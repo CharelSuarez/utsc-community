@@ -2,7 +2,8 @@
 Thumbs.db
 .DS_Store
 
+
 # node.js
 node_modules
 db
-
+.env
