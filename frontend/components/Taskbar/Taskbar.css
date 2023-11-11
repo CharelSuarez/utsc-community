@@ -1,0 +1,19 @@
+.taskbar {
+    height: fit-content;
+    display: flex;
+    background-color: gray;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    margin: 0px 20px;
+}
+
+.taskbar button {
+    margin: 0px 20px;
+}
