@@ -21,7 +21,9 @@ let userSchema = new mongoose.Schema({
         type: String
     }],
 });
-
-
   
-export const User = mongoose.model('user', userSchema);
+export const User = mongoose.model('User', userSchema);
+
+export function getClient() {
+    return mongoose.connection.getClient();
+}
