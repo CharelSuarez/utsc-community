@@ -1,0 +1,8 @@
+.pageBox {
+    border: 1px solid black;
+    height: 50px;
+    width: 704px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
