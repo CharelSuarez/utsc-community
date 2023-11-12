@@ -15,7 +15,13 @@ let userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
-  });
+    },
+
+    friends: [{
+        type: String
+    }],
+});
+
+
   
 export const User = mongoose.model('user', userSchema);
