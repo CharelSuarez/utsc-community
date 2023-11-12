@@ -3,8 +3,19 @@
     width: 800px;
 }
 
-.filterBox .filter{
+.filterBox .filters{
     border: 1px solid black;
-    height: 75px;
+    height: 100px;
     width: 704px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.filterBox .filters .oneFilter{
+    height: 25px;
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
