@@ -1,10 +1,37 @@
+import { useRef } from 'react';
 import Modal from '../Modal/Modal';
+import { register } from '@/api/auth';
 
 interface RegisterModalProps {
     onClose: () => void;
 }
 
-function getModalChildren() {
+function getModalChildren({onClose}: RegisterModalProps) {
+    const usernameRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+
+    const onClickRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        if (!usernameRef.current || !passwordRef.current) {
+            return;
+        }
+    
+        const username = usernameRef.current.value == null ? '' : usernameRef.current.value;
+        const password = passwordRef.current.value == null ? '' : passwordRef.current.value;
+    
+        register(username, password).then((response) => {
+            if (!response) {
+                return;
+            }
+            onClose();
+            // window.location.href = '/dashboard';
+        });
+
+        usernameRef.current.value = '';
+        passwordRef.current.value = '';
+    };
+
     return (
         <>
             <h1>Register</h1>
@@ -25,9 +52,9 @@ function getModalChildren() {
             </div>
 
             <div className='modal-form'>
-                <input id='username' type='text' placeholder='Username' />
-                <input id='password' type='password' placeholder='Password' />
-                <button>Register</button>
+                <input ref={usernameRef} type='text' placeholder='Username' autoComplete="off"/>
+                <input ref={passwordRef} type='password' placeholder='Password' autoComplete="off"/>
+                <button onClick={onClickRegister}>Register</button>
             </div>
         </>
     )
@@ -35,6 +62,6 @@ function getModalChildren() {
 
 export default function RegisterModal({ onClose }: RegisterModalProps) {
     return (
-        <Modal children={getModalChildren()} onClose={onClose}/>
+        <Modal children={getModalChildren({onClose})} onClose={onClose}/>
     );
 }
