@@ -4,9 +4,11 @@ import "./social.css"
 
 import Form from "@/components/Social/Form/Form"
 import Container from "@/components/Social/Container/Container"
+import Navigation from "@/components/Social/Navigation/Navigation"
 
 import { useEffect, useState } from "react"
-import { getFriend } from "@/api/social"
+import { addFriend } from "@/api/social"
+import Message from "@/components/Messages/Message"
 
 
 
@@ -15,13 +17,16 @@ export default function Page() {
 
     return(
         <>  
-            <div className="title">User</div>
-
             <div className="content">
-                <Form getFriend = {(username: string) => getFriend(username).then(setUsers)} />
-                <Container friend = {users}/>
-            </div>
+                <div className="navigation">
+                    <Navigation />
+                </div>
 
+
+                <div className="messages">
+                    <Message />
+                </div>
+            </div>
         </>
     )
 }

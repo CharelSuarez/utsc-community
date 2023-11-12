@@ -1,6 +1,6 @@
 :root{
     --bg-primary: #0077B6;
-
+    --bg-second: #023E8A;
 }
 
 
@@ -8,24 +8,35 @@ body{
     height: 100vh;
     width: auto;
     display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    background-color: var(--bg-primary);
-    padding: 4rem;
-    box-sizing: border-box;
-}
-
-.title{
-    font-size: 4rem;
-    color: white;
-    margin-bottom: 3rem;
 }
 
 .content{
     height: 100%;
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4rem;
 }
+
+.navigation{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    background-color: var(--bg-accent);
+}
+
+.messages{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-second);
+}
+
+.search{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+

@@ -2,10 +2,10 @@ import { useRef } from "react";
 import "./Form.css"
 
 interface FormProps{
-    getFriend: (username: string) => Promise<void>;
+    addFriend: (username: string) => Promise<void>;
 }
 
-export default function Form({ getFriend }: FormProps){
+export default function Form({ addFriend }: FormProps){
     
     const userRef = useRef<HTMLInputElement>(null);
 
@@ -14,7 +14,7 @@ export default function Form({ getFriend }: FormProps){
 
         const username =  userRef.current?.value == undefined ? "" : userRef.current?.value;
         
-        getFriend(username).then(function(){
+        addFriend(username).then(function(){
             return console.log("ur mom")
         })
         
@@ -22,9 +22,8 @@ export default function Form({ getFriend }: FormProps){
 
     return(
         <form className="form" onSubmit={(e) => handleSubmit(e)}>
-            <div className="title-form">Search User</div>
             <input type="text" 
-            placeholder="Enter User"
+            placeholder="Enter Username"
             required
             ref={userRef}
             />

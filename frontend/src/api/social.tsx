@@ -1,5 +1,5 @@
 import { send } from "./utils.mjs";
 
-export function getFriend(username: string){
-    return send("GET", '/api/'+username+"/friends/", null);
+export function addFriend(username: string){
+    return send("POST", '/api/'+"bob"+"/friends/", {friend: username});
 }

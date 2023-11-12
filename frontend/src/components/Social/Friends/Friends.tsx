@@ -1,11 +1,15 @@
 import "./Friends.css"
 
-export default function Friend(){
+interface FriendProps{
+    name: string
+}
+
+export default function Friend({name}: FriendProps){
     return (
         <>
             <div className="container">
                 <div className="profile"></div>
-                <div className="name">Name</div>
+                <div className="name">{name}</div>
             </div>  
         </>
     )
