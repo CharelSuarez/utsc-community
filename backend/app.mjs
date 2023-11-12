@@ -2,7 +2,7 @@ import { createServer } from "http";
 import express from "express";
 import "./load.mjs";
 import cors from "cors";
-import { User, getClient } from "./model/model.mjs";
+import { User, Event, getClient } from "./model/model.mjs";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import { body, param, validationResult, query} from "express-validator";
@@ -98,10 +98,41 @@ app.post("/api/register/", body(['username', 'password']).notEmpty(), async func
   res.sendStatus(201).end();
 });
 
+app.post("/api/event/", async function (req, res, next) {
+  const result = await Event.create(req.body);
+  return res
+  .status(200)
+  .json(result);
+});
+app.get("/api/events/:page", async function (req, res, next) {
+  const event = await Event.find({}).skip(parseInt(req.params.page)*10).limit(10);
+  return res
+  .status(200)
+  .json({events: event});
+});
 
 app.get("/api/:user/friends", async function(req,res){
-    const friend = await User.findOne({username: req.params.user}, {username:1})
-    return res.send({user: [friend]});
+  const friend = await User.findOne({username: req.params.user}, {username:1})
+  return res.send({user: [friend]});
+});
+
+app.delete("/api/event/:eventId/", async function (req, res, next) {
+  const event = await Event.findOne({_id : req.params.eventId});
+  if(event == null){
+    return res
+    .status(404)
+    .end("Event id:" + req.params.eventId + " does not exists");
+  }
+  else if(!isAuthenticatedAs(req, event.createdBy)){
+    return res
+    .status(404)
+    .end("Event id:" + req.params.eventId + " not authorized to delete");
+  }
+  else {
+    return res
+  .status(200)
+  .json(event);
+  }
 });
 
 

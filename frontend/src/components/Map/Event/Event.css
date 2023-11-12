@@ -14,7 +14,6 @@
     overflow: hidden;
     border-radius: 10px;
     border: 5px solid #000;
-    
 }
 .box .innerbox{
     position: absolute;
@@ -26,17 +25,20 @@
     transition: 0.5s;
     z-index: 1;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .box:hover .innerbox{
     bottom: 40px;
     width: 100%;
     height: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .box .innerbox h1{
-    width: 100%;
-    height: 100%;
     text-align: center;
     position: absolute;
     font-size: 40px;
