@@ -3,7 +3,15 @@ body {
     margin: 0px;
 }
 
-.links{
+h1 {
+    margin: 0px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.links {
     display: flex;
     flex-direction: column;
 }

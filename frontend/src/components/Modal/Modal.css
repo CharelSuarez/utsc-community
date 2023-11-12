@@ -1,0 +1,80 @@
+.modal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    box-shadow: gray 0px 5px 30px 0px;
+    background-color: white;
+    border: 2px solid whitesmoke;
+    border-radius: 15px;
+    position: absolute;
+    width: 400px;
+    height: 250px;
+    top: calc(50% - 200px - 40px);
+    left: calc(50% - 200px - 40px);
+    padding: 40px 80px 60px 80px;
+}
+
+.close-button {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+}
+
+.modal h1 {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.g_id_signin {
+    width: 100%;
+    padding-bottom: 15px;
+    border-bottom: 1px solid black;
+}
+
+.modal-form {
+    padding-top: 15px;
+}
+
+.modal-form button {
+    width: 100%;
+    padding: 0px;
+    margin: 5px 0px;
+    font-size: 20px;
+    border-color: darkgray;
+    background-color: white;
+    border-radius: 3px;
+    border-width: 1px;
+    height: 30px;
+}
+
+.modal-form input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0px;
+    margin: 5px 0px;
+    font-size: 20px;
+    padding-inline: 0px;
+    padding-block: 0px;
+}
+
+
+/* .modal {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
+    background-color: white;
+    border: 2px solid rgb(240, 240, 240);
+    border-radius: 12px;
+    position: absolute;
+    width: 250px;
+    top: 70px;
+    left: calc(50% - 125px);
+    bottom: 70px;
+} */
