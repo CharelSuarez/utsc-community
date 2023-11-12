@@ -1,0 +1,146 @@
+.body{
+    margin:0;
+    padding:0;
+    font-family: sans-serif;
+}
+.box{
+    position: relative;
+    width: calc(350px - 30px);
+    height: calc(250px - 30px);
+    background: #17469E;
+    float: left;
+    margin: 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 5px solid #000;
+    
+}
+.box .innerbox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #178A9E;
+    transition: 0.5s;
+    z-index: 1;
+    display: flex;
+}
+
+.box:hover .innerbox{
+    bottom: 40px;
+    width: 100%;
+    height: 25%;
+}
+
+.box .innerbox h1{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: absolute;
+    font-size: 40px;
+    transition:0.25s;
+    color: #000;
+}
+
+.box:hover .innerbox h1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin: 0;
+}
+
+.box .content{
+    position: absolute;
+    top: 100%;
+    width:100%;
+    height: calc(100% - 10px);
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: 0.5s;
+    
+}
+
+.box:hover .content{
+    top: 50px;
+    opacity: 1;
+    
+}
+
+.box .content .description {
+    margin:0;
+    height: 110px;
+    width: 100%;
+    padding: 0;
+    color: #fff;
+}
+
+.box .content .eventdetails{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.box .content .eventdetails .location {
+    margin:0;
+    width: 50px;
+    padding: 0;
+    color: #fff;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.box .content .eventdetails .location .tooltiptext{
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.box .content .eventdetails .location:hover .tooltiptext {
+    visibility: visible;
+    width: 120px;
+    bottom: 35%;
+    left: 20%;
+    margin-left: -60px;
+  }
+
+  .box .content .eventdetails .date .tooltiptext{
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.box .content .eventdetails .date:hover .tooltiptext {
+    visibility: visible;
+    width: 120px;
+    bottom: 35%;
+    margin-left: -60px;
+  }
+
+.box .content .eventdetails .date {
+    margin:0;
+    width: 200px;
+    padding: 0;
+    color: #fff;
+    display: flex;
+    justify-content: flex-end;
+}
