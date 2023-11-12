@@ -17,9 +17,9 @@ app.use(cors(
 ));
 
 
-app.get("/api/friends/:user", async function(req,res){
-    const friend = await  User.findOne({username: req.params.user}, {username:1})
-    return res.json(friend);
+app.get("/api/:user/friends", async function(req,res){
+    const friend = await User.findOne({username: req.params.user}, {username:1})
+    return res.send({user: [friend]});
 });
 
 
