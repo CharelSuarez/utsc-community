@@ -5,6 +5,7 @@ import Button from "../Button/Button"
 
 import { useState } from "react";
 import { addFriend } from "@/api/social";
+import Container from "../Container/Container";
 
 
 
@@ -22,8 +23,9 @@ export default function Navigation(){
                     <Button label="Direct" />
                     <Button label="Group"/>
                 </div>
-                <div className="display">
-                </div>
+
+                    <Container />
+
             </div>
         </>
     )

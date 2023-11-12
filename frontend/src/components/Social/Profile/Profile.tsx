@@ -1,13 +1,16 @@
-import "./Friends.css"
+import "./Profile.css"
 
-interface FriendProps{
+interface ProfileProps{
     name: string
 }
 
-export default function Friend({name}: FriendProps){
+export default function Profile({name}: ProfileProps){
+
+    console.log(name)
+
     return (
         <>
-            <div className="container">
+            <div className="container-profile">
                 <div className="profile"></div>
                 <div className="name">{name}</div>
             </div>  

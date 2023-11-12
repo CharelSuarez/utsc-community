@@ -3,12 +3,14 @@
     --bg-primary: #0077B6
 }
 
-.friends.container{
-    display: grid;
-    width: 1200px;
-    height: 80%;
-    background-color: var(--bg-secondary);
-    grid-template-columns: 300px 300px 300px;
-    gap: 1rem;
-    overflow-y: auto;
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+    justify-content: center;
+    width: 100%;
+    height: 350px;
+    gap: 2rem;
+
 }

@@ -108,6 +108,14 @@ app.post("/api/:user/friends", async function(req,res){
     return res.send({user: user.friends});
 });
 
+app.get("/api/:user/chat/", async function(req,res){
+
+    const chat = await User.findOne({username: req.params.user}).limit(5);
+    console.log(chat.friends.slice(0,3));
+
+    return res.send({chat: chat.friends.reverse().slice(0,3)})
+});
+
 
 const server = createServer(app).listen(PORT, function (err) {
   if (err) console.log(err);

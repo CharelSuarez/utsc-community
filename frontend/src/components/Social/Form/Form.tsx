@@ -23,11 +23,11 @@ export default function Form({ addFriend }: FormProps){
     return(
         <form className="form" onSubmit={(e) => handleSubmit(e)}>
             <input type="text" 
-            placeholder="Enter Username"
+            placeholder="Add by Username"
             required
             ref={userRef}
             />
-            <button type="submit">Submit</button>
+            <button type="submit">Add</button>
         </form>
 
     )

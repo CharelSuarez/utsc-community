@@ -1,18 +1,25 @@
 import "./container.css"
-import Friend from "../Friends/Friends"
+import Profile from "../Profile/Profile"
+import { useEffect, useState } from "react"
+import { getChat } from "@/api/social"
 
-interface FriendProps{
-    friends: never[]
-}
 
-export default function Container({friends}: FriendProps){
-    console.log(friends)
+export default function Container(){
+    const [chat, setChat] = useState([])
+
+    useEffect(()=>{
+        getChat("bob").then((chat)=>{
+            setChat(chat.chat)
+        });
+
+    }, []);
+
     return(
         <>
-            <div className="friends container">
-                {friends.map((friend) => (
-                    <Friend name={friend}/>
-                ))}
+            <div className="container">
+                {(  
+                    chat.map((user) => <Profile key={user} name={user}/>)
+                )}
             </div>
         </>
     )
