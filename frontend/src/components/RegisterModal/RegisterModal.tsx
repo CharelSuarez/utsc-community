@@ -27,7 +27,7 @@ function getModalChildren() {
             <div className='modal-form'>
                 <input id='username' type='text' placeholder='Username' />
                 <input id='password' type='password' placeholder='Password' />
-                <button>Log In</button>
+                <button>Register</button>
             </div>
         </>
     )
