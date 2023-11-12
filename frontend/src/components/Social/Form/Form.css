@@ -1,0 +1,11 @@
+.form{
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+}
+
+.title-form{
+    color: white;
+    margin-bottom: .5rem;
+    text-align: center;
+}

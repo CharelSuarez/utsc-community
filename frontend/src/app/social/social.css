@@ -1,3 +1,31 @@
-*{
-    color: black;
+:root{
+    --bg-primary: #0077B6;
+
+}
+
+
+body{
+    height: 100vh;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    background-color: var(--bg-primary);
+    padding: 4rem;
+    box-sizing: border-box;
+}
+
+.title{
+    font-size: 4rem;
+    color: white;
+    margin-bottom: 3rem;
+}
+
+.content{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
 }
