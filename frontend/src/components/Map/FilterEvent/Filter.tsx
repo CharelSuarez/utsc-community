@@ -1,13 +1,15 @@
 import "./Filter.css";
-import Events from "@/components/Map/Events/Events";
+import Calendar from "@/components/Map/Calendar/Calendar";
+import Location from "@/components/Map/Location/Location";
+
 export default function Filter(){
     return (
-      <div className="filterBox">
         <div className="filters">
-            
+          <Calendar label="Start Date"></Calendar>
+          <Calendar label="End Date"></Calendar>
+          <Location></Location>
+          <button></button>
         </div>
-        <Events></Events>
-      </div>
       
       );
 }

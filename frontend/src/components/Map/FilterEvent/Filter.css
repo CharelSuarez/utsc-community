@@ -1,10 +1,17 @@
-.filterBox{
-    height: 900px;
-    width: 800px;
+
+.filters{
+    border: 1px solid black;
+    height: 100px;
+    width: 704px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.filterBox .filter{
-    border: 1px solid black;
-    height: 75px;
-    width: 704px;
+.filters .oneFilter{
+    height: 25px;
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
