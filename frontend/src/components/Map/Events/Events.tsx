@@ -1,5 +1,5 @@
 import "./Events.css";
-import Event from "@/components/Event/Event" 
+import Event from "@/components/Map/Event/Event" 
 export default function Events(){
     return (
       <div className="eventBox">

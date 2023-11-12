@@ -1,4 +1,4 @@
-import Filter from "@/components//FilterEvent/Filter";
+import Filter from "@/components/Map/FilterEvent/Filter";
 
 export default function Page() {
     return (

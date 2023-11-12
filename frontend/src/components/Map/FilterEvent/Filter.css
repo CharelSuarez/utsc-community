@@ -4,7 +4,7 @@
 }
 
 .filterBox .filter{
-    background-color: black;
-    height: 150px;
-    width: 800px;
+    border: 1px solid black;
+    height: 75px;
+    width: 704px;
 }
