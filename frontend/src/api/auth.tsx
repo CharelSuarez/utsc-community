@@ -1,5 +1,13 @@
-import { send } from "./utils.mjs";
+import { send } from "./utils";
 
-export function login(username: string){
-    return send("GET", '/api/friends/'+username+"/", null);
+export function login(username: string, password: string) : Promise<any> {
+    return send("POST", '/api/login/', {username, password});
+}
+
+export function register(username: string, password: string) : Promise<any> {
+    return send("POST", '/api/register/', {username, password});
+}
+
+export function logout() : void {
+    send("DELETE", '/api/login/', null);
 }

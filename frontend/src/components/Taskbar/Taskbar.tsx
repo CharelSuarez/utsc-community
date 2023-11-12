@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import LoginModal from '@/components/LoginModal/LoginModal';
 import './Taskbar.css';
 import RegisterModal from '../RegisterModal/RegisterModal';
+import { logout } from '@/api/auth';
 
 export default function Taskbar(){
     const [showLoginModal, setLoginShowModal] = useState(false);
@@ -23,20 +24,23 @@ export default function Taskbar(){
                 <Link href="/social">
                     <button>Social</button>
                 </Link>
-                <button onClick={() => setLoginShowModal(true)}>
+                <button onClick={(event) => setLoginShowModal(true)}>
                 Login
                 </button>
                 {showLoginModal && createPortal(
                     <LoginModal onClose={() => setLoginShowModal(false)} />,
                     document.body
                 )}
-                <button onClick={() => setShowRegisterModal(true)}>
+                <button onClick={(event) => setShowRegisterModal(true)}>
                 Register
                 </button>
                 {showRegisterModal && createPortal(
                     <RegisterModal onClose={() => setShowRegisterModal(false)} />,
                     document.body
                 )}
+                <button onClick={(event) => logout()}>
+                Logout
+                </button>
             </div>
         </div>
     )

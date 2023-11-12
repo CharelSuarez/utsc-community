@@ -2,7 +2,7 @@ import { createServer } from "http";
 import express from "express";
 import "./load.mjs";
 import cors from "cors";
-import { User, getClient } from "./model/model.mjs";
+import { User, Event, getClient } from "./model/model.mjs";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import { body, param, validationResult, query} from "express-validator";
@@ -15,20 +15,20 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: process.env.FRONTEND
+  origin: process.env.FRONTEND,
+  credentials: true,
 }));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  cookie: {
-  },
+  cookie: {},
   saveUninitialized: true,
   resave: false,
   store: new MongoStore({
     client: getClient(),
     ttl: 1 * 60 * 60,
     autoRemove: 'native',
-    collection: 'session'
+    collectionName: 'sessions'
   })
 }));
 
@@ -59,7 +59,7 @@ app.use(function (req, res, next) {
 function setUserCookie(req, res) {
   res.setHeader(
     "Set-Cookie",
-    serialize("user", !req.session.user ? null : req.session.user, {
+    serialize("user", !req.session.user ? 'null' : JSON.stringify(req.session.user), {
       path: "/",
       maxAge: 60 * 60 * 24 * 14, // 14 days
     }),
@@ -76,12 +76,16 @@ app.post("/api/login/", body(['username', 'password']).notEmpty(), async functio
     return res.status(404).end("User not found!");
   }
 
-  req.session.user = {_id: user._id, username: user.username};
+  const project = req.session.user = {_id: user._id.toString(), username: user.username};
   setUserCookie(req, res);
-  res.sendStatus(200).end();
+  res.status(200).json(project);
 });
 
 app.post("/api/register/", body(['username', 'password']).notEmpty(), async function (req, res, next) {
+  if (req.session.user) {
+    return res.status(409).end("Already logged in!");
+  }
+
   if (!validationResult(req).isEmpty()) {
     return res.status(400).json(validationResult(req).array()).end();
   }
@@ -93,11 +97,30 @@ app.post("/api/register/", body(['username', 'password']).notEmpty(), async func
 
   const hash = bcrypt.hashSync(req.body.password, 10);
   user = await User.create({username: req.body.username, password: hash})
-  req.session.user = {_id: user._id, username: user.username};
+
+  const project = req.session.user = {_id: user._id.toString(), username: user.username};
   setUserCookie(req, res);
-  res.sendStatus(201).end();
+  res.status(201).json(project);
 });
 
+app.delete("/api/login/", isAuthenticated, async function (req, res, next) {
+  req.session.user = null;
+  setUserCookie(req, res);
+  res.sendStatus(200).end();
+});
+
+app.post("/api/event/", async function (req, res, next) {
+  const result = await Event.create(req.body);
+  return res
+  .status(200)
+  .json(result);
+});
+app.get("/api/events/:page", async function (req, res, next) {
+  const event = await Event.find({}).skip(parseInt(req.params.page)*10).limit(10);
+  return res
+  .status(200)
+  .json({events: event});
+});
 
 app.post("/api/:user/friends", async function(req,res){
     const user = await User.findOne({username: req.params.user});
@@ -116,6 +139,24 @@ app.get("/api/:user/chat/", async function(req,res){
     return res.send({chat: chat.friends.reverse().slice(0,3)})
 });
 
+app.delete("/api/event/:eventId/", async function (req, res, next) {
+  const event = await Event.findOne({_id : req.params.eventId});
+  if(event == null){
+    return res
+    .status(404)
+    .end("Event id:" + req.params.eventId + " does not exists");
+  }
+  else if(!isAuthenticatedAs(req, event.createdBy)){
+    return res
+    .status(404)
+    .end("Event id:" + req.params.eventId + " not authorized to delete");
+  }
+  else {
+    return res
+  .status(200)
+  .json(event);
+  }
+});
 
 const server = createServer(app).listen(PORT, function (err) {
   if (err) console.log(err);
