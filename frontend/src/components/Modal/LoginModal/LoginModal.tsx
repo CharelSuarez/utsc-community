@@ -1,16 +1,17 @@
-import { useRef } from 'react';
-import Modal from '../Modal/Modal';
-import { register } from '@/api/auth';
+import { useRef } from "react";
+import Modal from "@/components/Modal/Modal";
+import { MouseEventHandler } from "react";
+import { login } from "@/api/auth";
 
-interface RegisterModalProps {
+interface LoginModalProps {
     onClose: () => void;
 }
 
-function getModalChildren({onClose}: RegisterModalProps) {
+function getModalChildren({onClose}: LoginModalProps) {
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
-    const onClickRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const onClickLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
         if (!usernameRef.current || !passwordRef.current) {
@@ -20,7 +21,7 @@ function getModalChildren({onClose}: RegisterModalProps) {
         const username = usernameRef.current.value == null ? '' : usernameRef.current.value;
         const password = passwordRef.current.value == null ? '' : passwordRef.current.value;
     
-        register(username, password).then((response) => {
+        login(username, password).then((response) => {
             if (!response) {
                 return;
             }
@@ -34,7 +35,7 @@ function getModalChildren({onClose}: RegisterModalProps) {
 
     return (
         <>
-            <h1>Register</h1>
+            <h1>Login</h1>
 
             <script src='https://accounts.google.com/gsi/client' async></script>
             <div id='g_id_onload'
@@ -54,14 +55,16 @@ function getModalChildren({onClose}: RegisterModalProps) {
             <div className='modal-form'>
                 <input ref={usernameRef} type='text' placeholder='Username' autoComplete="off"/>
                 <input ref={passwordRef} type='password' placeholder='Password' autoComplete="off"/>
-                <button onClick={onClickRegister}>Register</button>
+                <button onClick={onClickLogin}>Log In</button>
             </div>
         </>
     )
 }
 
-export default function RegisterModal({ onClose }: RegisterModalProps) {
+export default function LoginModal({ onClose }: LoginModalProps) {
     return (
-        <Modal children={getModalChildren({onClose})} onClose={onClose}/>
+        <>
+            <Modal children={getModalChildren({onClose})} onClose={onClose}/>
+        </>
     );
 }

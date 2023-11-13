@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import LoginModal from '@/components/LoginModal/LoginModal';
+import LoginModal from '@/components/Modal/LoginModal/LoginModal';
 import './Taskbar.css';
-import RegisterModal from '../RegisterModal/RegisterModal';
+import RegisterModal from '@/components/Modal/RegisterModal/RegisterModal';
 import { logout } from '@/api/auth';
 
 export default function Taskbar(){
