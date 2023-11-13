@@ -2,11 +2,25 @@
     display: flex;
     width: 300px;
     justify-content: center;
+    align-items: center;
     gap: 1rem;
 }
 
-.title-form{
+.form input{
+    width: 80%;
+    height: 30px;
+    border-radius: 15px;
+    padding-left: .5rem;
+    border: 2px solid var(--bg-secondary);
+    font-size: 1rem;
+}
+
+.form button{
+    height: 35px;
+    width: 50px;
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    border: none;
     color: white;
-    margin-bottom: .5rem;
-    text-align: center;
+    font-weight: 600;
 }

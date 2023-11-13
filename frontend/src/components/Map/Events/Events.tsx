@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { getEvents } from "@/api/event"
 
 interface EventProps {
-  title: string;
+  name: string;
   description: string;
   location: string;
   date: string;
@@ -22,8 +22,8 @@ export default function Events(){
     return (
       <div className="eventBox">
         {(  
-            event.map((event) => <Event title={event.title} description={event.description} location={event.location} date={event.date}/>)
+            event.map((event) => <Event title={event.name} description={event.description} location={event.location} date={event.date}/>)
         )}
       </div>
-      );
+    );
 }
