@@ -13,7 +13,7 @@ export default function Taskbar(){
 
     return (
         <div className='taskbar'>
-            <h1>joe's website</h1>
+            <h1>UTSC</h1>
             <div className="links">
                 <Link href="/dashboard">
                     <button>Dashboard</button>
