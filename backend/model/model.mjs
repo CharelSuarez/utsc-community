@@ -30,30 +30,36 @@ let eventSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true
+        unique: false
     },
     description: {
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     createdBy: {
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     startDate: {
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     endDate: {
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     location: {
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     guest: [{
-        type: userSchema,
+        type: String,
+        unique: false
     }],
 });
 

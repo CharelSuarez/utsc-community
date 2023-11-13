@@ -1,14 +1,29 @@
+"use client";
 import "./Events.css";
 import Event from "@/components/Map/Event/Event" 
+import { useEffect, useState } from "react"
+import { getEvents } from "@/api/event"
+
+interface EventProps {
+  title: string;
+  description: string;
+  location: string;
+  date: string;
+}
+
 export default function Events(){
+  const [event, setEvent] = useState<EventProps[]>([]);
+
+  useEffect(() =>{
+    getEvents(0).then((events)=>{
+      setEvent(events.events)
+    })
+  }, []);
     return (
       <div className="eventBox">
-        <Event title="Monkey" description="Event is so cooking good looking" location="HW" date="7pm-9pm 10/30/2023"/>
-        <Event title="Monkey" description="Event is so cooking good looking" location="HW" date="7pm-9pm 10/30/2023"/>
-        <Event title="Monkey" description="Event is so cooking good looking" location="HW" date="7pm-9pm 10/30/2023"/>
-        <Event title="Monkey" description="Event is so cooking good looking" location="HW" date="7pm-9pm 10/30/2023"/>
-        <Event title="Monkey" description="Event is so cooking good looking" location="HW" date="7pm-9pm 10/30/2023"/>
-        <Event title="Monkey" description="Event is so cooking good looking" location="HW" date="7pm-9pm 10/30/2023"/>
+        {(  
+            event.map((event) => <Event title={event.title} description={event.description} location={event.location} date={event.date}/>)
+        )}
       </div>
       );
 }
