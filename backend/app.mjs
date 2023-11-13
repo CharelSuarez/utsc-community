@@ -103,6 +103,8 @@ app.post("/api/register/", body(['username', 'password']).notEmpty(), async func
   res.status(201).json(project);
 });
 
+
+
 app.delete("/api/login/", isAuthenticated, async function (req, res, next) {
   req.session.user = null;
   setUserCookie(req, res);
@@ -115,6 +117,7 @@ app.post("/api/event/", async function (req, res, next) {
   .status(200)
   .json(result);
 });
+
 app.get("/api/events/:page", async function (req, res, next) {
   const event = await Event.find({}).skip(parseInt(req.params.page)*10).limit(10);
   return res
@@ -122,21 +125,30 @@ app.get("/api/events/:page", async function (req, res, next) {
   .json({events: event});
 });
 
-app.post("/api/:user/friends", async function(req,res){
-    const user = await User.findOne({username: req.params.user});
-    user.friends.push(req.body.friend);
+app.post("/api/:friend/friends", isAuthenticated, async function(req,res){
+  
+    const friend = await User.findOne({username: req.params.friend});
 
-    await User.updateOne({username: req.params.user},{$set:{friends: user.friends}});
+    if(!friend){
+      return res.sendStatus(404);
+    }
 
-    return res.send({user: user.friends});
+    const user = await User.findOne({_id: req.session.user._id});
+    if(!(user.friends.includes(req.params.friend))){
+      user.friends.push(req.params.friend);
+    }
+   
+
+    await User.updateOne({_id: req.session.user._id}, {$set:{friends: user.friends}});
+
+    return res.send({user: user.friends.reverse().slice(0,3)});
 });
 
-app.get("/api/:user/chat/", async function(req,res){
+app.get("/api/chat/", isAuthenticated, async function(req,res){
 
-    const chat = await User.findOne({username: req.params.user}).limit(5);
-    console.log(chat.friends.slice(0,3));
+    const doc = await User.findOne({_id: req.session.user._id}).limit(5);
 
-    return res.send({chat: chat.friends.reverse().slice(0,3)})
+    return res.send({chat: doc.friends.reverse().slice(0,3)})
 });
 
 app.delete("/api/event/:eventId/", async function (req, res, next) {

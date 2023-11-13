@@ -3,22 +3,18 @@ import Profile from "../Profile/Profile"
 import { useEffect, useState } from "react"
 import { getChat } from "@/api/social"
 
+interface FriendProp{
+    users: string[]
+}
 
-export default function Container(){
-    const [chat, setChat] = useState([])
+export default function Container({users}: FriendProp){
 
-    useEffect(()=>{
-        getChat("bob").then((chat)=>{
-            setChat(chat.chat)
-        });
-
-    }, []);
 
     return(
         <>
             <div className="container">
                 {(  
-                    chat.map((user) => <Profile key={user} name={user}/>)
+                    users.map((user) => <Profile key={user} name={user}/>)
                 )}
             </div>
         </>
