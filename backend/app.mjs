@@ -116,7 +116,7 @@ app.post("/api/event/", async function (req, res, next) {
   .json(result);
 });
 app.get("/api/events/:page", async function (req, res, next) {
-  const event = await Event.find({}).skip(parseInt(req.params.page)*10).limit(10);
+  const event = await Event.find({}).skip(parseInt(req.params.page)*6).limit(6);
   return res
   .status(200)
   .json({events: event});
