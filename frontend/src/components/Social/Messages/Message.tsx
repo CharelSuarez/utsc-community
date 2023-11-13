@@ -1,6 +1,6 @@
 import "./Message.css"
 
-import Text from "../Social/Text/Text"
+import Text from "../Text/Text"
 
 export default function Message(){
 return(

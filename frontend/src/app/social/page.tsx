@@ -2,13 +2,11 @@
 
 import "./social.css"
 
-import Form from "@/components/Social/Form/Form"
-import Container from "@/components/Social/Container/Container"
+
 import Navigation from "@/components/Social/Navigation/Navigation"
 
 import { useEffect, useState } from "react"
-import { addFriend } from "@/api/social"
-import Message from "@/components/Messages/Message"
+import Message from "@/components/Social/Messages/Message"
 
 
 
