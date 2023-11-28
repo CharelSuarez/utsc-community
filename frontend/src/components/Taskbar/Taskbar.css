@@ -15,4 +15,10 @@
     margin: 0px 20px;
 }
 
+.links {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
 
