@@ -15,7 +15,7 @@ export default function Taskbar(){
         <div className='taskbar'>
             <h1>UTSC</h1>
             <div className="links">
-                <Link href="/dashboard">
+                {/* <Link href="/dashboard">
                     <button>Dashboard</button>
                 </Link>
                 <Link href="/map">
@@ -23,7 +23,7 @@ export default function Taskbar(){
                 </Link>
                 <Link href="/social">
                     <button>Social</button>
-                </Link>
+                </Link> */}
                 <button onClick={(event) => setLoginShowModal(true)}>
                 Login
                 </button>
@@ -31,16 +31,16 @@ export default function Taskbar(){
                     <LoginModal onClose={() => setLoginShowModal(false)} />,
                     document.body
                 )}
-                <button onClick={(event) => setShowRegisterModal(true)}>
+                {/* <button onClick={(event) => setShowRegisterModal(true)}>
                 Register
                 </button>
                 {showRegisterModal && createPortal(
                     <RegisterModal onClose={() => setShowRegisterModal(false)} />,
                     document.body
-                )}
-                <button onClick={(event) => logout()}>
+                )} */}
+                {/* <button onClick={(event) => logout()}>
                 Logout
-                </button>
+                </button> */}
             </div>
         </div>
     )
