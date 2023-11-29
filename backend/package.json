@@ -6,6 +6,7 @@
   "scripts": {
     "prod": "node app.mjs",
     "dev": "nodemon app.mjs",
+    "socket": "node socket.mjs",
     "test": "npx mocha"
   },
   "author": "",
@@ -20,7 +21,8 @@
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
     "mongodb": "^6.2.0",
-    "mongoose": "^8.0.0"
+    "mongoose": "^8.0.0",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

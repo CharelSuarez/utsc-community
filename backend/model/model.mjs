@@ -26,6 +26,16 @@ let userSchema = new mongoose.Schema({
 export const User = mongoose.model('User', userSchema);
 
 
+let groupSchema = new mongoose.Schema({
+
+    users: [{type: String}],
+    messages: [{user: String, message: String}]
+
+});
+
+export const Group = mongoose.model('Group', groupSchema);
+
+
 let eventSchema = new mongoose.Schema({
     name: {
         type: String,

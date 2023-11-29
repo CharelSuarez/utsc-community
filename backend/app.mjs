@@ -9,7 +9,8 @@ import { body, param, validationResult, query} from "express-validator";
 import bcrypt from "bcrypt";
 import { serialize } from "cookie";
 
-const PORT = 4000;
+
+const PORT = 5000;
 const app = express();
 
 app.use(express.json());
@@ -19,7 +20,7 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(session({
+export const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   cookie: {},
   saveUninitialized: true,
@@ -30,7 +31,9 @@ app.use(session({
     autoRemove: 'native',
     collectionName: 'sessions'
   })
-}));
+})
+
+app.use(sessionMiddleware);
 
 app.use(function (req, res, next) {
   console.log("HTTP request", req.method, req.url, req.body);
