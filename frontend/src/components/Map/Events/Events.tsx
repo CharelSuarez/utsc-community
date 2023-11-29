@@ -8,7 +8,9 @@ interface EventProps {
   name: string;
   description: string;
   location: string;
-  date: string;
+  startDate: string;
+  endDate: string;
+  _id: string;
 }
 
 export default function Events(){
@@ -22,7 +24,8 @@ export default function Events(){
     return (
       <div className="eventBox">
         {(  
-            event.map((event) => <Event title={event.name} description={event.description} location={event.location} date={event.date}/>)
+            event.map((event) => <Event title={event.name} description={event.description} location={event.location} 
+            startDate={event.startDate} endDate={event.endDate} _id={event._id}/>)
         )}
       </div>
     );
