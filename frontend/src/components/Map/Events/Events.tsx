@@ -10,6 +10,8 @@ interface EventProps {
   location: string;
   startDate: string;
   endDate: string;
+  startTime: string;
+  endTime: string;
   _id: string;
 }
 
@@ -25,7 +27,7 @@ export default function Events(){
       <div className="eventBox">
         {(  
             event.map((event) => <Event title={event.name} description={event.description} location={event.location} 
-            startDate={event.startDate} endDate={event.endDate} _id={event._id}/>)
+            startDate={event.startDate} endDate={event.endDate} startTime={event.startTime} endTime={event.endTime} _id={event._id}/>)
         )}
       </div>
     );

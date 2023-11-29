@@ -1,8 +1,5 @@
-import '../Modal.css';
-import { useRef } from "react";
+import './EventModal.css';
 import Modal from "@/components/Modal/Modal";
-import { MouseEventHandler } from "react";
-import { login } from "@/api/auth";
 
 interface EventModalProps {
     onClose: () => void;
@@ -11,29 +8,41 @@ interface EventModalProps {
     location: string;
     startDate: string;
     endDate: string;
+    startTime: string;
+    endTime: string;
     _id: string;
 }
 
-
-export default function EventModal({onClose, title, description, location, startDate, endDate, _id }: EventModalProps){
-    return (        
+function getModalChildren({onClose, title, description, location, startDate, endDate, startTime, endTime, _id }: EventModalProps) {
+return (
     <>
-        <div className="modalEvent">
-            <div className="innerbox">
-                <h1>{title}</h1>
-                <img className='close-button' src='https://i.imgur.com/O3YBoxX.png' alt='close' onClick={onClose} />
-                <button>Attend Event</button>
-            </div>
-            <div className="content">
-                <label>Event Description:
-                    <div className="description">{description}</div>
+        <div className="title">
+            <h1>{title}</h1>
+            <img className='close-button' src='https://i.imgur.com/O3YBoxX.png' alt='close' onClick={onClose} />
+            <button>Attend Event</button>
+        </div>
+        <div className="content">
+            <label>Event Description:
+                <div className="description">{description}</div>
+            </label>
+            <div className="eventdetails">
+                <label>Location:
+                    <div className="Location">{location}</div>
                 </label>
-                <div className="eventdetails">
-                    <div className="location">{location}</div>
-                    <div className="date">{startDate}</div>
-                </div>
+                <label>Date:
+                    <div className="date">{startDate}{"-"}{endDate}</div>
+                </label>
+                <label>Time:
+                    <div className="time">{startTime}{"-"}{endTime}</div>
+                </label>
             </div>
         </div>
     </>
+)
+}
+
+export default function EventModal({onClose, title, description, location, startDate, endDate, startTime, endTime, _id }: EventModalProps){
+    return (        
+        <Modal children={getModalChildren({onClose, title, description, location, startDate, endDate, startTime, endTime, _id })} onClose={onClose} type="modalEvent"/>
     );
 }

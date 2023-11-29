@@ -9,19 +9,17 @@ interface EventProps {
     location: string;
     startDate: string;
     endDate: string;
+    startTime: string;
+    endTime: string;
     _id: string;
 }
-export default function Event({title, description, location, startDate, endDate, _id}:EventProps){
+export default function Event({title, description, location, startDate, endDate, startTime, endTime, _id}:EventProps){
 
     const [showEventModal, setEventShowModal] = useState(false);
 
     return (
+        <>
             <div className="box" onClick={() => setEventShowModal(true)}>
-                {showEventModal && createPortal(
-                    <EventModal onClose={() => setEventShowModal(false)} title={title} description={description} 
-                    location={location} startDate={startDate} endDate={endDate} _id={_id}/>,
-                    document.body
-                )}
                 <div className="innerbox">
                     <h1>{title}</h1>
                 </div>
@@ -37,5 +35,11 @@ export default function Event({title, description, location, startDate, endDate,
                     </div>
                 </div>
             </div>
+            {showEventModal && createPortal(
+                <EventModal onClose={() => setEventShowModal(false)} title={title} description={description} 
+                location={location} startDate={startDate} endDate={endDate} _id={_id} startTime={startTime} endTime={endTime}/>,
+                document.body
+            )}
+            </>
       );
 }

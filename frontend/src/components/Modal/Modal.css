@@ -16,27 +16,6 @@
     padding: 40px 80px 60px 80px;
 }
 
-.modalEvent {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    box-shadow: gray 0px 5px 30px 0px;
-    background-color: white;
-    border: 2px solid whitesmoke;
-    border-radius: 15px;
-    position: absolute;
-    width: 500px;
-    height: 625px;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-top: 115px;
-    padding: 40px 80px 60px 80px;
-    z-index: 2;
-    transition: 0.25s;
-}
-
 .close-button {
     width: 25px;
     height: 25px;
@@ -83,19 +62,3 @@
     padding-inline: 0px;
     padding-block: 0px;
 }
-
-
-/* .modal {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
-    background-color: white;
-    border: 2px solid rgb(240, 240, 240);
-    border-radius: 12px;
-    position: absolute;
-    width: 250px;
-    top: 70px;
-    left: calc(50% - 125px);
-    bottom: 70px;
-} */
