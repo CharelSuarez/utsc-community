@@ -2,7 +2,7 @@ import { createServer } from "http";
 import express from "express";
 import "./load.mjs";
 import cors from "cors";
-import { User, Event, getClient } from "./model/model.mjs";
+import { User, Event, getClient , Group} from "./model/model.mjs";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import { body, param, validationResult, query} from "express-validator";
@@ -145,6 +145,31 @@ app.post("/api/:friend/friends", isAuthenticated, async function(req,res){
     await User.updateOne({_id: req.session.user._id}, {$set:{friends: user.friends}});
 
     return res.send({user: user.friends.reverse().slice(0,3)});
+});
+
+app.post("/api/group/", isAuthenticated, async function(req, res){
+  const users = req.body.users;
+  users.push(req.session.user.username)
+  users.sort();
+
+  const group = await Group.find({users: users})
+
+  if(group.length != 0){
+    console.log(group);
+    return res.status(403).json(users);
+  }
+
+  Group.create({users: users, messages: []});
+  return res.status(200).json(users);
+});
+
+app.get("/api/group/", isAuthenticated, async function(req, res){
+  const group = await Group.find({},{users:1, _id: 0});
+  const filter = group.map((item) => item.users.join(','))
+
+  console.log(filter);
+  res.status(200).json({group: filter});
+  
 });
 
 app.get("/api/chat/", isAuthenticated, async function(req,res){

@@ -6,7 +6,7 @@
   "scripts": {
     "prod": "node app.mjs",
     "dev": "nodemon app.mjs",
-    "socket": "node socket.mjs",
+    "socket": "nodemon socket.mjs",
     "test": "npx mocha"
   },
   "author": "",
