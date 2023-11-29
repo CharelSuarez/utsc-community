@@ -7,11 +7,13 @@
     "prod": "node app.mjs",
     "dev": "nodemon app.mjs",
     "socket": "nodemon socket.mjs",
+    "grpc": "nodemon grpc.mjs",
     "test": "npx mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@grpc/grpc-js": "^1.9.12",
     "bcrypt": "^5.1.1",
     "connect-mongo": "^5.1.0",
     "cookie": "^0.6.0",
@@ -25,6 +27,12 @@
     "socket.io": "^4.7.2"
   },
   "devDependencies": {
+    "eslint": "^8.54.0",
     "nodemon": "^3.0.1"
+  },
+  "eslintConfig": {
+    "rules": {
+      "no-var": "error"
+    }
   }
 }

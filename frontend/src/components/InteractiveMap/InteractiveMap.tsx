@@ -3,8 +3,11 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/images/marker-icon.png';
 import { LatLngBounds } from 'leaflet';
+import { connectToServer } from '@/api/grpc';
 
 export default function InteractiveMap() {
+    connectToServer();    
+
     return (
         <>
             <MapContainer 

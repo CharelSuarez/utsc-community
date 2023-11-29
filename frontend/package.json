@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "proto": "./node_modules/.bin/proto-loader-gen-types --longs=String --enums=String --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=proto/ proto/*.proto"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.9.12",
     "bcrypt": "^5.1.1",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
