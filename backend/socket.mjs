@@ -26,11 +26,8 @@ io.engine.use(sessionMiddleware);
 
 io.on('connection', (socket) => {
     const session = socket.request.session;
-
-    console.log('user connected');
-
     socket.on('message', (message) => {
         console.log(message);
-        io.emit('message', message);
+        io.emit('message', session.user.username + " said " + message);
     });
 })

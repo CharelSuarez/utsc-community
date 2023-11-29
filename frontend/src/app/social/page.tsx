@@ -11,18 +11,18 @@ import Message from "@/components/Social/Messages/Message"
 
 
 export default function Page() {
-    const [users, setUsers] = useState([]);
+    const [group , setGroup] = useState<string[]>([]);
 
     return(
         <>  
             <div className="content">
                 <div className="navigation">
-                    <Navigation />
+                    <Navigation current = {(group: string[]) => setGroup(group)}/>
                 </div>
 
 
                 <div className="messages">
-                    <Message />
+                    <Message group = {group.join(', ')} />
                 </div>
             </div>
         </>
