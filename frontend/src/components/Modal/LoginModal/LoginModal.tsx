@@ -64,7 +64,7 @@ function getModalChildren({onClose}: LoginModalProps) {
 export default function LoginModal({ onClose }: LoginModalProps) {
     return (
         <>
-            <Modal children={getModalChildren({onClose})} onClose={onClose}/>
+            <Modal children={getModalChildren({onClose})} onClose={onClose} type='modal'/>
         </>
     );
 }

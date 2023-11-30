@@ -62,6 +62,6 @@ function getModalChildren({onClose}: RegisterModalProps) {
 
 export default function RegisterModal({ onClose }: RegisterModalProps) {
     return (
-        <Modal children={getModalChildren({onClose})} onClose={onClose}/>
+        <Modal children={getModalChildren({onClose})} onClose={onClose} type='modal'/>
     );
 }
