@@ -174,12 +174,23 @@ app.get("/api/group/", isAuthenticated, async function(req, res){
 
 app.get("/api/message/:id/", isAuthenticated, async function(req, res){
   const messages = await Group.find({_id: req.params.id},{messages:1, _id: 0})
+
   if(messages.length == 0){
     return res.status(404).json([]) 
   }
 
-  console.log(messages)
-  return res.status(200).json(messages)
+  const filter = []
+  
+
+  for(let doc of messages[0].messages){
+    let message = {user: doc.user, message: doc.message, _id: doc._id, mine: req.session.user.username == doc.user}
+    filter.push(message)
+  }
+
+
+  console.log(filter);
+
+  return res.status(200).json(filter)
 });
 
 app.get("/api/chat/", isAuthenticated, async function(req,res){

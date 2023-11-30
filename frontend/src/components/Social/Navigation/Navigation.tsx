@@ -5,7 +5,7 @@ import Form from "../Form/Form"
 import { useEffect, useState } from "react";
 import { addFriend, getChat, addGroup, getAllGroup} from "@/api/social";
 import Container from "../Container/Container";
-import Group from "../Form/Group/Group";
+import Group from "../Container/Group";
 
 interface NaviProps{
     current: (users: string[]) => void
@@ -32,8 +32,6 @@ export default function Navigation({current, update}: NaviProps ){
     useEffect(() => {
         getAllGroup().then(function(doc){
             setList(doc.group)
-            console.log(doc.group[0]._id);
-            
             if(doc.group.length != 0){
                 current(doc.group[0].users);
                 update(doc.group[0]._id);
@@ -44,16 +42,16 @@ export default function Navigation({current, update}: NaviProps ){
     return(
         <>
             <div className="navi">
-                <div className="search">
+                {/* <div className="search">
                     <Form addFriend = {(username: string) => addFriend(username).then((friends) => setUsers(friends.user))}/>
-                </div>
-                <div className="group-add">
+                </div> */}
+                {/* <div className="group-add">
                     {group}
-                    <button onClick={() => addGroup(group).then((doc) => {current(doc.users); setList([...list, doc]); update(doc._id)})}>Add Groups</button>
-                </div>
-                    <Container users = {friend} addGroup = {(user: string) => setGroup([...group, user])}/>
-                    <Group groups={list.map((item) => item.users.join(','))} addCurrent ={current} />
-                </div>
+                    <button onClick={() => addGroup(group).then((doc) => { current(doc.users); setList([...list, doc]); update(doc._id) })}>Add Groups</button>
+                </div> */}
+                {/* <Container users={friend} addGroup={(user: string) => setGroup([...group, user])} /> */}
+                <Group groups={list.map((item) => item.users.join(','))} addCurrent={current} />
+            </div>
         </>
     )
 }

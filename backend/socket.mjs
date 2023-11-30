@@ -31,8 +31,12 @@ io.on('connection', (socket) => {
 
         const message = {user: session.user.username, message: doc.message};
         const messages = await Group.updateOne({_id:doc._id},{$push:{messages: message}});
-        
-        io.emit('message', message);
-        console.log(doc.group);
+
+        const mine = {user: session.user.username, message: doc.message, mine: true}
+        const yours = {user: session.user.username, message: doc.message, mine: false}
+
+
+        socket.broadcast.emit('message', yours)
+        socket.emit('message', mine);
     });
 })

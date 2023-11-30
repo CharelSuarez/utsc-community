@@ -17,6 +17,5 @@ export function getAllGroup(){
 }
 
 export function getMessages(id: string){
-    console.log(id);
     return send("GET", "/api/message/"+id+"/", null);
 }

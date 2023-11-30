@@ -14,6 +14,7 @@ interface MessageProps{
 interface Message{
     user: string
     message: string
+    mine: boolean
 }
 
 export default function Message({group, _id}: MessageProps){
@@ -25,7 +26,7 @@ export default function Message({group, _id}: MessageProps){
     useEffect(() => {
         getMessages(_id).then(function(doc){
             if(!doc) return;
-            setMessages(doc[0].messages)
+            setMessages(doc)
         });
     },[_id]);
 
@@ -43,11 +44,11 @@ export default function Message({group, _id}: MessageProps){
             <div className="title">Group: {group.join(',')}</div>
             <div className="display">
                 {(
-                    messages.map((message) => <Bubble key={key++} user={message.user} message={message.message}/>)
+                    messages.map((message) => <Bubble key={key++} user={message.user} message={message.message} mine={message.mine}/>)
                 )}
             </div>
             <div className="text">
-                <Text addMessage = {(message: string) => socket.emit('message', {_id: _id, message: message})} />
+                <Text addMessage = {(message: string) => socket.emit('message', {_id: _id, message: message, mine: socket.id})} />
             </div>
         </div>   
         </>

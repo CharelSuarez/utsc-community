@@ -21,8 +21,9 @@ export default function Page() {
     return(
         <>  
             <div className="content">
-                <Sidebar />
-                <Social />
+                <Sidebar active={active} update={setActive}/>
+                <Social current={active} />
+                
                 {/* <div className="navigation">
                     <Navigation current = {(group: string[]) => setGroup(group)} update = {(id: string) => setId(id)}/>
                 </div> */}

@@ -4,14 +4,15 @@ interface TabProps{
     label: string
     image: string
     active: string
+    type: string
     update: (active: string) => void
 
 }
 
 
-export default function Tab({label, image, active, update}: TabProps){
+export default function Tab({label, image, active, type, update}: TabProps){
 
-    let style = label == active ? "tab active" : "tab"
+    let style = label == active ? type+" active" : type
 
     return(
         <>
