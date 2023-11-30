@@ -7,13 +7,12 @@
     "prod": "node app.mjs",
     "dev": "nodemon app.mjs",
     "socket": "nodemon socket.mjs",
-    "grpc": "nodemon grpc.mjs",
+    "location": "nodemon location.mjs",
     "test": "npx mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@grpc/grpc-js": "^1.9.12",
     "bcrypt": "^5.1.1",
     "connect-mongo": "^5.1.0",
     "cookie": "^0.6.0",
@@ -24,6 +23,7 @@
     "express-validator": "^7.0.1",
     "mongodb": "^6.2.0",
     "mongoose": "^8.0.0",
+    "protobufjs": "^7.2.5",
     "socket.io": "^4.7.2"
   },
   "devDependencies": {

@@ -7,15 +7,16 @@ service LocationService {
 }
 
 message LocationResponse {
-    repeated PersonLocation personLocation = 1;
+    repeated PersonLocation personLocations = 1;
 }
 
 message PersonLocation {
     int32 personId = 1;
-    Location location = 2;
+    string username = 2;
+    Location location = 3;
 }
 
 message Location {
-    int32 latitude = 1;
-    int32 longitude = 2;
+    float latitude = 1;
+    float longitude = 2;
 }

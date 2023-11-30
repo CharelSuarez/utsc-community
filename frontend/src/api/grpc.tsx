@@ -1,28 +1,75 @@
-'use client';
-import grpc from '@grpc/grpc-js';
-import { ProtoGrpcType } from '../../proto/location_service';
-import { LocationServiceClient } from '../../proto/locationservice/LocationService';
-import { Location } from '../../proto/locationservice/Location';
-import { LocationResponse } from '../../proto/locationservice/LocationResponse';
-import { PersonLocation } from '../../proto/locationservice/PersonLocation';
+import { Socket, io } from "socket.io-client";
+import protobuf from "protobufjs";
 
-const ROUND_FACTOR = 1e7;
+let socket : Socket | null = null;
 
-export function connectToServer() {
-    const client = new LocationServiceClient('localhost:50051', grpc.credentials.createInsecure());
-    var call = client.sendGetLocations();
-    // call.on('data', function(locationResponse: LocationResponse) {
-    //     console.log();
-    // });
-    // call.on('end', callback);
+let Location : protobuf.Type | null = null;
+let LocationResponse : protobuf.Type | null = null;
 
-    call.write({
-        latitude: 43.78393739345549 * ROUND_FACTOR, 
-        longitude: -79.18573731545196 * ROUND_FACTOR
-    });
+async function loadProto() {
+    const root = await protobuf.load("/proto/location_service.proto");
+    Location = root.lookupType("locationservice.Location");
+    LocationResponse = root.lookupType("locationservice.LocationResponse");
 }
 
-function sendLocation() {
+export async function connectToLocationService(messageCallback : (locationResponse : Array<any>) => void) {
+    if (Location == null || LocationResponse == null) {
+        await loadProto();
+    }
+    if (Location == null || LocationResponse == null) {
+        return;
+    }
 
+    socket = io('ws://localhost:5002',{
+        transports: ['websocket']
+    });
+
+    socket.on('message', (message) =>{
+        if (Location == null || LocationResponse == null) {
+            return;
+        }
+
+        // Decode message from Uint8Array
+        const buffer = new Uint8Array(message);
+        const locationResponse = LocationResponse.decode(buffer);
+        console.log(`Message from server:`);
+        console.log(locationResponse);
+        messageCallback((locationResponse as any).personLocations);
+    });
+
+    setInterval(getSendLocation, 1000);
+}
+
+async function getSendLocation() {
+    if (!socket || !socket.connected){
+        return;
+    }
+
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(({ coords }) => {
+            const { latitude, longitude } = coords;
+            sendLocation(latitude, longitude);
+        }, null, { enableHighAccuracy: true });
+    }
+}
+
+async function sendLocation(latitude : number, longitude : number) {
+    if (socket == null || !socket.connected || Location == null || LocationResponse == null) {
+        return;
+    }
+
+    // const data = {
+    //     latitude: 43.78393739345549, 
+    //     longitude: -79.18573731545196
+    // };
+
+    // Encode message to Uint8Array
+    const data = {
+        latitude, longitude
+    };
+    console.log(`Sending message to server: ${data}`);
+    const location = Location.create(data);
+    const buffer = Location.encode(location).finish();
+    socket.emit('message', buffer);
 }
 
