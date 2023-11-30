@@ -2,33 +2,52 @@ import "./Message.css"
 
 import Text from "../Text/Text"
 import { io } from "socket.io-client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMessages } from "@/api/social";
+import Bubble from "../Bubble/Bubble";
 
 interface MessageProps{
-    group: string
+    group: string[]
+    _id: string
 }
 
-export default function Message({group}: MessageProps){
+interface Message{
+    user: string
+    message: string
+}
 
-    const [messages , setMessages] = useState(""); 
+export default function Message({group, _id}: MessageProps){
+
+    const [messages , setMessages] = useState<Message[]>([]); 
+    let key = 0
+  
+
+    useEffect(() => {
+        getMessages(_id).then(function(doc){
+            if(!doc) return;
+            setMessages(doc[0].messages)
+        });
+    },[_id]);
 
     const socket = io('ws://localhost:5001',{
         transports: ['websocket']
     });
 
     socket.on('message', (text) =>{
-        setMessages(text);
+        setMessages([...messages, text]);
     });
 
     return(
         <>
         <div className="message-display">
-            <div className="title">Group: {group}</div>
+            <div className="title">Group: {group.join(',')}</div>
             <div className="display">
-                    {messages}
+                {(
+                    messages.map((message) => <Bubble key={key++} user={message.user} message={message.message}/>)
+                )}
             </div>
             <div className="text">
-                <Text addMessage = {(message: string) => socket.emit('message', message)} />
+                <Text addMessage = {(message: string) => socket.emit('message', {_id: _id, message: message})} />
             </div>
         </div>   
         </>

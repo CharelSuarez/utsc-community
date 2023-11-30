@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import { sessionMiddleware } from "./app.mjs";
 import cors from "cors";
 import express from "express";
+import { Group } from "./model/model.mjs";
 
 
 const PORT = 5001;
@@ -26,8 +27,12 @@ io.engine.use(sessionMiddleware);
 
 io.on('connection', (socket) => {
     const session = socket.request.session;
-    socket.on('message', (message) => {
-        console.log(message);
-        io.emit('message', session.user.username + " said " + message);
+    socket.on('message', async function(doc) {
+
+        const message = {user: session.user.username, message: doc.message};
+        const messages = await Group.updateOne({_id:doc._id},{$push:{messages: message}});
+        
+        io.emit('message', message);
+        console.log(doc.group);
     });
 })

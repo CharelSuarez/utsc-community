@@ -152,24 +152,34 @@ app.post("/api/group/", isAuthenticated, async function(req, res){
   users.push(req.session.user.username)
   users.sort();
 
-  const group = await Group.find({users: users})
+  const group = await Group.find({users: users});
+  
 
   if(group.length != 0){
     console.log(group);
     return res.status(403).json(users);
   }
 
-  Group.create({users: users, messages: []});
-  return res.status(200).json(users);
+  const result = await Group.create({users: users, messages: []});
+  console.log(result.users);
+
+  return res.status(200).json({users: result.users, _id: result._id});
+
 });
 
 app.get("/api/group/", isAuthenticated, async function(req, res){
-  const group = await Group.find({},{users:1, _id: 0});
-  const filter = group.map((item) => item.users.join(','))
+  const group = await Group.find({},{users:1});
+  res.status(200).json({group: group});
+});
 
-  console.log(filter);
-  res.status(200).json({group: filter});
-  
+app.get("/api/message/:id/", isAuthenticated, async function(req, res){
+  const messages = await Group.find({_id: req.params.id},{messages:1, _id: 0})
+  if(messages.length == 0){
+    return res.status(404).json([]) 
+  }
+
+  console.log(messages)
+  return res.status(200).json(messages)
 });
 
 app.get("/api/chat/", isAuthenticated, async function(req,res){
