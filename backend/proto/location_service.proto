@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package locationservice;
+
+service LocationService {
+    rpc SendGetLocations(stream Location) returns (stream LocationResponse) {}
+}
+
+message LocationResponse {
+    repeated PersonLocation personLocations = 1;
+}
+
+message PersonLocation {
+    int32 personId = 1;
+    string username = 2;
+    Location location = 3;
+}
+
+message Location {
+    float latitude = 1;
+    float longitude = 2;
+}

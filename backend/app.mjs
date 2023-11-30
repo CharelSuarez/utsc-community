@@ -22,7 +22,12 @@ app.use(cors({
 
 export const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
-  cookie: {},
+  cookie: {
+    maxAge: 1 * 60 * 60 * 1000, // 1 hour
+    secure: false,
+    sameSite: 'lax',
+    httpOnly: true
+  },
   saveUninitialized: true,
   resave: false,
   store: new MongoStore({
@@ -36,7 +41,7 @@ export const sessionMiddleware = session({
 app.use(sessionMiddleware);
 
 app.use(function (req, res, next) {
-  console.log("HTTP request", req.method, req.url, req.body);
+  console.log(`HTTP request from \'${req.session?.user?.username}\'`, req.method, req.url, req.body);
   next();
 });
 
