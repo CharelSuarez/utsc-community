@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Tab from "../Tab/Tab";
 import "./Sidebar.css"
+import Link from "next/link";
 
 interface Sidebar {
     update: (active: string) => void
@@ -24,9 +25,13 @@ export default function Sidebar({update, active}: Sidebar){
                 <div className="navi">
                     <div className="title">Navigation</div>
                     <div className="tab-holder">
-                        <Tab label="Dashboard" image="/dashboard.png" active={active} update={update} type="tab"/>
+                        <Link href="/">
+                            <Tab label="Dashboard" image="/dashboard.png" active={active} update={update} type="tab"/>
+                        </Link>
                         <Tab label="Events" image="/event.png" active={active} update={update} type="tab"/>
-                        <Tab label="Map" image="/map.png" active={active} update={update} type="tab"/>
+                        <Link href="/dashboard">
+                            <Tab label="Map" image="/map.png" active={active} update={update} type="tab"/>
+                        </Link>
                     </div>
                 </div>
             </div>

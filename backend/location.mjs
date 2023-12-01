@@ -44,40 +44,44 @@ io.on('connection', async (socket) => {
     console.log(`User '${username}' connected!`);
 
     socket.on('message', (message) => {
+        // TODO Do this in a separate task!
+        // Clear old locations
+        for (const key in locations) {
+            const location = locations[key];
+            if (location.lastUpdated != null && Date.now() - location.lastUpdated > 10000) {
+                delete locations[key];
+            }
+        }
+
         // Decode message from Uint8Array
         let buffer = new Uint8Array(message);
         const location = Location.decode(buffer);
         // console.log(`Message from client '${username}'`);
         // console.log(location);
 
-        // Clear locations
-        for (const key in locations) {
-            // if (locations.hasOwnProperty(key)) {
-                // const location = locations[key];
-                // if (Date.now() - location.lastUpdated > 10000) {
-                    delete locations[key];
-                // }
-            // }
-        }
+        // Add user's location to all locations
+        locations[personId] = { 
+            personId,
+            username,
+            location,
+            lastUpdated: Date.now()
+        } 
 
-        for (let i = 0; i < 10; i++) {
-            const random = Math.floor(Math.random() * 20000);
+
+        // TODO Remove this!
+        for (let i = Object.values(locations).length; i < 50; i++) {
+            const random = `${Math.floor(Math.random() * 20000)}`;
             locations[random] = {
                 personId: random,
-                username: `Username ${random}`,
+                username: `Random User #${random}`,
                 location: {
                     latitude: 43.777106 + Math.random() * (43.792295 - 43.777106),
                     longitude: -79.180157 + Math.random() * (-79.195519 - -79.180157),
-                }
+                },
+                lastUpdated: null
             }
         }
 
-        // Encode message to Uint8Array
-        // locations[12345] = { 
-        //     personId,
-        //     username,
-        //     location
-        // };
         const locationResponse = LocationResponse.create({ personLocations: Object.values(locations) });
         buffer = LocationResponse.encode(locationResponse).finish();
         io.emit('message', buffer);

@@ -11,7 +11,7 @@ message LocationResponse {
 }
 
 message PersonLocation {
-    int32 personId = 1;
+    string personId = 1;
     string username = 2;
     Location location = 3;
 }

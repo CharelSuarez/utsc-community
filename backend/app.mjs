@@ -111,12 +111,10 @@ app.post("/api/register/", body(['username', 'password']).notEmpty(), async func
   res.status(201).json(project);
 });
 
-
-
 app.delete("/api/login/", isAuthenticated, async function (req, res, next) {
   req.session.user = null;
   setUserCookie(req, res);
-  res.sendStatus(200).end();
+  res.status(200).json({});
 });
 
 app.post("/api/event/", async function (req, res, next) {
