@@ -1,11 +1,11 @@
 import { send } from "./utils";
 
 export function addFriend(username: string){
-    return send("POST", '/api/'+username+"/friends/", null);
+    return send("POST", "/api/friends/"+username+"/", null);
 }
 
-export function getChat(){
-    return send("GET", "/api/chat/", null);
+export function getFriends(){
+    return send("GET", "/api/friends/", null);
 }
 
 export function addGroup(users: string[]){
@@ -18,4 +18,8 @@ export function getAllGroup(){
 
 export function getMessages(id: string){
     return send("GET", "/api/message/"+id+"/", null);
+}
+
+export function getAllUsers(){
+    return send("GET", "/api/allUsers/", null);
 }

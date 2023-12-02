@@ -1,20 +1,39 @@
-.bubble{
+.text-holder{
+    display: flex;
+    flex-direction: column;
+}
+
+.text-holder .user{
+    color: var(--bg-tab);
+    font-weight: 600;
+}
+
+.text-holder .user.hidden{
+    visibility: hidden;
+}
+
+.text-holder .user{
+    align-self: start;
+}
+
+
+.text-holder .bubble{
     border-radius: 20px;
     padding: 8px 15px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 8px;
+    margin-bottom: 0px;
     display: inline-block;
     width: fit-content;
 }
 
-.yours.bubble {
+.text-holder .yours.bubble {
     align-self: flex-start;
     margin-right: 25%;
     background-color: #eee;
     position: relative;
 }
  
-.mine.bubble {
+.text-holder .mine.bubble {
     align-self: flex-end;
     color: white;
     background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);

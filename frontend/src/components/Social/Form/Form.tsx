@@ -29,6 +29,5 @@ export default function Form({ addFriend }: FormProps){
             />
             <button type="submit">Add</button>
         </form>
-
     )
 }

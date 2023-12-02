@@ -1,6 +1,9 @@
 .message-display{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 80%;
-    height: 70%;
+    height: 95%;
     background-color: white;
     border-radius: 15px;
     padding: 0 2rem ;
@@ -9,13 +12,29 @@
 .message-display .display{
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 80%;
-    border-bottom: 4px solid var(--bg-primary);
+    width: 75%;
+    height: 100%;
+    border-bottom: 4px solid var(--bg-tab);
     overflow-y: scroll;
 }
 
 .message-display .text{
     width: 100%;
     height: 20%;
+}
+
+.message-display .group-title{
+    background-color: var(--bg-tab);
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: white;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+::-webkit-scrollbar{
+    width: 12px;
 }

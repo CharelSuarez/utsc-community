@@ -151,7 +151,9 @@ app.get("/api/events/", async function (req, res, next) {
 
 
 
-app.post("/api/:friend/friends", isAuthenticated, async function(req,res){
+
+
+app.post("/api/friends/:friend/", isAuthenticated, async function(req,res){
   
     const friend = await User.findOne({username: req.params.friend});
 
@@ -191,7 +193,7 @@ app.post("/api/group/", isAuthenticated, async function(req, res){
 });
 
 app.get("/api/group/", isAuthenticated, async function(req, res){
-  const group = await Group.find({},{users:1});
+  const group = await Group.find({users: {$in:[req.session.user.username]}},{users:1});
   res.status(200).json({group: group});
 });
 
@@ -204,23 +206,27 @@ app.get("/api/message/:id/", isAuthenticated, async function(req, res){
 
   const filter = []
   
-
   for(let doc of messages[0].messages){
     let message = {user: doc.user, message: doc.message, _id: doc._id, mine: req.session.user.username == doc.user}
     filter.push(message)
   }
 
-
-  console.log(filter);
-
   return res.status(200).json(filter)
 });
 
-app.get("/api/chat/", isAuthenticated, async function(req,res){
+app.get("/api/friends/", isAuthenticated, async function(req,res){
 
     const doc = await User.findOne({_id: req.session.user._id}).limit(5);
+    return res.send({chat: doc.friends.reverse()})
+    
+});
 
-    return res.send({chat: doc.friends.reverse().slice(0,3)})
+app.get("/api/allUsers/", isAuthenticated, async function(req, res){
+  const doc = await User.find({}, {username: 1, _id: 0});
+  const filter = doc.map((value) => value.username).filter((value) => value != req.session.user.username);
+  console.log(filter)
+
+  return res.status(200).json({friends: filter});
 });
 
 app.delete("/api/event/:eventId/", async function (req, res, next) {
