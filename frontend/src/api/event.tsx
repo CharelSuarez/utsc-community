@@ -8,8 +8,9 @@ export function addEvent(name: string, description: string, start: string, end: 
 }
 
 export function getEvents(page: number, startDateFilter: string, endDateFilter: string, locationFilter: string){
-    var query:string = "";
-
     return send("GET", "/api/events?page=" + page + "&startDateFilter=" + startDateFilter + "&endDateFilter=" + endDateFilter + "&locationFilter=" + locationFilter, null);
 }
 
+export function attendEvent(attendee: string, eventId: string){
+    return send("POST", "/api/attendevent/", {attendee, eventId});
+}

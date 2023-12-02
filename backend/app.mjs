@@ -146,6 +146,8 @@ app.get("/api/events/", async function (req, res, next) {
   
 });
 
+
+
 app.post("/api/:friend/friends", isAuthenticated, async function(req,res){
   
     const friend = await User.findOne({username: req.params.friend});
