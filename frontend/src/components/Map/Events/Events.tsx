@@ -11,6 +11,7 @@ interface EventProps {
   startDate: string;
   endDate: string;
   createdBy: string;
+  guests: string[];
   _id: string;
 }
 
@@ -32,7 +33,6 @@ export default function Events({onAdd, onAddFunction, pageNumber, setPageNumber,
         setPageNumber(pageNumber - 1);
         return;
       }
-      console.log(events.events)
       setEvent(events.events)
       onAddFunction(false);
     })
@@ -41,7 +41,7 @@ export default function Events({onAdd, onAddFunction, pageNumber, setPageNumber,
       <div className="eventBox">
         {(  
             event.map((event) => <Event title={event.name} description={event.description} location={event.location} 
-            startDate={event.startDate} endDate={event.endDate} createdBy={event.createdBy} _id={event._id}/>)
+            startDate={event.startDate} endDate={event.endDate} createdBy={event.createdBy} guests={event.guests} _id={event._id} onAddFunction={onAddFunction}/>)
         )}
       </div>
     );

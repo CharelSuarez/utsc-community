@@ -72,9 +72,8 @@ let eventSchema = new mongoose.Schema({
         unique: false,
         required: true
     },
-    guest: [{
-        type: String,
-        unique: false
+    guests: [{
+        type: String
     }],
 });
 

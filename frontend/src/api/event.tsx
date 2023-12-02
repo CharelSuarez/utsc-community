@@ -12,5 +12,13 @@ export function getEvents(page: number, startDateFilter: string, endDateFilter: 
 }
 
 export function attendEvent(attendee: string, eventId: string){
-    return send("POST", "/api/attendevent/", {attendee, eventId});
+    return send("PATCH", "/api/attendevent/", {attendee, eventId});
+}
+
+export function unattendEvent(attendee: string, eventId: string){
+    return send("PATCH", "/api/unattendevent/", {attendee, eventId});
+}
+
+export function cancelEvent(eventId: string){
+    return send("Delete", "/api/event/" + eventId , null);
 }

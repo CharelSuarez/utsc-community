@@ -10,9 +10,11 @@ interface EventProps {
     startDate: string;
     endDate: string;
     createdBy: string;
+    guests: string[];
     _id: string;
+    onAddFunction: (state:boolean) => void;
 }
-export default function Event({title, description, location, startDate, endDate, createdBy, _id}:EventProps){
+export default function Event({title, description, location, startDate, endDate, createdBy, guests, _id, onAddFunction}:EventProps){
 
     const [showEventModal, setEventShowModal] = useState(false);
 
@@ -36,7 +38,7 @@ export default function Event({title, description, location, startDate, endDate,
             </div>
             {showEventModal && createPortal(
                 <EventModal onClose={() => setEventShowModal(false)} title={title} description={description} 
-                location={location} startDate={startDate} endDate={endDate} createdBy={createdBy} _id={_id} />,
+                location={location} startDate={startDate} endDate={endDate} createdBy={createdBy} guests={guests} _id={_id} onAddFunction={onAddFunction}/>,
                 document.body
             )}
             </>

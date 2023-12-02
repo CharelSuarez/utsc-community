@@ -5,6 +5,7 @@ import Location from "@/components/Map/Location/Location";
 import Time from "@/components/Map/Time/Time";
 import { useRef, useState } from "react";
 import { addEvent } from "@/api/event"
+import {getUsername} from "@/api/auth";
 
 interface EventModalProps {
     onClose: () => void;
@@ -35,8 +36,11 @@ function getModalChildren({onClose, onAddFunction}: EventModalProps) {
         if(!title || !description || !startDate || !endDate || !startTime || !endTime || !location){
             return;
         }
-
-        addEvent(title, description, startDate.concat("T".concat(startTime).concat(":00.000Z")), endDate.concat("T".concat(endTime).concat(":00.000Z")), location, "ME").then((result) => {
+        var createdBy = getUsername();
+        if(!createdBy){
+            createdBy = "";
+        }
+        addEvent(title, description, startDate.concat("T".concat(startTime).concat(":00.000Z")), endDate.concat("T".concat(endTime).concat(":00.000Z")), location, createdBy).then((result) => {
             
             if(result != null){
                 onClose();

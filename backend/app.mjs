@@ -129,7 +129,7 @@ app.get("/api/events/", async function (req, res, next) {
   var start = req.query.startDateFilter;
   var end = req.query.endDateFilter;
   var loc = req.query.locationFilter;
-  
+  console.log(loc);
   if(start == ""){
     start = "1970-01-01";
   }
@@ -146,10 +146,25 @@ app.get("/api/events/", async function (req, res, next) {
   return res
   .status(200)
   .json({events: event});
-  
 });
 
+app.patch("/api/attendevent/", async function (req, res, next){
+  const event = await Event.updateOne(
+    {_id: req.body.eventId}, {$push: {guests: req.body.attendee}}
+  );
+  return res
+  .status(200)
+  .json({event});
+});
 
+app.patch("/api/unattendevent/", async function (req, res, next){
+  const event = await Event.updateOne(
+    {_id: req.body.eventId}, {$pull: {guests: req.body.attendee}}
+  );
+  return res
+  .status(200)
+  .json({event});
+});
 
 app.post("/api/:friend/friends", isAuthenticated, async function(req,res){
   
@@ -224,22 +239,15 @@ app.get("/api/chat/", isAuthenticated, async function(req,res){
 });
 
 app.delete("/api/event/:eventId/", async function (req, res, next) {
-  const event = await Event.findOne({_id : req.params.eventId});
-  if(event == null){
+  const event = await Event.deleteOne({_id : req.params.eventId, createdBy: req.session.user.username});
+  if(!event){
     return res
     .status(404)
     .end("Event id:" + req.params.eventId + " does not exists");
   }
-  else if(!isAuthenticatedAs(req, event.createdBy)){
-    return res
-    .status(404)
-    .end("Event id:" + req.params.eventId + " not authorized to delete");
-  }
-  else {
-    return res
+  return res
   .status(200)
   .json(event);
-  }
 });
 
 const server = createServer(app).listen(PORT, function (err) {

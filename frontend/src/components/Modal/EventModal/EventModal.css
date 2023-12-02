@@ -48,3 +48,9 @@
     flex-direction: row;
 
 }
+
+.modalEvent .content .hostAttendees label {
+    display: flex;
+    flex-direction: row;
+
+}
