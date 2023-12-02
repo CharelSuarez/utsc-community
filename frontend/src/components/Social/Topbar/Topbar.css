@@ -8,6 +8,12 @@
     box-sizing: border-box;
 }
 
+.topbar .button {
+    width: 150px;
+    justify-content: center;
+    background-color: var(--bg-sidebar);
+}
+
 .topbar .tabs{
     display: flex;
     gap: 1.5rem;
@@ -25,6 +31,6 @@
     cursor: pointer;
 }
 
-.active{
+/* .active{
     border-bottom: 3px solid var(--bg-tab);
-}
+} */

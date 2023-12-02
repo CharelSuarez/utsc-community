@@ -21,6 +21,108 @@ a {
     color: inherit;
 }
 
+/* Normal Button (No Background) */
+.button {
+    font-family: inherit;
+    font-weight: normal;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 250ms ease-in;
+    z-index: 1;
+}
+
+.button:hover {
+    animation: button-scale 0.25s ease-in-out forwards;
+}
+
+/* Active Button (Gradient Static Background) */
+.button.active::before {
+    z-index: -1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    content: '';
+    opacity: 1;
+    background-image: radial-gradient(circle at center, var(--bg-tab) 0, #5468ff 100%);
+    background-position: center center;
+    background-size: 150%;
+}
+
+/* Button Hover Animations (Normal/Active) */
+.button:hover::before {
+    z-index: -1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    content: '';
+    opacity: 1;
+    transition: opacity 5s ease-in-out;
+    background-image: radial-gradient(circle at center, var(--bg-tab) 0, #5468ff 100%);
+    background-size: 200%;
+    animation: gradient-wave 3s linear infinite reverse, button-opacity 0.5s ease-in-out forwards;
+}
+
+.button.active:hover::before {
+    z-index: -1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    content: '';
+    opacity: 1;
+    transition: opacity 5s ease-in-out;
+    background-image: radial-gradient(circle at center, var(--bg-tab) 0, #5468ff 100%);
+    background-size: 200%;
+    animation: gradient-wave 3s linear infinite reverse;
+}
+
+@keyframes gradient-wave {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes button-opacity {
+    0% { 
+        opacity: 0; 
+    }
+    100% { 
+        opacity: 1; 
+    }
+}
+
+@keyframes button-scale {
+    0% { 
+        scale: 1;
+    }
+    100% { 
+        scale: 1.05;
+    }
+}
+
 .taskbar button {
     align-items: center;
     background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);

@@ -1,0 +1,84 @@
+.building {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: darkgray 0px 5px 20px 0px;
+    /* filter: drop-shadow(-1px 1px 0px darkgray); */
+    background-color: var(--bg-sidebar);
+    border-radius: 15px;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.building-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.building-code {
+    /* height: fit-content; */
+    /* width: fit-content; */
+    font-size: 1.4rem;
+}
+
+/* .building-name {
+    height: fit-content;
+    width: fit-content;
+} */
+
+.building-marker .building .building-image {
+    width: calc(170px - 20px);
+    height: 100px;
+    min-height: 80px;
+    object-fit: cover; /* TODO: Resize images instead? */
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+.building h1, .building h2, .building p {
+    /* width: fit-content; */
+    padding: 0px;
+    margin: 0px;
+    color: white;
+    font-weight: normal;
+    text-align: center;
+}
+
+.building h1, h2 {
+    font-size: 1rem;
+}
+
+.building-info {
+    width: 100%;
+}
+
+.building-events {
+    /* TODO This is a global button style... */
+    /* align-items: center;
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+    border: none;
+    border-radius: 6px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    overflow: hidden; */
+
+    width: 100%;
+    justify-content: space-between;
+    padding: 7px 7px;
+    font-size: 0.8rem;
+    height: fit-content;
+}
+
+.building-events-icon {
+    width: 16px;
+    height: 16px;
+    filter: invert(100%) sepia(0%) saturate(7450%) hue-rotate(189deg) brightness(125%) contrast(100%);
+}
