@@ -8,12 +8,13 @@ interface EventModalProps {
     location: string;
     startDate: string;
     endDate: string;
-    startTime: string;
-    endTime: string;
+    createdBy: string;
     _id: string;
 }
 
-function getModalChildren({onClose, title, description, location, startDate, endDate, startTime, endTime, _id }: EventModalProps) {
+function getModalChildren({onClose, title, description, location, startDate, endDate, createdBy, _id }: EventModalProps) {
+    console.log(startDate);
+    console.log(endDate);
 return (
     <>
         <div className="title">
@@ -22,6 +23,9 @@ return (
             <button>Attend Event</button>
         </div>
         <div className="content">
+            <label>Hosted By:
+                <div className="host">{createdBy}</div>
+            </label>
             <label>Event Description:
                 <div className="description">{description}</div>
             </label>
@@ -30,10 +34,10 @@ return (
                     <div className="Location">{location}</div>
                 </label>
                 <label>Date:
-                    <div className="date">{startDate}{"-"}{endDate}</div>
+                    <div className="date">{new Date(startDate).toLocaleDateString()}{"-"}{new Date(endDate).toLocaleDateString()}</div>
                 </label>
                 <label>Time:
-                    <div className="time">{startTime}{"-"}{endTime}</div>
+                    <div className="time">{new Date(startDate).toLocaleTimeString()}{"-"}{new Date(endDate).toLocaleTimeString()}</div>
                 </label>
             </div>
         </div>
@@ -41,8 +45,8 @@ return (
 )
 }
 
-export default function EventModal({onClose, title, description, location, startDate, endDate, startTime, endTime, _id }: EventModalProps){
+export default function EventModal({onClose, title, description, location, startDate, endDate, createdBy, _id }: EventModalProps){
     return (        
-        <Modal children={getModalChildren({onClose, title, description, location, startDate, endDate, startTime, endTime, _id })} onClose={onClose} type="modalEvent"/>
+        <Modal children={getModalChildren({onClose, title, description, location, startDate, endDate, createdBy, _id })} onClose={onClose} type="modalEvent"/>
     );
 }

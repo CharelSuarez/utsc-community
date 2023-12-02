@@ -6,25 +6,38 @@ import AddEventModal from "@/components/Modal/AddEventModal/AddEventModal"
 import { useState } from "react";
 import { createPortal } from 'react-dom';
 
+interface AddEventProp{
+  onAddFunction: (state:boolean) => void;
+  setStartDate: (filterElement:string) => void;
+  setEndDate: (filterElement:string) => void;
+  setLocation: (filterElement:string) => void;
+}
 
-export default function Filter(){
+export default function Filter({onAddFunction, setStartDate, setEndDate, setLocation}: AddEventProp){
 
   const [showAddEventModal, setAddEventShowModal] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [location, setLocation] = useState("");
+  const [startDate, setStartDateFilter] = useState("");
+  const [endDate, setEndDateFilter] = useState("");
+  const [location, setLocationFilter] = useState("");
 
   const getStartDate = (date:string) => {
-      setStartDate(date);
+    setStartDateFilter(date);
   }
 
   const getEndDate = (date:string) => {
-      setEndDate(date);
+    setEndDateFilter(date);
   }
 
   const getLocation = (location:string) =>{
-      setLocation(location)
+    setLocationFilter(location);
   }
+
+  const getFilters = () =>{
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setLocation(location);
+  }
+
     return (
       <div className="filterAndAdd">
         <div className="filters">
@@ -33,7 +46,7 @@ export default function Filter(){
           <Location getLocation={getLocation}></Location>
         </div>
         <div className="submit">
-          <button>Filter Events</button>
+          <button onClick={getFilters}>Filter Events</button>
         </div>
         <div className="addEvent">
           <button onClick={() => setAddEventShowModal(true)}>Create an Event</button>
@@ -41,7 +54,7 @@ export default function Filter(){
         <div>
         </div>
         {showAddEventModal && createPortal(
-                <AddEventModal onClose={() => setAddEventShowModal(false)}/>,
+                <AddEventModal onAddFunction={onAddFunction} onClose={() => setAddEventShowModal(false)}/>,
                 document.body
             )}
       </div>

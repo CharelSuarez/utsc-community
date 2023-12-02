@@ -30,6 +30,7 @@
     width: 550px;
     height: 50px;
 }
+
 .modalEvent .content label {
     display: flex;
     flex-direction: column;
@@ -45,4 +46,5 @@
 .modalEvent .content .eventdetails label {
     display: flex;
     flex-direction: row;
+
 }

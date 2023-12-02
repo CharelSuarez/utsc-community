@@ -10,24 +10,38 @@ interface EventProps {
   location: string;
   startDate: string;
   endDate: string;
-  startTime: string;
-  endTime: string;
+  createdBy: string;
   _id: string;
 }
 
-export default function Events(){
+interface PageProps{
+  onAdd: boolean;
+  onAddFunction: (state:boolean) => void;
+  pageNumber: number;
+  setPageNumber: (pageNumber:number) => void;
+  startDateFilter: string;
+  endDateFilter: string;
+  locationFilter: string;
+}
+export default function Events({onAdd, onAddFunction, pageNumber, setPageNumber, startDateFilter, endDateFilter, locationFilter}: PageProps){
   const [event, setEvent] = useState<EventProps[]>([]);
 
   useEffect(() =>{
-    getEvents(0).then((events)=>{
+    getEvents(pageNumber, startDateFilter, endDateFilter, locationFilter).then((events)=>{
+      if(events.events && pageNumber > 0){
+        setPageNumber(pageNumber - 1);
+        return;
+      }
+      console.log(events.events)
       setEvent(events.events)
+      onAddFunction(false);
     })
-  }, []);
+  }, [onAdd, pageNumber, startDateFilter, endDateFilter, locationFilter]);
     return (
       <div className="eventBox">
         {(  
             event.map((event) => <Event title={event.name} description={event.description} location={event.location} 
-            startDate={event.startDate} endDate={event.endDate} startTime={event.startTime} endTime={event.endTime} _id={event._id}/>)
+            startDate={event.startDate} endDate={event.endDate} createdBy={event.createdBy} _id={event._id}/>)
         )}
       </div>
     );

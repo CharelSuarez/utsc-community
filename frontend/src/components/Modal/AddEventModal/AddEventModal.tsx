@@ -8,9 +8,10 @@ import { addEvent } from "@/api/event"
 
 interface EventModalProps {
     onClose: () => void;
+    onAddFunction: (state:boolean) => void;
 }
 
-function getModalChildren({onClose}: EventModalProps) {
+function getModalChildren({onClose, onAddFunction}: EventModalProps) {
 
     const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
@@ -20,27 +21,8 @@ function getModalChildren({onClose}: EventModalProps) {
     const [endTime, setEndTime] = useState("");
     const [location, setLocation] = useState("");
 
-    const getStartDate = (date:string) => {
-        setStartDate(date);
-    }
-
-    const getEndDate = (date:string) => {
-        setEndDate(date);
-    }
-
-    const getStartTime = (time:string) => {
-        setStartTime(time);
-    }
-
-    const getEndTime = (time:string) => {
-        setEndTime(time);
-    }
-
-    const getLocation = (location:string) =>{
-        setLocation(location)
-    }
-
     const onClickCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
+        console.log(startTime);
         event.preventDefault();
 
         if (!titleRef.current || !descriptionRef.current) {
@@ -49,27 +31,23 @@ function getModalChildren({onClose}: EventModalProps) {
 
         const title = titleRef.current.value == null ? '' : titleRef.current.value;
         const description = descriptionRef.current.value == null ? '' : descriptionRef.current.value;
-    
-        console.log(title);
-        console.log(description);
-        console.log(startDate);
-        console.log(endDate);
-        console.log(startTime);
-        console.log(endTime);
-        console.log(location);
 
         if(!title || !description || !startDate || !endDate || !startTime || !endTime || !location){
             return;
         }
 
-        addEvent(title, description, startDate, endDate, startTime, endTime, location, "ME");
-
-
+        addEvent(title, description, startDate.concat("T".concat(startTime).concat(":00.000Z")), endDate.concat("T".concat(endTime).concat(":00.000Z")), location, "ME").then((result) => {
+            
+            if(result != null){
+                onClose();
+                onAddFunction(true);
+            }
+        });
+        
         titleRef.current.value = '';
         descriptionRef.current.value = '';
-
-        onClose();
     };
+    
     return (
         <>
             <img className='close-button' src='https://i.imgur.com/O3YBoxX.png' alt='close' onClick={onClose} />
@@ -81,11 +59,11 @@ function getModalChildren({onClose}: EventModalProps) {
                     <input ref={descriptionRef} type='text'></input>
                 </label>
                 <div className="eventdetails">
-                    <Calendar getDate={getStartDate} label="Start Date"></Calendar>
-                    <Calendar getDate={getEndDate} label="End Date"></Calendar>
-                    <Time getTime={getStartTime} label="Start Time"></Time>
-                    <Time getTime={getEndTime} label="End Time"></Time>
-                    <Location getLocation={getLocation}></Location>
+                    <Calendar getDate={setStartDate} label="Start Date"></Calendar>
+                    <Calendar getDate={setEndDate} label="End Date"></Calendar>
+                    <Time getTime={setStartTime} label="Start Time"></Time>
+                    <Time getTime={setEndTime} label="End Time"></Time>
+                    <Location getLocation={setLocation}></Location>
                 </div>
                 <button onClick={onClose}>Cancel</button>
                 <button onClick={onClickCreate}>Create</button>
@@ -94,8 +72,8 @@ function getModalChildren({onClose}: EventModalProps) {
     )
 }
 
-export default function AddEventModal({onClose}: EventModalProps){
+export default function AddEventModal({onClose, onAddFunction}: EventModalProps){
     return (        
-        <Modal children={getModalChildren({onClose})} onClose={onClose} type="modalEvent"/>
+        <Modal children={getModalChildren({onClose, onAddFunction})} onClose={onClose} type="modalEvent"/>
     );
 }

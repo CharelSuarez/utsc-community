@@ -9,11 +9,10 @@ interface EventProps {
     location: string;
     startDate: string;
     endDate: string;
-    startTime: string;
-    endTime: string;
+    createdBy: string;
     _id: string;
 }
-export default function Event({title, description, location, startDate, endDate, startTime, endTime, _id}:EventProps){
+export default function Event({title, description, location, startDate, endDate, createdBy, _id}:EventProps){
 
     const [showEventModal, setEventShowModal] = useState(false);
 
@@ -29,7 +28,7 @@ export default function Event({title, description, location, startDate, endDate,
                         <div className="location">{location}
                             <span className="tooltiptext">Location</span>
                         </div>
-                        <div className="date">{startDate}
+                        <div className="date">{new Date(startDate).toLocaleDateString()}
                             <span className="tooltiptext">Date</span>
                         </div>
                     </div>
@@ -37,7 +36,7 @@ export default function Event({title, description, location, startDate, endDate,
             </div>
             {showEventModal && createPortal(
                 <EventModal onClose={() => setEventShowModal(false)} title={title} description={description} 
-                location={location} startDate={startDate} endDate={endDate} _id={_id} startTime={startTime} endTime={endTime}/>,
+                location={location} startDate={startDate} endDate={endDate} createdBy={createdBy} _id={_id} />,
                 document.body
             )}
             </>

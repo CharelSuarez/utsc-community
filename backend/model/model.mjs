@@ -53,12 +53,12 @@ let eventSchema = new mongoose.Schema({
         unique: false
     },
     startDate: {
-        type: String,
+        type: Date,
         required: true,
         unique: false
     },
     endDate: {
-        type: String,
+        type: Date,
         required: true,
         unique: false
     },
@@ -66,6 +66,11 @@ let eventSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: false
+    },
+    createTime:{
+        type: Date,
+        unique: false,
+        required: true
     },
     guest: [{
         type: String,

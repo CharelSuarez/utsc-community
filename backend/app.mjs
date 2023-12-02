@@ -116,16 +116,34 @@ app.delete("/api/login/", isAuthenticated, async function (req, res, next) {
 
 app.post("/api/event/", async function (req, res, next) {
   const result = await Event.create(req.body);
+
   return res
   .status(200)
   .json(result);
 });
 
-app.get("/api/events/:page", async function (req, res, next) {
-  const event = await Event.find({}).skip(parseInt(req.params.page)*6).limit(6);
+app.get("/api/events/", async function (req, res, next) {
+  var start = req.query.startDateFilter;
+  var end = req.query.endDateFilter;
+  var loc = req.query.locationFilter;
+  
+  if(start == ""){
+    start = "1970-01-01";
+  }
+  if(end == ""){
+    end = "2099-01-01";
+  }
+  if(loc == ""){
+    const event = await Event.find({startDate:{$gte: start,$lt: end}}).sort({createTime:-1}).skip(parseInt(req.query.page)*6).limit(6);
   return res
   .status(200)
   .json({events: event});
+  }
+  const event = await Event.find({startDate:{$gte: start,$lt: end}, location: loc}).sort({createTime:-1}).skip(parseInt(req.query.page)*6).limit(6);
+  return res
+  .status(200)
+  .json({events: event});
+  
 });
 
 app.post("/api/:friend/friends", isAuthenticated, async function(req,res){
