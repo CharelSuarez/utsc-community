@@ -1,6 +1,7 @@
-import Taskbar from "@/components/Taskbar/Taskbar";
-
+"use client"
+import Sidebar from "@/components/Social/Sidebar/Sidebar";
 import dynamic from 'next/dynamic'
+import "./dashboard.css"
 
 export default function Page() {
   const Map = dynamic(
@@ -12,8 +13,10 @@ export default function Page() {
   )
   return (
     <>
-        <Taskbar/>
+      <div className="map_content">
+        <Sidebar />
         <Map/>
+      </div>
     </>
   )
 }

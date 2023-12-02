@@ -1,5 +1,7 @@
 :root{
     --bg-taskbar: #2b2b2b;
+    --bg-sidebar: #010b13;
+    --bg-tab: #1AA7EC;
 }
 
 body {
@@ -14,7 +16,12 @@ h1 {
     margin: 0px;
 }
 
-button {
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.taskbar button {
     align-items: center;
     background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
     border: none;
@@ -29,7 +36,7 @@ button {
     font-size: 18px;
 }
 
-button:active {
+.taskbar button:active {
   box-shadow: #3c4fe0 0 3px 7px inset;
   transform: translateY(2px);
 }

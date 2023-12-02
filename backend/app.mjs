@@ -22,7 +22,12 @@ app.use(cors({
 
 export const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
-  cookie: {},
+  cookie: {
+    maxAge: 1 * 60 * 60 * 1000, // 1 hour
+    secure: false,
+    sameSite: 'lax',
+    httpOnly: true
+  },
   saveUninitialized: true,
   resave: false,
   store: new MongoStore({
@@ -36,7 +41,7 @@ export const sessionMiddleware = session({
 app.use(sessionMiddleware);
 
 app.use(function (req, res, next) {
-  console.log("HTTP request", req.method, req.url, req.body);
+  console.log(`HTTP request from \'${req.session?.user?.username}\'`, req.method, req.url, req.body);
   next();
 });
 
@@ -106,12 +111,10 @@ app.post("/api/register/", body(['username', 'password']).notEmpty(), async func
   res.status(201).json(project);
 });
 
-
-
 app.delete("/api/login/", isAuthenticated, async function (req, res, next) {
   req.session.user = null;
   setUserCookie(req, res);
-  res.sendStatus(200).end();
+  res.status(200).json({});
 });
 
 app.post("/api/event/", async function (req, res, next) {
@@ -172,24 +175,45 @@ app.post("/api/group/", isAuthenticated, async function(req, res){
   users.push(req.session.user.username)
   users.sort();
 
-  const group = await Group.find({users: users})
+  const group = await Group.find({users: users});
+  
 
   if(group.length != 0){
     console.log(group);
     return res.status(403).json(users);
   }
 
-  Group.create({users: users, messages: []});
-  return res.status(200).json(users);
+  const result = await Group.create({users: users, messages: []});
+  console.log(result.users);
+
+  return res.status(200).json({users: result.users, _id: result._id});
+
 });
 
 app.get("/api/group/", isAuthenticated, async function(req, res){
-  const group = await Group.find({},{users:1, _id: 0});
-  const filter = group.map((item) => item.users.join(','))
+  const group = await Group.find({},{users:1});
+  res.status(200).json({group: group});
+});
+
+app.get("/api/message/:id/", isAuthenticated, async function(req, res){
+  const messages = await Group.find({_id: req.params.id},{messages:1, _id: 0})
+
+  if(messages.length == 0){
+    return res.status(404).json([]) 
+  }
+
+  const filter = []
+  
+
+  for(let doc of messages[0].messages){
+    let message = {user: doc.user, message: doc.message, _id: doc._id, mine: req.session.user.username == doc.user}
+    filter.push(message)
+  }
+
 
   console.log(filter);
-  res.status(200).json({group: filter});
-  
+
+  return res.status(200).json(filter)
 });
 
 app.get("/api/chat/", isAuthenticated, async function(req,res){

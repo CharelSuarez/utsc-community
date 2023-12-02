@@ -5,17 +5,23 @@ import Form from "../Form/Form"
 import { useEffect, useState } from "react";
 import { addFriend, getChat, addGroup, getAllGroup} from "@/api/social";
 import Container from "../Container/Container";
-import Group from "../Form/Group/Group";
+import Group from "../Container/Group";
 
 interface NaviProps{
     current: (users: string[]) => void
+    update: (id: string) => void
+}
+
+interface GroupProps{
+    users: string[]
+    _id: string
 }
 
 
-export default function Navigation({current}: NaviProps ){
+export default function Navigation({current, update}: NaviProps ){
     const [friend, setUsers] = useState<string[]>([]);
     const [group, setGroup] = useState<string[]>([]);
-    const [list, setList] = useState<string[]>([])
+    const [list, setList] = useState<GroupProps[]>([]);
 
     useEffect(()=>{
         getChat().then((doc)=>{
@@ -24,23 +30,28 @@ export default function Navigation({current}: NaviProps ){
     }, []);
 
     useEffect(() => {
-        getAllGroup().then((doc) => setList(doc.group));
-    
+        getAllGroup().then(function(doc){
+            setList(doc.group)
+            if(doc.group.length != 0){
+                current(doc.group[0].users);
+                update(doc.group[0]._id);
+            }
+        });
     },[]);
     
     return(
         <>
             <div className="navi">
-                <div className="search">
+                {/* <div className="search">
                     <Form addFriend = {(username: string) => addFriend(username).then((friends) => setUsers(friends.user))}/>
-                </div>
-                <div className="group-add">
+                </div> */}
+                {/* <div className="group-add">
                     {group}
-                    <button onClick={() => addGroup(group).then((group) => {current(group); setList([...list,group])})}>Add Groups</button>
-                </div>
-                    <Container users = {friend} addGroup = {(user: string) => setGroup([...group, user])}/>
-                    <Group groups={list} addCurrent ={current}/>
-                </div>
+                    <button onClick={() => addGroup(group).then((doc) => { current(doc.users); setList([...list, doc]); update(doc._id) })}>Add Groups</button>
+                </div> */}
+                {/* <Container users={friend} addGroup={(user: string) => setGroup([...group, user])} /> */}
+                <Group groups={list.map((item) => item.users.join(','))} addCurrent={current} />
+            </div>
         </>
     )
 }

@@ -15,3 +15,7 @@ export function addGroup(users: string[]){
 export function getAllGroup(){
     return send("GET", "/api/group/", null);
 }
+
+export function getMessages(id: string){
+    return send("GET", "/api/message/"+id+"/", null);
+}

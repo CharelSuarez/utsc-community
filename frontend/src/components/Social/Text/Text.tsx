@@ -24,7 +24,9 @@ export default function Text({addMessage} : textProps){
             required
             ref={messageRef}
             />
-            <button type="submit">Send</button>
+            <button type="submit">
+                <img src="/message.png" alt="" />
+            </button>
         </form>
 
     )
