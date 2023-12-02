@@ -1,7 +1,7 @@
 import { send } from "./utils";
 
-export function addFriend(username: string){
-    return send("POST", "/api/friends/"+username+"/", null);
+export function addFriend(friend: string){
+    return send("POST", "/api/friends/", {friend});
 }
 
 export function getFriends(){
@@ -22,4 +22,12 @@ export function getMessages(id: string){
 
 export function getAllUsers(){
     return send("GET", "/api/allUsers/", null);
+}
+
+export function addRequest(friend: string){
+    return send("POST", "/api/request/", {friend});
+}
+
+export function getRequest(){
+    return send("GET", "/api/request/", null);
 }

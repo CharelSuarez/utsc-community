@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "./Group.css"
 import { addGroup, getAllGroup, getFriends } from "@/api/social";
-import GroupTabs from "../Profile/GroupTabs/GroupTabs";
+import GroupTabs from "../Profile/GroupTabs";
 import Profile from "../Profile/Profile";
 
 interface GroupProps {

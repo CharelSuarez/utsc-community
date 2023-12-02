@@ -1,4 +1,4 @@
-import "../Profile.css"
+import "./Profile.css"
 
 interface GroupProps{
     name: string

@@ -5,7 +5,7 @@ import Form from "../Form/Form"
 import { useEffect, useState } from "react";
 import { addFriend, addGroup, getAllGroup} from "@/api/social";
 import Container from "../Container/Container";
-import GroupTabs from "../Profile/GroupTabs/GroupTabs";
+import GroupTabs from "../Profile/GroupTabs";
 
 interface NaviProps{
     current: (users: string[]) => void
