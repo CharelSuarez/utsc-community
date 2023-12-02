@@ -25,7 +25,7 @@ export default function Text({addMessage} : textProps){
             ref={messageRef}
             />
             <button type="submit">
-                <img src="/message.png" alt="" />
+                <img src="/icons/up-arrow.png" alt="" />
             </button>
         </form>
 

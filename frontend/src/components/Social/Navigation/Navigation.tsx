@@ -3,9 +3,9 @@ import "./navigation.css"
 import Form from "../Form/Form"
 
 import { useEffect, useState } from "react";
-import { addFriend, getChat, addGroup, getAllGroup} from "@/api/social";
+import { addFriend, addGroup, getAllGroup} from "@/api/social";
 import Container from "../Container/Container";
-import Group from "../Container/Group";
+import GroupTabs from "../Profile/GroupTabs";
 
 interface NaviProps{
     current: (users: string[]) => void
@@ -23,12 +23,6 @@ export default function Navigation({current, update}: NaviProps ){
     const [group, setGroup] = useState<string[]>([]);
     const [list, setList] = useState<GroupProps[]>([]);
 
-    useEffect(()=>{
-        getChat().then((doc)=>{
-            setUsers(doc.chat)
-        });
-    }, []);
-
     useEffect(() => {
         getAllGroup().then(function(doc){
             setList(doc.group)
@@ -41,7 +35,7 @@ export default function Navigation({current, update}: NaviProps ){
     
     return(
         <>
-            <div className="navi">
+            <div className="navigation-main">
                 {/* <div className="search">
                     <Form addFriend = {(username: string) => addFriend(username).then((friends) => setUsers(friends.user))}/>
                 </div> */}
@@ -50,7 +44,9 @@ export default function Navigation({current, update}: NaviProps ){
                     <button onClick={() => addGroup(group).then((doc) => { current(doc.users); setList([...list, doc]); update(doc._id) })}>Add Groups</button>
                 </div> */}
                 {/* <Container users={friend} addGroup={(user: string) => setGroup([...group, user])} /> */}
-                <Group groups={list.map((item) => item.users.join(','))} addCurrent={current} />
+
+                {list.length == 0 ? <div>You have no group chats</div> :  
+                list.map((group) => <GroupTabs name={group.users.join(',')} key={group._id} addCurrent = {current} update={update} id={group._id}/>)}
             </div>
         </>
     )

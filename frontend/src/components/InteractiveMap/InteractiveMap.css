@@ -32,37 +32,3 @@
         border: 2px rgba(145, 238, 145, 1) solid;
     }
 }
-
-.building {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    box-shadow: darkgray 0px 5px 20px 0px;
-    /* filter: drop-shadow(-1px 1px 0px darkgray); */
-    background-color: var(--bg-sidebar);
-    /* border: 2px solid var(--bg-sidebar); */
-    /* border: 2px solid white; */
-    border-radius: 15px;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-}
-
-.building h1 {
-    width: 100%;
-    padding: 0px;
-    font-size: 1rem;
-    color: white;
-    font-weight: normal;
-    text-align: center;
-}
-
-.building-marker .building img {
-    width: calc(150px - 20px);
-    object-fit: cover;
-    /* height: calc(100px); */
-    /* height: 100%; */
-    border-radius: 15px;
-}

@@ -20,6 +20,11 @@ let userSchema = new mongoose.Schema({
     friends: [{
         type: String
     }],
+
+    requests: [{
+        reqType: String,
+        user: String
+    }]
 });
 
   

@@ -166,23 +166,65 @@ app.patch("/api/unattendevent/", async function (req, res, next){
   .json({event});
 });
 
-app.post("/api/:friend/friends", isAuthenticated, async function(req,res){
+app.post("/api/friends/", isAuthenticated, async function(req,res){
   
-    const friend = await User.findOne({username: req.params.friend});
+    const friend = await User.findOne({username: req.body.friend});
 
+    //check if friend exists
     if(!friend){
       return res.sendStatus(404);
     }
 
     const user = await User.findOne({_id: req.session.user._id});
-    if(!(user.friends.includes(req.params.friend))){
-      user.friends.push(req.params.friend);
+
+    //find the index of friend is in requests
+    const recieved = user.requests.findIndex(val => val.user == req.body.friend && val.reqType == "recieved");
+    const sent = friend.requests.findIndex(val => val.user == req.session.user.username && val.reqType == "sent");
+
+
+    //add friend to users friends if it exists 
+    if(recieved > -1){
+
+      user.friends.push(req.body.friend);
+      friend.friends.push(req.session.user.username);
+      user.requests.splice(user.requests[recieved], 1);
+      friend.requests.splice(friend.requests[sent], 1);
     }
-   
 
     await User.updateOne({_id: req.session.user._id}, {$set:{friends: user.friends}});
+    await User.updateOne({_id: req.session.user._id}, {$set:{requests: user.requests}});
 
-    return res.send({user: user.friends.reverse().slice(0,3)});
+    await User.updateOne({username: req.body.friend}, {$set:{requests: friend.requests}});
+    await User.updateOne({username: req.body.friend}, {$set:{friends: friend.friends}});
+
+    return res.send({user: user.friends.reverse()});
+});
+
+app.post("/api/request/", isAuthenticated, async function(req,res){
+  const friend = await User.findOne({username: req.body.friend});
+
+  if(!friend){
+    return res.sendStatus(404);
+  }
+
+  const user = await User.findOne({_id: req.session.user._id});
+
+  if(!(user.requests.some(val => val.user == req.body.friend) || friend.requests.some(val => val.user == req.session.user.username))){
+    user.requests.push({reqType:"sent", user:req.body.friend});
+    friend.requests.push({reqType:"recieved", user:req.session.user.username});
+  }
+
+  await User.updateOne({_id: req.session.user._id}, {$set:{requests: user.requests}});
+  await User.updateOne({username: req.body.friend}, {$set:{requests: friend.requests}});
+
+  return res.send({user: user.requests.reverse()});
+
+});
+
+app.get("/api/request/", isAuthenticated, async function(req,res){
+  const user = await User.findOne({_id: req.session.user._id},{_id:0});
+
+  return res.send({requests: user.requests});
 });
 
 app.post("/api/group/", isAuthenticated, async function(req, res){
@@ -206,7 +248,7 @@ app.post("/api/group/", isAuthenticated, async function(req, res){
 });
 
 app.get("/api/group/", isAuthenticated, async function(req, res){
-  const group = await Group.find({},{users:1});
+  const group = await Group.find({users: {$in:[req.session.user.username]}},{users:1});
   res.status(200).json({group: group});
 });
 
@@ -219,23 +261,26 @@ app.get("/api/message/:id/", isAuthenticated, async function(req, res){
 
   const filter = []
   
-
   for(let doc of messages[0].messages){
     let message = {user: doc.user, message: doc.message, _id: doc._id, mine: req.session.user.username == doc.user}
     filter.push(message)
   }
 
-
-  console.log(filter);
-
   return res.status(200).json(filter)
 });
 
-app.get("/api/chat/", isAuthenticated, async function(req,res){
+app.get("/api/friends/", isAuthenticated, async function(req,res){
 
     const doc = await User.findOne({_id: req.session.user._id}).limit(5);
+    return res.send({chat: doc.friends.reverse()})
+    
+});
 
-    return res.send({chat: doc.friends.reverse().slice(0,3)})
+app.get("/api/allUsers/", isAuthenticated, async function(req, res){
+  const doc = await User.find({}, {username: 1, _id: 0});
+  const filter = doc.map((value) => value.username).filter((value) => value != req.session.user.username);
+
+  return res.status(200).json({friends: filter});
 });
 
 app.delete("/api/event/:eventId/", async function (req, res, next) {

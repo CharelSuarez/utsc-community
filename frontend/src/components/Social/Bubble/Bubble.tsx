@@ -7,8 +7,15 @@ interface Bubbleprops{
 }
 
 export default function Bubble({user, message, mine}: Bubbleprops){
-    let style = mine ? "bubble mine" : "bubble yours"
+    let bubble = mine ? "bubble mine" : "bubble yours"
+    let userBubble = mine ? "user hidden" : "user"
+
     return (
-        <div key={message} className={style}>{message}</div>
+        <div className="text-holder">
+            
+            <div key={message} className={bubble}>{message}</div>
+            <div className={userBubble}>{user}</div>
+        </div>
+       
     )
 }

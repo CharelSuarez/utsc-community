@@ -24,6 +24,7 @@ export default function Message({group, _id}: MessageProps){
   
 
     useEffect(() => {
+        if(!_id) return;
         getMessages(_id).then(function(doc){
             if(!doc) return;
             setMessages(doc)
@@ -41,7 +42,7 @@ export default function Message({group, _id}: MessageProps){
     return(
         <>
         <div className="message-display">
-            <div className="title">Group: {group.join(',')}</div>
+            <div className="group-title">Group: {group.join(',')}</div>
             <div className="display">
                 {(
                     messages.map((message) => <Bubble key={key++} user={message.user} message={message.message} mine={message.mine}/>)

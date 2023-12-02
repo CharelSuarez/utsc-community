@@ -9,14 +9,13 @@ interface TabProps{
 
 }
 
-
 export default function Tab({label, image, active, type, update}: TabProps){
 
     let style = label == active ? type+" active" : type
 
     return(
         <>
-            <button className={style} onClick={() => update(label)}>
+            <button className={style + " button"} onClick={() => update(label)}>
                 <img src={image} alt=""/>
                 {label}
             </button>
