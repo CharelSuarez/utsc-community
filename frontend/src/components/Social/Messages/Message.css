@@ -4,17 +4,18 @@
     align-items: center;
     width: 80%;
     height: 95%;
-    background-color: white;
     border-radius: 15px;
-    padding: 0 2rem ;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    background-color: #DFE1E6;
 }
 
 .message-display .display{
     display: flex;
     flex-direction: column;
-    width: 75%;
+    width: 80%;
     height: 100%;
-    border-bottom: 4px solid var(--bg-tab);
+ 
     overflow-y: scroll;
 }
 
@@ -24,11 +25,11 @@
 }
 
 .message-display .group-title{
-    background-color: var(--bg-tab);
+    background: linear-gradient(125deg, rgba(5,170,255,1) 0%, rgba(0,65,238,1) 100%);
     padding: 1rem;
     box-sizing: border-box;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: white;
     font-weight: 400;
     margin-bottom: 1rem;

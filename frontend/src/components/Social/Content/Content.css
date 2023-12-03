@@ -1,8 +1,9 @@
 .main-content{
     padding-top: 4rem;
-
     display: flex;
     height: 100%;
     width: 100%;
     overflow: hidden;
+    gap: 1.5rem;
+    justify-content: center;
 }

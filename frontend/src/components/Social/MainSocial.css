@@ -5,4 +5,5 @@
     height: 100vh;
     padding: 0 2rem;
     box-sizing: border-box;
+    background: linear-gradient(125deg, hsl(218,20.4%,34.4%) 0%, hsla(218,20.4%,39.4%,0.9) 100%);
 }

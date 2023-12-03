@@ -1,8 +1,13 @@
-.text{
+.message-display .text{
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    background-color: var(--bg-taskbar);
+    height: fit-content;
+    width: 900px;
+    padding: .2rem 0.2rem;
+    border-radius: 60px;
 }
 
 form .text{
@@ -13,12 +18,18 @@ form .text{
 }
 
 .text input{
-    width: 80%;
+    width: 100%;
     height: 30px;
-    border-radius: 15px;
+    border: none;
     padding-left: 1rem;
-    border: 2px solid var(--bg-tab);
     font-size: 1rem;
+    background-color: var(--bg-taskbar);
+    border-radius: 2px;
+    color: white;
+}
+
+.text input:enabled{
+    border: none;
 }
 
 .text button{
@@ -28,7 +39,7 @@ form .text{
     height: 50px;
     width: 50px;
     border-radius: 100%;
-    background-color: var(--bg-tab);
+    background: var(--search);
     border: none;
     cursor: pointer;
 }

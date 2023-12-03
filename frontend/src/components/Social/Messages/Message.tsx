@@ -7,7 +7,7 @@ import { getMessages } from "@/api/social";
 import Bubble from "../Bubble/Bubble";
 
 interface MessageProps{
-    name: string
+    name: string | null
     _id: string
 }
 
@@ -41,7 +41,7 @@ export default function Message({name, _id}: MessageProps){
 
     return(
         <>
-        {(name == "")? <div className="empty">
+        {(name==null)? <div></div> : (name == "") ? <div className="empty">
             <div className="container">
                 <div className="caption">Dont be shy Make some <span className="highlight">Groups!</span></div>
                 <img src="/empty/monkey.png" alt="" />
@@ -58,6 +58,8 @@ export default function Message({name, _id}: MessageProps){
                 <Text addMessage = {(message: string) => socket.emit('message', {_id: _id, message: message, mine: socket.id})} />
             </div>
         </div>   }
+
+        
 
 
 

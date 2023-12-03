@@ -10,7 +10,8 @@
     align-items: center;
     width: 200px;
     height: 70px;
-    background-color: var(--bg-tab);
+    background: var(--search);
+    font-size: 1.3rem;
     border-radius: 5px;
 }
 
@@ -29,4 +30,8 @@
     color: white;
     width: 80%;
     text-align: center;
+}
+
+.navigation-main .container-profile{
+    width: 100%;
 }
