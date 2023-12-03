@@ -8,8 +8,8 @@ export function getFriends(){
     return send("GET", "/api/friends/", null);
 }
 
-export function addGroup(users: string[]){
-    return send("POST", "/api/group/", {users});
+export function addGroup(users: string[], name: string){
+    return send("POST", "/api/group/", {users, name});
 }
 
 export function getAllGroup(){

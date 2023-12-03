@@ -3,12 +3,14 @@ import FriendContent from "./Content/FriendContent"
 import MessageContent from "./Content/MessageContent"
 import "./MainSocial.css"
 import Topbar from "./Topbar/Topbar"
+import AccountContent from "./Content/AccountContent"
 
 interface SocialProps {
     current: string
 }
 
 export default function Social({ current }: SocialProps) {
+    
     const [active, setActive] = useState("Your Messages");
 
     return (<>
@@ -18,13 +20,17 @@ export default function Social({ current }: SocialProps) {
                     <Topbar current={current} update={setActive} active={active} />
                     <MessageContent tab={active} />
                 </div> :
-                (current == "Friends") ?
+            (current == "Friends") ?
                 <div className="main">
                     <Topbar current={current} update={setActive} active={active} />
                     <FriendContent />
                 </div> :
-
-                <div className="main">Nothing to see here</div>
+            (current == "Account") ?
+                <div className="main">
+                    <Topbar current={current} update={setActive} active={active} />
+                    <AccountContent />
+                </div> :
+            <div className="main">Nothing to see here</div>
         }
     </>)
 }

@@ -27,7 +27,7 @@ const MemoizedBuildingMarker = memo(function MemoizedMarker({ buildingKey, build
                             <img class="building-image" src=${image} />
                             <div class="building-info" style="font-size: 15px;">
                                 <button class="building-events button active">
-                                    <img class="building-events-icon" src="event.png" />
+                                    <img class="building-events-icon" src="icons/event.png" />
                                     <p>5 upcoming events</p>
                                 </button>
                             </div>

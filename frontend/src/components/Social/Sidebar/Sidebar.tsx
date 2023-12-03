@@ -2,6 +2,7 @@ import { useState } from "react";
 import Tab from "../Tab/Tab";
 import "./Sidebar.css"
 import Link from "next/link";
+import { logout } from "@/api/auth";
 
 interface Sidebar {
     update: (active: string) => void
@@ -38,7 +39,12 @@ export default function Sidebar({update, active}: Sidebar){
                 </div>
             </div>
             <div className="sign">
-                <Tab label="Sign Out" image="/icons/exit.png" active={active} update={update} type="tab"/>
+                <Tab label="Account" image="/icons/user.png" active={active} update={update} type="tab"/>
+                <Tab label="Sign Out" image="/icons/exit.png" active={active} update={() => {
+                    logout().then(() => {
+                        window.location.href = "/"
+                    });
+                }} type="tab red"/>
             </div>
         </div>
 

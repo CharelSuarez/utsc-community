@@ -2,18 +2,20 @@ import { createServer } from "http";
 import express from "express";
 import "./load.mjs";
 import cors from "cors";
-import { User, Event, getClient , Group} from "./model/model.mjs";
+import { User, Event, getClient, Group } from "./model/model.mjs";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { body, param, validationResult, query} from "express-validator";
+import { body, param, validationResult, query } from "express-validator";
 import bcrypt from "bcrypt";
 import { serialize } from "cookie";
-
+import multer from "multer";
+import fs from "fs";
 
 const PORT = 5000;
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
   origin: process.env.FRONTEND,
@@ -37,8 +39,10 @@ export const sessionMiddleware = session({
     collectionName: 'sessions'
   })
 })
-
 app.use(sessionMiddleware);
+
+const avatars = multer({ dest: 'public/avatars/', limits: { fileSize: 1024 * 1024 }}) // 1MB
+app.use(express.static('public'))
 
 app.use(function (req, res, next) {
   console.log(`HTTP request from \'${req.session?.user?.username}\'`, req.method, req.url, req.body);
@@ -79,36 +83,60 @@ app.post("/api/login/", body(['username', 'password']).notEmpty(), async functio
     return res.status(400).json(validationResult(req).array()).end();
   }
 
-  const user = await User.findOne({username: req.body.username})
+  const user = await User.findOne({ username: req.body.username })
   if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
     return res.status(404).end("User not found!");
   }
 
-  const project = req.session.user = {_id: user._id.toString(), username: user.username};
+  const avatar = getUserAvatar(user);
+  const project = req.session.user = { _id: user._id.toString(), username: user.username, avatar };
   setUserCookie(req, res);
   res.status(200).json(project);
 });
 
-app.post("/api/register/", body(['username', 'password']).notEmpty(), async function (req, res, next) {
-  if (req.session.user) {
-    return res.status(409).end("Already logged in!");
+function deleteFile(file) {
+  if (!file) {
+    return;
   }
+  fs.unlink(file.path, (err) => {
+    if (err) {
+      console.error("Failed to delete file!", err)
+    }
+  });
+}
 
-  if (!validationResult(req).isEmpty()) {
-    return res.status(400).json(validationResult(req).array()).end();
-  }
+app.post("/api/register/", async function (req, res, next) {
+  avatars.single('avatar') (req, res, async function (err) {
+    if (err) {
+      return res.status(400).end("Bad file!");
+    }
 
-  let user = await User.findOne({username: req.body.username})
-  if (user) {
-    return res.status(409).end("Username already exists!");
-  }
+    body(['username', 'password']).notEmpty()(req, res, (err) => {});
+  
+    if (req.session.user) {
+      deleteFile(req.file);
+      return res.status(409).end("Already logged in!");
+    }
+  
+    if (!validationResult(req).isEmpty()) {
+      deleteFile(req.file);
+      return res.status(400).json(validationResult(req).array()).end();
+    }
+  
+    let user = await User.findOne({username: req.body.username})
+    if (user) {
+      deleteFile(req.file);
+      return res.status(409).end("Username already exists!");
+    }
+  
+    const hash = bcrypt.hashSync(req.body.password, 10);
+    user = await User.create({username: req.body.username, password: hash, avatar: req.file})
 
-  const hash = bcrypt.hashSync(req.body.password, 10);
-  user = await User.create({username: req.body.username, password: hash})
-
-  const project = req.session.user = {_id: user._id.toString(), username: user.username};
-  setUserCookie(req, res);
-  res.status(201).json(project);
+    const avatar = getUserAvatar(user);
+    const project = req.session.user = {_id: user._id.toString(), username: user.username, avatar};
+    setUserCookie(req, res);
+    res.status(201).json(project);
+  });
 });
 
 app.delete("/api/login/", isAuthenticated, async function (req, res, next) {
@@ -121,28 +149,46 @@ app.post("/api/event/", async function (req, res, next) {
   const result = await Event.create(req.body);
 
   return res
-  .status(200)
-  .json(result);
+    .status(200)
+    .json(result);
+});
+
+function getUserAvatar(user) {
+  let avatar = user.avatar?.path?.replace(/\\/g, "/");
+  if (!avatar || !fs.existsSync("./" + avatar)) {
+    avatar = "avatars/default.svg"; 
+  }
+  if (avatar.startsWith("public/")) {
+    avatar = avatar.substring("public/".length);
+  }
+  return "http://localhost:5000/" + avatar; // TODO: Fix origin!
+}
+
+// Endpoint to get any user's information
+app.get("/api/user/:id", isAuthenticated, async (req, res, next) => {
+  const user = await User.findOne({_id: req.params.id});
+  const avatar = getUserAvatar(user);
+  return res.status(200).json({_id: user._id, username: user.username, avatar});
 });
 
 app.get("/api/events/", async function (req, res, next) {
-  var start = req.query.startDateFilter;
-  var end = req.query.endDateFilter;
-  var loc = req.query.locationFilter;
+  let start = req.query.startDateFilter;
+  let end = req.query.endDateFilter;
+  let loc = req.query.locationFilter;
   console.log(loc);
   if(start == ""){
     start = "1970-01-01";
   }
-  if(end == ""){
+  if (end == "") {
     end = "2099-01-01";
   }
-  if(loc == ""){
-    const event = await Event.find({startDate:{$gte: start,$lt: end}}).sort({createTime:-1}).skip(parseInt(req.query.page)*4).limit(4);
-  return res
-  .status(200)
-  .json({events: event});
+  if (loc == "") {
+    const event = await Event.find({ startDate: { $gte: start, $lt: end } }).sort({ createTime: -1 }).skip(parseInt(req.query.page) * 4).limit(4);
+    return res
+      .status(200)
+      .json({ events: event });
   }
-  const event = await Event.find({startDate:{$gte: start,$lt: end}, location: loc}).sort({createTime:-1}).skip(parseInt(req.query.page)*6).limit(6);
+  const event = await Event.find({ startDate: { $gte: start, $lt: end }, location: loc }).sort({ createTime: -1 }).skip(parseInt(req.query.page) * 6).limit(6);
   return res
   .status(200)
   .json({events: event});
@@ -166,129 +212,126 @@ app.patch("/api/unattendevent/", async function (req, res, next){
   .json({event});
 });
 
-app.post("/api/friends/", isAuthenticated, async function(req,res){
-  
-    const friend = await User.findOne({username: req.body.friend});
+app.post("/api/friends/", isAuthenticated, async function (req, res) {
 
-    //check if friend exists
-    if(!friend){
-      return res.sendStatus(404);
-    }
+  const friend = await User.findOne({ username: req.body.friend });
 
-    const user = await User.findOne({_id: req.session.user._id});
-
-    //find the index of friend is in requests
-    const recieved = user.requests.findIndex(val => val.user == req.body.friend && val.reqType == "recieved");
-    const sent = friend.requests.findIndex(val => val.user == req.session.user.username && val.reqType == "sent");
-
-
-    //add friend to users friends if it exists 
-    if(recieved > -1){
-
-      user.friends.push(req.body.friend);
-      friend.friends.push(req.session.user.username);
-      user.requests.splice(user.requests[recieved], 1);
-      friend.requests.splice(friend.requests[sent], 1);
-    }
-
-    await User.updateOne({_id: req.session.user._id}, {$set:{friends: user.friends}});
-    await User.updateOne({_id: req.session.user._id}, {$set:{requests: user.requests}});
-
-    await User.updateOne({username: req.body.friend}, {$set:{requests: friend.requests}});
-    await User.updateOne({username: req.body.friend}, {$set:{friends: friend.friends}});
-
-    return res.send({user: user.friends.reverse()});
-});
-
-app.post("/api/request/", isAuthenticated, async function(req,res){
-  const friend = await User.findOne({username: req.body.friend});
-
-  if(!friend){
+  //check if friend exists
+  if (!friend) {
     return res.sendStatus(404);
   }
 
-  const user = await User.findOne({_id: req.session.user._id});
+  const user = await User.findOne({ _id: req.session.user._id });
 
-  if(!(user.requests.some(val => val.user == req.body.friend) || friend.requests.some(val => val.user == req.session.user.username))){
-    user.requests.push({reqType:"sent", user:req.body.friend});
-    friend.requests.push({reqType:"recieved", user:req.session.user.username});
+  //find the index of friend is in requests
+  const recieved = user.requests.findIndex(val => val.user == req.body.friend && val.reqType == "recieved");
+  const sent = friend.requests.findIndex(val => val.user == req.session.user.username && val.reqType == "sent");
+
+
+  //add friend to users friends if it exists 
+  if (recieved > -1) {
+
+    user.friends.push(req.body.friend);
+    friend.friends.push(req.session.user.username);
+    user.requests.splice(user.requests[recieved], 1);
+    friend.requests.splice(friend.requests[sent], 1);
   }
 
-  await User.updateOne({_id: req.session.user._id}, {$set:{requests: user.requests}});
-  await User.updateOne({username: req.body.friend}, {$set:{requests: friend.requests}});
+  await User.updateOne({ _id: req.session.user._id }, { $set: { friends: user.friends } });
+  await User.updateOne({ _id: req.session.user._id }, { $set: { requests: user.requests } });
 
-  return res.send({user: user.requests.reverse()});
+  await User.updateOne({ username: req.body.friend }, { $set: { requests: friend.requests } });
+  await User.updateOne({ username: req.body.friend }, { $set: { friends: friend.friends } });
+
+  return res.send({ user: user.friends.reverse() });
+});
+
+app.post("/api/request/", isAuthenticated, async function (req, res) {
+  const friend = await User.findOne({ username: req.body.friend });
+
+  if (!friend) {
+    return res.sendStatus(404);
+  }
+
+  const user = await User.findOne({ _id: req.session.user._id });
+
+  if (!(user.requests.some(val => val.user == req.body.friend) || friend.requests.some(val => val.user == req.session.user.username))) {
+    user.requests.push({ reqType: "sent", user: req.body.friend });
+    friend.requests.push({ reqType: "recieved", user: req.session.user.username });
+  }
+
+  await User.updateOne({ _id: req.session.user._id }, { $set: { requests: user.requests } });
+  await User.updateOne({ username: req.body.friend }, { $set: { requests: friend.requests } });
+
+  return res.send({ user: user.requests.reverse() });
 
 });
 
-app.get("/api/request/", isAuthenticated, async function(req,res){
-  const user = await User.findOne({_id: req.session.user._id},{_id:0});
+app.get("/api/request/", isAuthenticated, async function (req, res) {
+  const user = await User.findOne({ _id: req.session.user._id }, { _id: 0 });
 
-  return res.send({requests: user.requests});
+  return res.send({ requests: user.requests });
 });
 
-app.post("/api/group/", isAuthenticated, async function(req, res){
+app.post("/api/group/", isAuthenticated, async function (req, res) {
+
   const users = req.body.users;
+  
   users.push(req.session.user.username)
   users.sort();
 
-  const group = await Group.find({users: users});
-  
+  const group = await Group.find({})
+  const name = req.body.name == "Group" ? req.body.name + " " + group.length : req.body.name; 
 
-  if(group.length != 0){
-    console.log(group);
-    return res.status(403).json(users);
-  }
 
-  const result = await Group.create({users: users, messages: []});
-  console.log(result.users);
+  const result = await Group.create({ users: users, messages: [], name: name });
 
-  return res.status(200).json({users: result.users, _id: result._id});
+  return res.status(200).json({ users: result.users, _id: result._id, name: result.name });
 
 });
 
-app.get("/api/group/", isAuthenticated, async function(req, res){
-  const group = await Group.find({users: {$in:[req.session.user.username]}},{users:1});
-  res.status(200).json({group: group});
+app.get("/api/group/", isAuthenticated, async function (req, res) {
+  const group = await Group.find({ users: { $in: [req.session.user.username] } }, { messages: 0});
+  res.status(200).json({ group: group });
 });
 
-app.get("/api/message/:id/", isAuthenticated, async function(req, res){
-  const messages = await Group.find({_id: req.params.id},{messages:1, _id: 0})
+app.get("/api/message/:id/", isAuthenticated, async function (req, res) {
+  const messages = await Group.find({ _id: req.params.id }, { messages: 1, _id: 0 })
 
-  if(messages.length == 0){
-    return res.status(404).json([]) 
+  if (messages.length == 0) {
+    return res.status(404).json([])
   }
 
   const filter = []
-  
-  for(let doc of messages[0].messages){
-    let message = {user: doc.user, message: doc.message, _id: doc._id, mine: req.session.user.username == doc.user}
+
+  for (let doc of messages[0].messages) {
+    let message = { user: doc.user, message: doc.message, _id: doc._id, mine: req.session.user.username == doc.user }
     filter.push(message)
   }
 
   return res.status(200).json(filter)
 });
 
-app.get("/api/friends/", isAuthenticated, async function(req,res){
+app.get("/api/friends/", isAuthenticated, async function (req, res) {
 
-    const doc = await User.findOne({_id: req.session.user._id}).limit(5);
-    return res.send({chat: doc.friends.reverse()})
-    
+  const doc = await User.findOne({ _id: req.session.user._id }).limit(5);
+  return res.send({ chat: doc.friends.reverse() })
+
 });
 
-app.get("/api/allUsers/", isAuthenticated, async function(req, res){
-  const doc = await User.find({}, {username: 1, _id: 0});
+app.get("/api/allUsers/", isAuthenticated, async function (req, res) {
+  const doc = await User.find({}, { username: 1, _id: 0 });
   const filter = doc.map((value) => value.username).filter((value) => value != req.session.user.username);
 
-  return res.status(200).json({friends: filter});
+  return res.status(200).json({ friends: filter });
 });
 
 app.delete("/api/event/:eventId/", async function (req, res, next) {
   const event = await Event.deleteOne({_id : req.params.eventId, createdBy: req.session.user.username});
   if(!event){
     return res
-    .status(404)
-    .end("Event id:" + req.params.eventId + " does not exists");
+      .status(404)
+      .end("Event id:" + req.params.eventId + " does not exists");
   }
   return res
   .status(200)

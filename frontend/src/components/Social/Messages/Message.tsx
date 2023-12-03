@@ -7,7 +7,7 @@ import { getMessages } from "@/api/social";
 import Bubble from "../Bubble/Bubble";
 
 interface MessageProps{
-    group: string[]
+    name: string
     _id: string
 }
 
@@ -17,7 +17,7 @@ interface Message{
     mine: boolean
 }
 
-export default function Message({group, _id}: MessageProps){
+export default function Message({name, _id}: MessageProps){
 
     const [messages , setMessages] = useState<Message[]>([]); 
     let key = 0
@@ -41,8 +41,14 @@ export default function Message({group, _id}: MessageProps){
 
     return(
         <>
-        <div className="message-display">
-            <div className="group-title">Group: {group.join(',')}</div>
+        {(name == "")? <div className="empty">
+            <div className="container">
+                <div className="caption">Dont be shy Make some <span className="highlight">Groups!</span></div>
+                <img src="/empty/monkey.png" alt="" />
+            </div>
+           
+        </div>: <div className="message-display">
+            <div className="group-title">Group: {name}</div>
             <div className="display">
                 {(
                     messages.map((message) => <Bubble key={key++} user={message.user} message={message.message} mine={message.mine}/>)
@@ -51,7 +57,11 @@ export default function Message({group, _id}: MessageProps){
             <div className="text">
                 <Text addMessage = {(message: string) => socket.emit('message', {_id: _id, message: message, mine: socket.id})} />
             </div>
-        </div>   
+        </div>   }
+
+
+
+       
         </>
     )
 

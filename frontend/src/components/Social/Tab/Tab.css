@@ -13,7 +13,3 @@
     cursor: pointer;
     background-color: white;
 }
-
-.active{
-    border-bottom: 3px solid var(--bg-tab);
-}

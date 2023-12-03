@@ -1,4 +1,4 @@
-import { send } from "./utils";
+import { send, sendForm } from "./utils";
 
 interface User {
     _id: string;
@@ -17,8 +17,8 @@ export function login(username: string, password: string) : Promise<User> {
     );
 }
 
-export function register(username: string, password: string) : Promise<User> {
-    return send("POST", '/api/register/', {username, password})
+export function register(username: string, password: string, avatar: any) : Promise<User> {
+    return sendForm("POST", '/api/register/', {username, password, avatar})
         .then((user) => {
             if (user) {
                 localStorage.setItem('user_id', user._id);
@@ -33,8 +33,7 @@ export function logout() : Promise<any> {
     return send("DELETE", '/api/login/', null)
         .then((response) => {
             if (response) {
-                localStorage.removeItem('user_id');
-                localStorage.removeItem('username');
+                resetUser();
             }
         }
     );
@@ -46,4 +45,9 @@ export function getUserId() {
 
 export function getUsername() {
     return localStorage.getItem('username');
+}
+
+export function resetUser() {
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('username');
 }
