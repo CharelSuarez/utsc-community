@@ -26,7 +26,7 @@ function getModalChildren({onClose}: LoginModalProps) {
                 return;
             }
             onClose();
-            // window.location.href = '/dashboard'; // TODO Redirect!
+            window.location.href = '/social';
         });
 
         usernameRef.current.value = '';

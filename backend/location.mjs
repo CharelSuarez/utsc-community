@@ -38,9 +38,15 @@ io.on('connection', async (socket) => {
         await loadProto();
     }
 
+    if (!socket.request.session?.user) {
+        socket.disconnect();
+        return;
+    }
+
     const session = socket.request.session;
-    const personId = session?.user?._id || session.sessionID;
-    const username = session?.user?.username || 'Unknown';
+    const personId = session.user._id;
+    const username = session.user.username;
+    const avatar = session.user.avatar;
     console.log(`User '${username}' connected!`);
 
     socket.on('message', (message) => {
@@ -63,24 +69,26 @@ io.on('connection', async (socket) => {
         locations[personId] = { 
             personId,
             username,
+            avatar,
             location,
             lastUpdated: Date.now()
         } 
 
 
         // TODO Remove this!
-        for (let i = Object.values(locations).length; i < 50; i++) {
-            const random = `${Math.floor(Math.random() * 20000)}`;
-            locations[random] = {
-                personId: random,
-                username: `Random User #${random}`,
-                location: {
-                    latitude: 43.777106 + Math.random() * (43.792295 - 43.777106),
-                    longitude: -79.180157 + Math.random() * (-79.195519 - -79.180157),
-                },
-                lastUpdated: null
-            }
-        }
+        // for (let i = Object.values(locations).length; i < 50; i++) {
+        //     const random = `${Math.floor(Math.random() * 20000)}`;
+        //     locations[random] = {
+        //         personId: random,
+        //         username: `Random User #${random}`,
+        //         avatar: 'http://localhost:5000/avatars/default.svg', // TODO: Fix origin!
+        //         location: {
+        //             latitude: 43.777106 + Math.random() * (43.792295 - 43.777106),
+        //             longitude: -79.180157 + Math.random() * (-79.195519 - -79.180157),
+        //         },
+        //         lastUpdated: null
+        //     }
+        // }
 
         const locationResponse = LocationResponse.create({ personLocations: Object.values(locations) });
         buffer = LocationResponse.encode(locationResponse).finish();

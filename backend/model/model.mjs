@@ -6,6 +6,17 @@ async function main() {
   await mongoose.connect(process.env.ATLAS_URI);
 }
 
+let pictureMetadata = new mongoose.Schema({
+    fieldname: String,
+    originalname: String,
+    encoding: String,
+    mimetype: String,
+    destination: String,
+    filename: String,
+    path: String,
+    size: Number
+});
+
 let userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -16,7 +27,9 @@ let userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
+    avatar: {
+        type: pictureMetadata
+    },
     friends: [{
         type: String
     }],

@@ -7,3 +7,5 @@ Thumbs.db
 node_modules
 db
 .env
+public/avatars/*
+!public/avatars/default.svg

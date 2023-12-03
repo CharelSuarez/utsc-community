@@ -8,12 +8,14 @@ import MongoStore from "connect-mongo";
 import { body, param, validationResult, query} from "express-validator";
 import bcrypt from "bcrypt";
 import { serialize } from "cookie";
-
+import multer from "multer";
+import fs from "fs";
 
 const PORT = 5000;
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
   origin: process.env.FRONTEND,
@@ -37,8 +39,10 @@ export const sessionMiddleware = session({
     collectionName: 'sessions'
   })
 })
-
 app.use(sessionMiddleware);
+
+const avatars = multer({ dest: 'public/avatars/', limits: { fileSize: 1024 * 1024 }}) // 1MB
+app.use(express.static('public'))
 
 app.use(function (req, res, next) {
   console.log(`HTTP request from \'${req.session?.user?.username}\'`, req.method, req.url, req.body);
@@ -84,31 +88,55 @@ app.post("/api/login/", body(['username', 'password']).notEmpty(), async functio
     return res.status(404).end("User not found!");
   }
 
-  const project = req.session.user = {_id: user._id.toString(), username: user.username};
+  const avatar = getUserAvatar(user);
+  const project = req.session.user = {_id: user._id.toString(), username: user.username, avatar};
   setUserCookie(req, res);
   res.status(200).json(project);
 });
 
-app.post("/api/register/", body(['username', 'password']).notEmpty(), async function (req, res, next) {
-  if (req.session.user) {
-    return res.status(409).end("Already logged in!");
+function deleteFile(file) {
+  if (!file) {
+    return;
   }
+  fs.unlink(file.path, (err) => {
+    if (err) {
+      console.error("Failed to delete file!", err)
+    }
+  });
+}
 
-  if (!validationResult(req).isEmpty()) {
-    return res.status(400).json(validationResult(req).array()).end();
-  }
+app.post("/api/register/", async function (req, res, next) {
+  avatars.single('avatar') (req, res, async function (err) {
+    if (err) {
+      return res.status(400).end("Bad file!");
+    }
 
-  let user = await User.findOne({username: req.body.username})
-  if (user) {
-    return res.status(409).end("Username already exists!");
-  }
+    body(['username', 'password']).notEmpty()(req, res, (err) => {});
+  
+    if (req.session.user) {
+      deleteFile(req.file);
+      return res.status(409).end("Already logged in!");
+    }
+  
+    if (!validationResult(req).isEmpty()) {
+      deleteFile(req.file);
+      return res.status(400).json(validationResult(req).array()).end();
+    }
+  
+    let user = await User.findOne({username: req.body.username})
+    if (user) {
+      deleteFile(req.file);
+      return res.status(409).end("Username already exists!");
+    }
+  
+    const hash = bcrypt.hashSync(req.body.password, 10);
+    user = await User.create({username: req.body.username, password: hash, avatar: req.file})
 
-  const hash = bcrypt.hashSync(req.body.password, 10);
-  user = await User.create({username: req.body.username, password: hash})
-
-  const project = req.session.user = {_id: user._id.toString(), username: user.username};
-  setUserCookie(req, res);
-  res.status(201).json(project);
+    const avatar = getUserAvatar(user);
+    const project = req.session.user = {_id: user._id.toString(), username: user.username, avatar};
+    setUserCookie(req, res);
+    res.status(201).json(project);
+  });
 });
 
 app.delete("/api/login/", isAuthenticated, async function (req, res, next) {
@@ -125,10 +153,28 @@ app.post("/api/event/", async function (req, res, next) {
   .json(result);
 });
 
+function getUserAvatar(user) {
+  let avatar = user.avatar?.path?.replace(/\\/g, "/");
+  if (!avatar || !fs.existsSync("./" + avatar)) {
+    avatar = "avatars/default.svg"; 
+  }
+  if (avatar.startsWith("public/")) {
+    avatar = avatar.substring("public/".length);
+  }
+  return "http://localhost:5000/" + avatar; // TODO: Fix origin!
+}
+
+// Endpoint to get any user's information
+app.get("/api/user/:id", isAuthenticated, async (req, res, next) => {
+  const user = await User.findOne({_id: req.params.id});
+  const avatar = getUserAvatar(user);
+  return res.status(200).json({_id: user._id, username: user.username, avatar});
+});
+
 app.get("/api/events/", async function (req, res, next) {
-  var start = req.query.startDateFilter;
-  var end = req.query.endDateFilter;
-  var loc = req.query.locationFilter;
+  let start = req.query.startDateFilter;
+  let end = req.query.endDateFilter;
+  let loc = req.query.locationFilter;
   console.log(loc);
   if(start == ""){
     start = "1970-01-01";

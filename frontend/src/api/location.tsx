@@ -32,12 +32,19 @@ export async function connectToLocationService(messageCallback : (locationRespon
         // Decode message from Uint8Array
         const buffer = new Uint8Array(message);
         const locationResponse = LocationResponse.decode(buffer);
-        console.log(`Message from server:`);
-        console.log(locationResponse);
+        // console.log(`Message from server:`);
+        // console.log(locationResponse);
         messageCallback((locationResponse as any).personLocations);
     });
 
     setInterval(getSendLocation, 1000);
+}
+
+export function disconnectFromLocationService() {
+    if (socket == null) {
+        return;
+    }
+    socket.disconnect();
 }
 
 async function getSendLocation() {
@@ -67,7 +74,7 @@ async function sendLocation(latitude : number, longitude : number) {
     const data = {
         latitude, longitude
     };
-    console.log(`Sending message to server: ${data}`);
+    // console.log(`Sending message to server: ${data}`);
     const location = Location.create(data);
     const buffer = Location.encode(location).finish();
     socket.emit('message', buffer);

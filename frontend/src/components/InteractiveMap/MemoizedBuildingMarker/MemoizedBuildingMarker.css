@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    box-shadow: darkgray 0px 5px 20px 0px;
+    /* box-shadow: darkgray 0px 5px 20px 0px; */
     /* filter: drop-shadow(-1px 1px 0px darkgray); */
     background-color: var(--bg-sidebar);
     border-radius: 15px;

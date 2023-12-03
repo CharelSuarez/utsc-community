@@ -3,11 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/images/marker-icon.png';
 import { DivIcon, Icon, LatLngBounds} from 'leaflet';
-// import { DivIcon, Icon, LatLngBounds, Map as LeafletMap} from 'leaflet';
-import { connectToLocationService } from '@/api/location';
+import { connectToLocationService, disconnectFromLocationService } from '@/api/location';
 import { useEffect, useState } from 'react';
-// import Building from './Building/Building';
-// import { BUILDING } from './Building/Building';
 import './InteractiveMap.css';
 import MemoizedMarker from './MemoizedMarker/MemoizedMarker';
 import MemoizedBuildingMarker from './MemoizedBuildingMarker/MemoizedBuildingMarker';
@@ -27,7 +24,6 @@ const BUILDING : {[buildingName: string] : Building} = {
 }
 
 export default function InteractiveMap() {
-    // const [map, setMap] = useState<LeafletMap|null>(null);
     const [personLocations, setPersonLocations] = useState<Array<any>>([]);
 
     useEffect(() => {
@@ -51,21 +47,24 @@ export default function InteractiveMap() {
                 return newPersonLocations;
             });
         });
+
+        return () => {
+            disconnectFromLocationService();
+        };
     }, []);
 
     return (
         <>
             <MapContainer
                 style={{fontFamily: 'inherit'}}
-                maxBounds={new LatLngBounds([43.777106, -79.195519], [43.792295, -79.180157])}
+                maxBounds={new LatLngBounds([43.77726466009645, -79.19554571880464], [43.792133217870415, -79.17708660072934])}
                 maxBoundsViscosity={1.0}
                 className='map_container'
                 center={[43.78393739345549, -79.18573731545196]} 
                 zoom={18}
-                // minZoom={18}
+                minZoom={1}
                 zoomControl={false}
                 scrollWheelZoom={true}
-                // ref={setMap}
                 >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -73,55 +72,14 @@ export default function InteractiveMap() {
                 />
                 {
                     personLocations.map((personLocation, index) => {
-                        // const {latitude, longitude} = personLocation.location;
                         return (
-                            // <Marker 
-                            //     key={personLocation.personId} 
-                            //     position={[latitude, longitude]}
-                            //     icon={
-                            //         new DivIcon({
-                            //             className: 'user-marker',
-                            //             // <img src="marker-icon.png" />
-                            //             html: `
-                            //                 <img class='user-image' src="monkey.jpg" />
-                            //             `,
-                            //             // iconSize: [25, 41],
-                            //             // iconAnchor: [25/2, 41],
-                            //             iconSize: [40, 40],
-                            //             iconAnchor: [40/2, 40/2],
-                            //         })
-                            //     }>
-                            //     <Popup>
-                            //         Person: {personLocation.personId} <br/>
-                            //         Coords: {`${latitude}, ${longitude}`}
-                            //     </Popup>
-                            // </Marker>
                             <MemoizedMarker key={personLocation.personId} personLocation={personLocation}/>
                         );
                     })
                 }
                 {
                     Object.entries(BUILDING).map(([key, building], index) => {
-                        // const {latitude, longitude} = building.location;
-                        // const image = `building/${key.toLowerCase()}.jpg`
                         return (
-                            // <Marker 
-                            //     key={key} 
-                            //     position={[latitude, longitude]} 
-                            //     icon={
-                            //         new DivIcon({
-                            //             className: 'building-marker',
-                            //             html: `
-                            //                 <div class="building">
-                            //                     <h1>${building.name}</h1>
-                            //                     <img src=${image} />
-                            //                 </div>
-                            //             `,
-                            //             iconSize: [150, 150],
-                            //             iconAnchor: [75, 75],
-                            //         })}
-                            //     >
-                            // </Marker>
                             <MemoizedBuildingMarker key={key} buildingKey={key} building={building}/>
                         );
                     })

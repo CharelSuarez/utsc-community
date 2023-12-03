@@ -9,6 +9,7 @@ interface RegisterModalProps {
 function getModalChildren({onClose}: RegisterModalProps) {
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+    const fileRef = useRef<HTMLInputElement>(null);
 
     const onClickRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -17,19 +18,23 @@ function getModalChildren({onClose}: RegisterModalProps) {
             return;
         }
     
-        const username = usernameRef.current.value == null ? '' : usernameRef.current.value;
-        const password = passwordRef.current.value == null ? '' : passwordRef.current.value;
+        const username = !usernameRef.current?.value ? '' : usernameRef.current.value;
+        const password = !passwordRef.current?.value ? '' : passwordRef.current.value;
+        const picture = !fileRef.current?.files ? null : fileRef.current.files[0];
     
-        register(username, password).then((response) => {
+        register(username, password, picture).then((response) => {
             if (!response) {
                 return;
             }
             onClose();
-            // window.location.href = '/dashboard'; // TODO Redirect!
+            window.location.href = '/social';
         });
 
         usernameRef.current.value = '';
         passwordRef.current.value = '';
+        if (fileRef.current) {
+            fileRef.current.value = '';
+        }
     };
 
     return (
@@ -54,6 +59,7 @@ function getModalChildren({onClose}: RegisterModalProps) {
             <div className='modal-form'>
                 <input ref={usernameRef} type='text' placeholder='Username' autoComplete="off"/>
                 <input ref={passwordRef} type='password' placeholder='Password' autoComplete="off"/>
+                <input ref={fileRef} type='file' placeholder='File' autoComplete="off"/>
                 <button onClick={onClickRegister}>Register</button>
             </div>
         </>

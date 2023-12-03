@@ -13,7 +13,8 @@ message LocationResponse {
 message PersonLocation {
     string personId = 1;
     string username = 2;
-    Location location = 3;
+    string avatar = 3;
+    Location location = 4;
 }
 
 message Location {

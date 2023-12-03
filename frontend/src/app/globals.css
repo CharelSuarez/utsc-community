@@ -44,8 +44,8 @@ a {
     animation: button-scale 0.25s ease-in-out forwards;
 }
 
-/* Active Button (Gradient Static Background) */
-.button.active::before {
+/* Button Background */
+.button.active::before, .button:hover::before {
     z-index: -1;
     position: absolute;
     top: 0px;
@@ -55,41 +55,23 @@ a {
     border-radius: 10px;
     content: '';
     opacity: 1;
-    background-image: radial-gradient(circle at center, var(--bg-tab) 0, #5468ff 100%);
-    background-position: center center;
-    background-size: 150%;
-}
-
-/* Button Hover Animations (Normal/Active) */
-.button:hover::before {
-    z-index: -1;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    content: '';
-    opacity: 1;
-    transition: opacity 5s ease-in-out;
     background-image: radial-gradient(circle at center, var(--bg-tab) 0, #5468ff 100%);
     background-size: 200%;
+    background-position: center center;
+}
+
+/* Red Button Background */
+.button.red:hover::before {
+    background-image: radial-gradient(circle at center, #ff546e 0, var(--bg-sidebar) 100%);
+}
+
+/* Normal Button Animation */
+.button:hover::before {
     animation: gradient-wave 3s linear infinite reverse, button-opacity 0.5s ease-in-out forwards;
 }
 
+/* Active Button Animation */
 .button.active:hover::before {
-    z-index: -1;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    content: '';
-    opacity: 1;
-    transition: opacity 5s ease-in-out;
-    background-image: radial-gradient(circle at center, var(--bg-tab) 0, #5468ff 100%);
-    background-size: 200%;
     animation: gradient-wave 3s linear infinite reverse;
 }
 
