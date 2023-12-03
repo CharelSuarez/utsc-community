@@ -46,12 +46,10 @@ export default function Filter({onAddFunction, setStartDate, setEndDate, setLoca
           <Location getLocation={getLocation}></Location>
         </div>
         <div className="submit">
-          <button onClick={getFilters}>Filter Events</button>
+          <button className="button active buttonFilter" onClick={getFilters}>Filter Events</button>
         </div>
-        <div className="addEvent">
-          <button onClick={() => setAddEventShowModal(true)}>Create an Event</button>
-        </div>
-        <div>
+        <div className="submit">
+          <button className="button active buttonFilter" onClick={() => setAddEventShowModal(true)}>Create an Event</button>
         </div>
         {showAddEventModal && createPortal(
                 <AddEventModal onAddFunction={onAddFunction} onClose={() => setAddEventShowModal(false)}/>,

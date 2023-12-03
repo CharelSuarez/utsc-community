@@ -1,6 +1,6 @@
 import "./Event.css";
 import EventModal from "@/components/Modal/EventModal/EventModal" 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { createPortal } from 'react-dom';
 
 interface EventProps {
@@ -14,14 +14,15 @@ interface EventProps {
     _id: string;
     onAddFunction: (state:boolean) => void;
 }
+
 export default function Event({title, description, location, startDate, endDate, createdBy, guests, _id, onAddFunction}:EventProps){
 
     const [showEventModal, setEventShowModal] = useState(false);
 
     return (
         <>
-            <div className="box" onClick={() => setEventShowModal(true)}>
-                <div className="innerbox">
+            <div className="box" >
+                <div className="innerbox" onClick={() => setEventShowModal(true)}>
                     <h1>{title}</h1>
                 </div>
                 <div className="content">

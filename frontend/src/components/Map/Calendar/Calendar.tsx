@@ -22,7 +22,7 @@ export default function Calendar({label, getDate} : CalendarProps){
     return (
         <div className="oneFilter">
             <label>{label}:</label>
-            <input type="date" ref={dateRef} onInput={onInput}></input>
+            <input className="calendar" type="date" ref={dateRef} onInput={onInput}></input>
         </div>
       );
 }

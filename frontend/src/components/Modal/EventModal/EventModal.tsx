@@ -52,7 +52,7 @@ return (
         <div className="title">
             <h1>{title}</h1>
             <img className='close-button' src='https://i.imgur.com/O3YBoxX.png' alt='close' onClick={onClose} />
-            <button onClick={eventOnClick}>{btnName}</button>
+            <button className={(btnName == "Attend Event" ? "button active" : "")} onClick={eventOnClick}>{btnName}</button>
         </div>
         <div className="content">
             <div className="hostAttendees">

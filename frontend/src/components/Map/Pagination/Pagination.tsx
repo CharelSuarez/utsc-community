@@ -15,8 +15,8 @@ export default function Pagination({pageNumber, setPageNumber}: PaginationProps)
 
     return (
       <div className="pageBox">
-        <button onClick={() => changePageNumber(- 1)}></button>
-        <button onClick={() => changePageNumber(1)}></button>
+        <img src='/icons/prevEvents.png' alt='previous' onClick={() => changePageNumber(-1)} />
+        <img src='/icons/nextEvents.png' alt='next' onClick={() => changePageNumber(1)} />
       </div>
       );
 }

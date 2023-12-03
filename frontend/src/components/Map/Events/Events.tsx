@@ -26,10 +26,9 @@ interface PageProps{
 }
 export default function Events({onAdd, onAddFunction, pageNumber, setPageNumber, startDateFilter, endDateFilter, locationFilter}: PageProps){
   const [event, setEvent] = useState<EventProps[]>([]);
-
   useEffect(() =>{
     getEvents(pageNumber, startDateFilter, endDateFilter, locationFilter).then((events)=>{
-      if(events.events && pageNumber > 0){
+      if(events.events.length == 0 && pageNumber > 0){
         setPageNumber(pageNumber - 1);
         return;
       }

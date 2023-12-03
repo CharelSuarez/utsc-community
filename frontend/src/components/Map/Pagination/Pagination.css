@@ -1,8 +1,15 @@
 .pageBox {
-    border: 1px solid black;
+    
+    border-left: 5px;
+    border-left-style:solid;
+    border-color: var(--bg-tab);
     height: 50px;
-    width: 704px;
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
+}
+
+.pageBox img:hover{
+    cursor: pointer;
 }

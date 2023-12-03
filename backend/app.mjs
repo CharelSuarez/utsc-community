@@ -137,7 +137,7 @@ app.get("/api/events/", async function (req, res, next) {
     end = "2099-01-01";
   }
   if(loc == ""){
-    const event = await Event.find({startDate:{$gte: start,$lt: end}}).sort({createTime:-1}).skip(parseInt(req.query.page)*6).limit(6);
+    const event = await Event.find({startDate:{$gte: start,$lt: end}}).sort({createTime:-1}).skip(parseInt(req.query.page)*4).limit(4);
   return res
   .status(200)
   .json({events: event});

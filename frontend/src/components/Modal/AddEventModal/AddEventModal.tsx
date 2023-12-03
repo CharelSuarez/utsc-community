@@ -1,4 +1,4 @@
-import './../EventModal/EventModal.css';
+import './AddEventModal.css';
 import Modal from "@/components/Modal/Modal";
 import Calendar from "@/components/Map/Calendar/Calendar";
 import Location from "@/components/Map/Location/Location";
@@ -54,23 +54,30 @@ function getModalChildren({onClose, onAddFunction}: EventModalProps) {
     
     return (
         <>
-            <img className='close-button' src='https://i.imgur.com/O3YBoxX.png' alt='close' onClick={onClose} />
-            <div className="content">
+            <div className="contentAdd">
                 <label>Event Title:
-                    <input ref={titleRef} type='text'></input>
+                    <input className="titleAdd" ref={titleRef} type='text'></input>
                 </label>
                 <label>Event Description:
-                    <input ref={descriptionRef} type='text'></input>
+                    <input className="descriptionAdd" ref={descriptionRef} type='text'></input>
                 </label>
                 <div className="eventdetails">
-                    <Calendar getDate={setStartDate} label="Start Date"></Calendar>
-                    <Calendar getDate={setEndDate} label="End Date"></Calendar>
-                    <Time getTime={setStartTime} label="Start Time"></Time>
-                    <Time getTime={setEndTime} label="End Time"></Time>
-                    <Location getLocation={setLocation}></Location>
+                    <div className='dateTime'>
+                        <Calendar getDate={setStartDate} label="Start Date"></Calendar>
+                        <Calendar getDate={setEndDate} label="End Date"></Calendar>
+                    </div>
+                    <div className='dateTime'>
+                        <Time getTime={setStartTime} label="Start Time"></Time>
+                        <Time getTime={setEndTime} label="End Time"></Time>
+                    </div>
+                    <div className="locationAdd">
+                        <Location getLocation={setLocation}></Location>
+                    </div>
                 </div>
-                <button onClick={onClose}>Cancel</button>
-                <button onClick={onClickCreate}>Create</button>
+                <div className="buttons">
+                    <button className="button active red" onClick={onClose}>Cancel</button>
+                    <button className="button active" onClick={onClickCreate}>Create</button>
+                </div>
             </div>
         </>
     )

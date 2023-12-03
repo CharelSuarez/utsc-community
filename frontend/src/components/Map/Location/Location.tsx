@@ -20,8 +20,8 @@ export default function Location({getLocation} : LocationsProps){
     return (
         <div className="oneFilter">
         <label>Location:</label>
-        <select name="locations" id="locations" ref={locationRef} onInput={onInput}>
-          <option disabled selected> -- select an option -- </option>
+        <select className="location"name="locations" id="locations" ref={locationRef} onInput={onInput}>
+          <option disabled selected> -- select option -- </option>
           <option value="SW">SW</option>
           <option value="MW">MW</option>
           <option value="IC">IC</option>

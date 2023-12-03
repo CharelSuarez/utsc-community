@@ -7,12 +7,11 @@
     position: relative;
     width: 320px;
     height: 220px;
-    background: #17469E;
+    background: var(--bg-sidebar);
     float: left;
     margin: 15px;
     box-sizing: border-box;
     overflow: hidden;
-    border-radius: 10px;
     border: 5px solid #000;
 }
 .box .innerbox{
@@ -21,7 +20,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: #178A9E;
+    background: var(--bg-tab);
     transition: 0.5s;
     z-index: 1;
     display: flex;
@@ -44,7 +43,7 @@
     position: absolute;
     font-size: 40px;
     transition:0.25s;
-    color: #000;
+    color: white;
 }
 
 .box:hover .innerbox h1{
@@ -53,7 +52,7 @@
     justify-content: center;
     font-size: 30px;
     margin: 0;
-    color: rgb(0, 247, 255);
+    color: darkblue;
 }
 
 .box .content{

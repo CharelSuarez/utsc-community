@@ -2,27 +2,23 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    width: 100%;
+    height:100px;
+    background-color: var(--bg-sidebar);
+    border-left: 5px;
+    border-left-style:solid;
+    border-color: var(--bg-tab);
 }
 .filterAndAdd .filters{
-    border: 1px solid black;
     height: 100px;
     width: 250px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    
 }
 
 .filterAndAdd .submit{
-    border: 1px solid black;
-    height: 100px;
-    width: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
-.filterAndAdd .addEvent{
-    border: 1px solid black;
     height: 100px;
     width: 150px;
     display: flex;
@@ -37,4 +33,11 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.filterAndAdd .submit .buttonFilter{
+    height: 75px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

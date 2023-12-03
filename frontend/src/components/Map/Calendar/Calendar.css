@@ -1,0 +1,9 @@
+.oneFilter label{
+    color: white;
+}
+
+.oneFilter .calendar{
+    color: black;
+    border-radius: 5px;
+    margin-left: 1px;
+}
