@@ -47,6 +47,7 @@ export const User = mongoose.model('User', userSchema);
 let groupSchema = new mongoose.Schema({
 
     users: [{type: String}],
+    name: String,
     messages: [{user: String, message: String}]
 
 });

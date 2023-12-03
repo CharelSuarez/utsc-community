@@ -10,6 +10,7 @@ interface SocialProps {
 }
 
 export default function Social({ current }: SocialProps) {
+    
     const [active, setActive] = useState("Your Messages");
 
     return (<>

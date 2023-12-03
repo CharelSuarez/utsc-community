@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import "./Group.css"
-import { addFriend, getAllUsers, getFriends, getRequest , addRequest} from "@/api/social";
+import { addFriend, getAllUsers, getFriends, getRequest, addRequest } from "@/api/social";
 import Profile from "../Profile/Profile";
 
-interface Request{
+interface Request {
     user: string
     reqType: string
 }
@@ -19,18 +19,16 @@ export default function Friends() {
 
 
     useEffect(() => {
-
-
-        getRequest().then(function(doc){
+        getRequest().then(function (doc) {
             getAllUsers().then(function (friends) {
 
                 const filterSent = doc.requests.filter((value: Request) => value.reqType == "sent").map((req: Request) => req.user);
                 const filterRecieved = doc.requests.filter((value: Request) => value.reqType == "recieved").map((req: Request) => req.user);
-    
+
                 setSent(filterSent);
                 setRecieved(filterRecieved);
 
-                getFriends().then(function(doc){
+                getFriends().then(function (doc) {
                     setFriends(doc.chat);
                     const filteredArray = friends.friends.filter((value: string) => !filterRecieved.includes(value) && !filterSent.includes(value) && !doc.chat.includes(value));
                     setToAdd(filteredArray)
@@ -65,19 +63,24 @@ export default function Friends() {
                 </div>
             </div>
 
-            <div className="subsection">
+            {sent.length == 0 ? <div></div>: <div className="subsection">
                 <div className="title">Pending Friend Requests</div>
-                <div className="container">
-                    <div className="sent">
+                <div className="container request">
+                    <div className="request-body">
                         <div className="title">Sent</div>
-                        {sent.map((user) => <Profile key={key++} name={user} update={() => null} addGroup={()=>null}/>)}
+                        <div className="users">
+                            {sent.map((user) => <Profile key={key++} name={user} update={() => null} addGroup={() => null} />)}
+                        </div>
                     </div>
-                    <div className="recieved">
+                    <div className="request-body">
                         <div className="title">Recieved</div>
-                        {recieved.map((user) => <Profile key={key++} name={user} update={addFriend} addGroup={(user: string) => setFriends([...myFriends, user])}/>)}
+                        <div className="users">
+                            {recieved.map((user) => <Profile key={key++} name={user} update={addFriend} addGroup={(user: string) => setFriends([...myFriends, user])} />)}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div>}
+            
 
 
 

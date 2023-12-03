@@ -38,3 +38,34 @@
 ::-webkit-scrollbar{
     width: 12px;
 }
+
+.empty{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.empty .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+}
+
+.empty .container .caption{
+    width: 400px;
+    font-size: 4rem;
+    line-height: 1.2;
+}
+
+.empty img{
+    height: 650px;
+}
+
+.empty .caption .highlight{
+    color: var(--bg-tab);
+    font-weight: 600;
+    font-size: 4.3rem;
+}
