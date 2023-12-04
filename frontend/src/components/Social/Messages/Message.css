@@ -55,6 +55,7 @@
 }
 
 .empty .container .caption{
+    color: white;
     width: 400px;
     font-size: 4rem;
     line-height: 1.2;

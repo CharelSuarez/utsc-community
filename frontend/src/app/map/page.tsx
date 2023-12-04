@@ -5,8 +5,8 @@ import Pagination from "@/components/Map/Pagination/Pagination";
 import Sidebar from "@/components/Social/Sidebar/Sidebar";
 import Header from "@/components/Map/Header/Header"
 import { useState } from "react";
-
 import "./page.css"
+import DynamicMap from "@/components/InteractiveMap/DynamicMap/DynamicMap";
 
 export default function Page() {
     const [addedEventFunction, setAddedEventFunction] = useState(false);
@@ -17,7 +17,7 @@ export default function Page() {
 
     return (
         <div className="map">
-            <Sidebar active="Events"> </Sidebar>
+            <Sidebar active="Events"></Sidebar>
             <div className="filterAndEvents">
                 <Header title="Find and Create Events"></Header>
                 <Filter onAddFunction={setAddedEventFunction} setStartDate={setStartDate} setEndDate={setEndDate} setLocation={setLocation}></Filter>
@@ -25,6 +25,7 @@ export default function Page() {
                 startDateFilter={startDate} endDateFilter={endDate} locationFilter={location}></Events>
                 <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber}></Pagination>   
             </div>
+            <DynamicMap width={350 + 700}></DynamicMap>
         </div>
     );
   }

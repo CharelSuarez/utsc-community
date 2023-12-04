@@ -10,6 +10,10 @@ import MemoizedMarker from './MemoizedMarker/MemoizedMarker';
 import MemoizedBuildingMarker from './MemoizedBuildingMarker/MemoizedBuildingMarker';
 import { BUILDINGS } from '@/util/building/Building';
 
+export interface MapProps {
+    width: number;
+}
+
 function getShowBuildings() {
     if (typeof window === 'undefined') {
         return true;
@@ -17,7 +21,7 @@ function getShowBuildings() {
     return !(localStorage.getItem('showBuildings') === 'false');
 }
 
-export default function InteractiveMap() {
+export default function InteractiveMap({ width } : MapProps) {
     const [personLocations, setPersonLocations] = useState<Array<any>>([]);
     const [showBuildings, setShowBuildings] = useState(getShowBuildings());
     const showBuildingsButton = useRef<any>(null);
@@ -64,7 +68,7 @@ export default function InteractiveMap() {
     return (
         <>
             <MapContainer
-                style={{fontFamily: 'inherit'}}
+                style={{fontFamily: 'inherit', width: `calc(100% - ${width}px)`}}
                 maxBounds={new LatLngBounds([43.77726466009645, -79.19554571880464], [43.792133217870415, -79.17708660072934])}
                 maxBoundsViscosity={1.0}
                 className='map_container'
