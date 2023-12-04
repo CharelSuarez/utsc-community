@@ -19,18 +19,7 @@ export default function Filter({onAddFunction, setStartDate, setEndDate, setLoca
   const [startDate, setStartDateFilter] = useState("");
   const [endDate, setEndDateFilter] = useState("");
   const [location, setLocationFilter] = useState("");
-
-  const getStartDate = (date:string) => {
-    setStartDateFilter(date);
-  }
-
-  const getEndDate = (date:string) => {
-    setEndDateFilter(date);
-  }
-
-  const getLocation = (location:string) =>{
-    setLocationFilter(location);
-  }
+  const [reset, setReset] = useState(false);
 
   const getFilters = () =>{
     setStartDate(startDate);
@@ -38,12 +27,22 @@ export default function Filter({onAddFunction, setStartDate, setEndDate, setLoca
     setLocation(location);
   }
 
+  const resetEvents = () => {
+    setReset(true);
+    setStartDate("");
+    setEndDate("");
+    setLocation("");
+  }
+
     return (
       <div className="filterAndAdd">
         <div className="filters">
-          <Calendar getDate={getStartDate} label="Start Date"></Calendar>
-          <Calendar getDate={getEndDate} label="End Date"></Calendar>
-          <Location getLocation={getLocation}></Location>
+          <Calendar getDate={setStartDateFilter} reset={reset} setReset={setReset} label="Start Date"></Calendar>
+          <Calendar getDate={setEndDateFilter} reset={reset} setReset={setReset} label="End Date"></Calendar>
+          <Location getLocation={setLocationFilter} reset={reset} setReset={setReset}></Location>
+        </div>
+        <div className="submit">
+          <button className="button active buttonFilter" onClick={resetEvents}>Reset Filters</button>
         </div>
         <div className="submit">
           <button className="button active buttonFilter" onClick={getFilters}>Filter Events</button>

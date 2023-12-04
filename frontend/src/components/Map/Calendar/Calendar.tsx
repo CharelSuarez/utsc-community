@@ -1,13 +1,15 @@
 import "./Calendar.css";
 import "@/components/Map/FilterEvent/Filter.css";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface CalendarProps {
     label: string;
     getDate: (date:string) => void;
+    reset: boolean;
+    setReset: (flag:boolean) => void;
 }
 
-export default function Calendar({label, getDate} : CalendarProps){
+export default function Calendar({label, getDate, reset, setReset} : CalendarProps){
     const dateRef = useRef<HTMLInputElement>(null);
 
     const onInput = (event: React.InputHTMLAttributes<HTMLButtonElement>) => {
@@ -18,6 +20,16 @@ export default function Calendar({label, getDate} : CalendarProps){
         const date = dateRef.current.value == null ? '' : dateRef.current.value;
         getDate(date);
     }
+
+    useEffect(()=>{
+        if(reset){
+            if (dateRef.current) {
+                dateRef.current.value = '';
+            }
+            setReset(false);
+        }
+
+    }, [reset]);
 
     return (
         <div className="oneFilter">

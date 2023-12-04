@@ -23,7 +23,6 @@ function getModalChildren({onClose, onAddFunction}: EventModalProps) {
     const [location, setLocation] = useState("");
 
     const onClickCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(startTime);
         event.preventDefault();
 
         if (!titleRef.current || !descriptionRef.current) {
@@ -32,15 +31,21 @@ function getModalChildren({onClose, onAddFunction}: EventModalProps) {
 
         const title = titleRef.current.value == null ? '' : titleRef.current.value;
         const description = descriptionRef.current.value == null ? '' : descriptionRef.current.value;
+        const start = new Date(startDate.concat("T".concat(startTime).concat(":00.000Z")));
+        const end = new Date(endDate.concat("T".concat(endTime).concat(":00.000Z")));
 
-        if(!title || !description || !startDate || !endDate || !startTime || !endTime || !location){
+        if(!title || !description || !startDate || !endDate || !startTime || !endTime || !location)
             return;
-        }
+
+        
+        if(start.toISOString() > end.toISOString())
+            return;
+        
         var createdBy = getUsername();
         if(!createdBy){
             createdBy = "";
         }
-        addEvent(title, description, startDate.concat("T".concat(startTime).concat(":00.000Z")), endDate.concat("T".concat(endTime).concat(":00.000Z")), location, createdBy).then((result) => {
+        addEvent(title, description, start, end, location, createdBy).then((result) => {
             
             if(result != null){
                 onClose();
@@ -63,15 +68,15 @@ function getModalChildren({onClose, onAddFunction}: EventModalProps) {
                 </label>
                 <div className="eventdetails">
                     <div className='dateTime'>
-                        <Calendar getDate={setStartDate} label="Start Date"></Calendar>
-                        <Calendar getDate={setEndDate} label="End Date"></Calendar>
+                        <Calendar getDate={setStartDate} reset={false} setReset={()=>{}} label="Start Date"></Calendar>
+                        <Calendar getDate={setEndDate} reset={false} setReset={()=>{}} label="End Date"></Calendar>
                     </div>
                     <div className='dateTime'>
                         <Time getTime={setStartTime} label="Start Time"></Time>
                         <Time getTime={setEndTime} label="End Time"></Time>
                     </div>
                     <div className="locationAdd">
-                        <Location getLocation={setLocation}></Location>
+                        <Location getLocation={setLocation} reset={false} setReset={()=>{}}></Location>
                     </div>
                 </div>
                 <div className="buttons">

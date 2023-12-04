@@ -1,16 +1,11 @@
 .header{
-    background-color: var(--bg-sidebar);
     height: 100px;
     display: flex;
     flex-direction: column;
     padding-left: 10px;
     justify-content: center;
-    border-bottom: 1rem;
-    border-bottom-style:groove;
-    border-color: var(--bg-tab);
-    border-right: 5px;
-    border-right-style:solid;
-    border-right-color: var(--bg-tab);
+    margin-top: 25px;
+    margin-bottom: 25px;
     
 }
 
@@ -18,9 +13,9 @@
     display: flex;
     flex-direction: row;
     justify-content: start;
-    color: white;
+    color: black;
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 400;
     padding-top: 4rem;
     padding-bottom:2rem;
 }

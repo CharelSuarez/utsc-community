@@ -52,28 +52,28 @@ return (
         <div className="title">
             <h1>{title}</h1>
             <img className='close-button' src='https://i.imgur.com/O3YBoxX.png' alt='close' onClick={onClose} />
-            <button className={(btnName == "Attend Event" ? "button active" : "")} onClick={eventOnClick}>{btnName}</button>
+            <button className={"buttonEvent button active" + (btnName == "Attend Event" ? "" : " red")} onClick={eventOnClick}>{btnName}</button>
         </div>
         <div className="content">
             <div className="hostAttendees">
-                <label>Hosted By:
+                <label className={"labelParticipants"}>Hosted By:&ensp;
                     <div className="host">{createdBy}</div>
                 </label>
-                <label>Number of Attendants:
+                <label className={"labelParticipants"}>Number of Attendants:&ensp;
                     <div className="attendees">{guests.length}</div>
                 </label>
             </div>
-            <label>Event Description:
+            <label>Event Description:&ensp;
                 <div className="description">{description}</div>
             </label>
             <div className="eventdetails">
-                <label>Location:
+                <label>Location:&ensp;
                     <div className="Location">{location}</div>
                 </label>
-                <label>Date:
+                <label>Date:&ensp;
                     <div className="date">{new Date(startDate).toLocaleDateString()}{"-"}{new Date(endDate).toLocaleDateString()}</div>
                 </label>
-                <label>Time:
+                <label>Time:&ensp;
                     <div className="time">{new Date(startDate).toLocaleTimeString()}{"-"}{new Date(endDate).toLocaleTimeString()}</div>
                 </label>
             </div>

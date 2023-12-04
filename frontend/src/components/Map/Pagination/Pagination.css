@@ -1,8 +1,4 @@
 .pageBox {
-    
-    border-left: 5px;
-    border-left-style:solid;
-    border-color: var(--bg-tab);
     height: 50px;
     width: 100%;
     display: flex;

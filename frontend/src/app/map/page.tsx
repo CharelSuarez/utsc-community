@@ -2,7 +2,6 @@
 import Filter from "@/components/Map/FilterEvent/Filter";
 import Events from "@/components/Map/Events/Events";
 import Pagination from "@/components/Map/Pagination/Pagination";
-import Create from "@/components/Map/CreateEvent/Create";
 import Sidebar from "@/components/Social/Sidebar/Sidebar";
 import Header from "@/components/Map/Header/Header"
 import { useState } from "react";
@@ -26,7 +25,6 @@ export default function Page() {
                 startDateFilter={startDate} endDateFilter={endDate} locationFilter={location}></Events>
                 <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber}></Pagination>   
             </div>
-            <Create></Create>
         </div>
     );
   }

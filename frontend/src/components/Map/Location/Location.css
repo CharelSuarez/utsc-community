@@ -1,9 +1,10 @@
 .oneFilter label{
-    color: white;
+    color: black;
 }
 
 .oneFilter .location{
     color: black;
     border-radius: 5px;
+    border-width: 2px;
     margin-left: 1px;
 }

@@ -2,9 +2,9 @@
     display: flex;
     justify-content: center;
     width: fit-content;
-    height: fit-content;
+    height: 100%;
 }
 .map .filterAndEvents{
     width: 700px;
-    height: fit-content;
+    height: 100%;
 }
