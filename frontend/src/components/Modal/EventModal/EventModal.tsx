@@ -23,7 +23,7 @@ function getModalChildren({onClose, title, description, location, startDate, end
     var btnName:string = "Attend Event";
     const attendee = getUserId();
     if(attendee){
-        if(getUserId() == createdBy){
+        if(getUsername() == createdBy){
             btnName = "Cancel Event";
         }
         else if(checkIfAttending(guests, attendee)){
