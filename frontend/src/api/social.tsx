@@ -31,3 +31,7 @@ export function addRequest(friend: string){
 export function getRequest(){
     return send("GET", "/api/request/", null);
 }
+
+export function removeFriend(friend: string){
+    return send("PATCH", "/api/friends/", {friend});
+}

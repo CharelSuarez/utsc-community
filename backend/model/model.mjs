@@ -48,7 +48,7 @@ let groupSchema = new mongoose.Schema({
 
     users: [{type: String}],
     name: String,
-    messages: [{user: String, message: String}]
+    messages: [{user: String, message: String, createdAt: Date}],
 
 });
 
