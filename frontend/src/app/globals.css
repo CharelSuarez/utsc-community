@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
 :root{
     --bg-taskbar: #2b2b2b;
     --bg-sidebar: #010b13;
@@ -7,13 +9,24 @@
     --bg-white: #DFE1E6;
 }
 
+
+
 body {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: auto;
     height: 100vh;
     margin: 0px;
+    background: var(--bg);
+    overflow: hidden;
 }
+
+*{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+}
+
+
 
 h1 {
     margin: 0px;

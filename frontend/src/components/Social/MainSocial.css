@@ -3,7 +3,7 @@
     flex-direction: column;
     width: calc(100% - 350px);
     height: 100%;
-    padding: 0 2rem;
+    padding:2.5rem;
     box-sizing: border-box;
     background: linear-gradient(125deg, hsl(218,20.4%,34.4%) 0%, hsla(218,20.4%,39.4%,0.9) 100%);
 }

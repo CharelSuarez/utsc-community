@@ -4,7 +4,8 @@
 
 .container-profile{
     display: flex;
-    flex: 0, auto;
+    flex-grow: 0;
+    flex-shrink: 0;
     padding: 1rem;
     box-sizing: border-box;
     justify-content: space-between;
@@ -12,7 +13,6 @@
     width: 200px;
     height: 70px;
     background: var(--search);
-
     font-size: 1.3rem;
     border-radius: 5px;
 }
@@ -36,5 +36,7 @@
 }
 
 .main-content .navigation-main .container-profile{
-    width: 100%;
+
+    flex-shrink: 0;
+    flex-grow: 0;
 }

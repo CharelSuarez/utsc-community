@@ -13,8 +13,8 @@ export default function Account() {
 
     return (
     <>
-        <div className="section">
-            <div className="subsection">
+        <div className="section-account">
+            <div className="subsection-account">
                 <div className="title">User Info</div>
                 <div className="avatar-container">
                     <img className="avatar" src="/icons/user.png" alt="profile avatar"/>

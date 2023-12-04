@@ -22,7 +22,7 @@ export default function Topbar({current, update, active}: Topbar){
             </div>
 
             {
-                (current=="Messages")? (<div className="tabs">
+                (current=="Messages") ? (<div className="tabs">
                     {MessageTabs.map((label) => <Tab key={key++} label={label} image="" type="select" update={update} active={active} />)}
                 </div>) : (<div className="tabs">
                 </div>)

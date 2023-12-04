@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
-    justify-content: space-evenly;
+
+    gap: 1rem;
+
 }
 
 .subsection{
@@ -32,6 +33,7 @@
 .container{
     display: flex;
     align-items: center;
+    overflow-x: auto;
 }
 
 .request{
@@ -47,7 +49,6 @@
     display: flex;
     flex-direction: column;
     gap: .5rem;
-    margin-bottom: 2rem;
     width: 100%;
 }
 
@@ -119,4 +120,8 @@
     color: var(--bg-tab);
     font-weight: 600;
     font-size: 4.3rem;
+}
+
+.friend-container{
+    overflow-x: auto;
 }

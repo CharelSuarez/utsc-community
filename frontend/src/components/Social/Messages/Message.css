@@ -7,7 +7,9 @@
     border-radius: 15px;
     padding: 1.5rem;
     box-sizing: border-box;
-    background-color: #DFE1E6;
+    background-color: var(--bg-white);
+    margin-top: 2.5rem;
+
 }
 
 .message-display .display{

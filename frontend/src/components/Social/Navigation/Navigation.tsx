@@ -41,12 +41,6 @@ export default function Navigation({ current, update }: NaviProps) {
                     {list.map((group) => <GroupTabs name={group.name} key={group._id} addCurrent={current} update={update} id={group._id} />)}
                 </div>
             }
-            {/* 
-            <div className="navigation-main">
-
-                {list.length == 0 ? <div></div> :  
-                list.map((group) => <GroupTabs name={group.name} key={group._id} addCurrent = {current} update={update} id={group._id}/>)}
-            </div> */}
         </>
     )
 }

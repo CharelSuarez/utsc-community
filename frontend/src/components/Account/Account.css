@@ -1,4 +1,4 @@
-.section{
+.section-account{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -6,7 +6,7 @@
     gap: 5rem;
 }
 
-.subsection{
+.subsection-account{
     display: flex;
     flex-direction: column;
     gap: 1.5rem;

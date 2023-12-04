@@ -1,9 +1,9 @@
 .taskbar {
     display: flex;
-    background-color: var(--bg-taskbar);
+    background-color: var(--bg-sidebar);
     justify-content: space-between;
     align-items: center;
-    padding: 0 4rem;
+    padding: 0 6rem;
     height: 6rem;
     box-sizing: border-box;
 }

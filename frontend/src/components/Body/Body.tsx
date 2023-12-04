@@ -13,13 +13,6 @@ export default function Body(){
         <div className="content">
             <div className="left">
                 <div className="title">Welcome to UTSC</div>
-                <button onClick={(event) => setShowRegisterModal(true)}>
-                Register
-                </button>
-                {showRegisterModal && createPortal(
-                    <RegisterModal onClose={() => setShowRegisterModal(false)} />,
-                    document.body
-                )} 
             </div>
             <div className="right">
                 <div className="blob">
