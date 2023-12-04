@@ -171,7 +171,7 @@ app.get("/api/user/:id", isAuthenticated, async (req, res, next) => {
   return res.status(200).json({_id: user._id, username: user.username, avatar});
 });
 
-app.get("/api/events/", async function (req, res, next) {
+app.get("/api/events/", isAuthenticated, async function (req, res, next) {
   let start = req.query.startDateFilter;
   let end = req.query.endDateFilter;
   let loc = req.query.locationFilter;
@@ -194,7 +194,7 @@ app.get("/api/events/", async function (req, res, next) {
   .json({events: event});
 });
 
-app.patch("/api/attendevent/", async function (req, res, next){
+app.patch("/api/attendevent/", isAuthenticated, async function (req, res, next){
   const event = await Event.updateOne(
     {_id: req.body.eventId}, {$push: {guests: req.body.attendee}}
   );
@@ -203,7 +203,7 @@ app.patch("/api/attendevent/", async function (req, res, next){
   .json({event});
 });
 
-app.patch("/api/unattendevent/", async function (req, res, next){
+app.patch("/api/unattendevent/", isAuthenticated, async function (req, res, next){
   const event = await Event.updateOne(
     {_id: req.body.eventId}, {$pull: {guests: req.body.attendee}}
   );
@@ -326,7 +326,7 @@ app.get("/api/allUsers/", isAuthenticated, async function (req, res) {
   return res.status(200).json({ friends: filter });
 });
 
-app.delete("/api/event/:eventId/", async function (req, res, next) {
+app.delete("/api/event/:eventId/",  isAuthenticated, async function (req, res, next) {
   const event = await Event.deleteOne({_id : req.params.eventId, createdBy: req.session.user.username});
   if(!event){
     return res

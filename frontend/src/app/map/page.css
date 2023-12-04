@@ -3,6 +3,7 @@
     justify-content: center;
     width: fit-content;
     height: 100%;
+    background: var(--bg);
 }
 .map .filterAndEvents{
     width: 700px;
