@@ -2,7 +2,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/images/marker-icon.png';
-import { DivIcon, Icon, LatLngBounds} from 'leaflet';
+import { DivIcon, LatLngBounds, Map} from 'leaflet';
 import { connectToLocationService, disconnectFromLocationService } from '@/api/location';
 import { useEffect, useState, useRef } from 'react';
 import './InteractiveMap.css';
@@ -12,6 +12,8 @@ import { BUILDINGS } from '@/util/building/Building';
 
 export interface MapProps {
     width: number;
+    currentEvent?: any;
+    setCurrentEvent?: (event: any) => void;
 }
 
 function getShowBuildings() {
@@ -21,9 +23,10 @@ function getShowBuildings() {
     return !(localStorage.getItem('showBuildings') === 'false');
 }
 
-export default function InteractiveMap({ width } : MapProps) {
+export default function InteractiveMap({ width, currentEvent, setCurrentEvent } : MapProps) {
     const [personLocations, setPersonLocations] = useState<Array<any>>([]);
     const [showBuildings, setShowBuildings] = useState(getShowBuildings());
+    const [map, setMap] = useState<Map|null>(null);
     const showBuildingsButton = useRef<any>(null);
 
     useEffect(() => {
@@ -65,6 +68,16 @@ export default function InteractiveMap({ width } : MapProps) {
         }
     }, [showBuildings]);
 
+    useEffect(() => {
+        console.log("LOL");
+        if (currentEvent) {
+            // const building = BUILDINGS[currentEvent.location.building];
+            const building = BUILDINGS.PAN_AM;
+            console.log(building);
+            map?.flyTo([building.location.latitude, building.location.longitude], 18); // 18 = max zoom level
+        }
+    }, [currentEvent, map]);
+
     return (
         <>
             <MapContainer
@@ -77,6 +90,7 @@ export default function InteractiveMap({ width } : MapProps) {
                 minZoom={1}
                 zoomControl={false}
                 scrollWheelZoom={true}
+                ref={setMap}
                 >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -120,8 +134,8 @@ export default function InteractiveMap({ width } : MapProps) {
             <div className='toggle-menu'>
                 <div className='toggle-buildings'>
                     <h2 className='toggle-title'>{showBuildings ? "Hide" : "Show"} Buildings</h2>
-                    <button className='toggle-button button active' ref={showBuildingsButton}>
-                        <img className='toggle-icon' src='icons/building.png' alt='toggle buildings' onClick={() => setShowBuildings(!showBuildings)}/>
+                    <button className='toggle-button button active' ref={showBuildingsButton} onClick={() => setShowBuildings(!showBuildings)}>
+                        <img className='toggle-icon' src='icons/building.png' alt='toggle buildings'/>
                     </button>
                 </div>
             </div>

@@ -13,9 +13,9 @@ import fs from "fs";
 import { BUILDINGS } from "./util/building/Building.mjs";
 import mongoose from "mongoose";
 
-
 const PORT = 5000;
 const app = express();
+const SESSION_TIME = 60 * 60 * 24; // 24 hours
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,7 +28,7 @@ app.use(cors({
 export const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   cookie: {
-    maxAge: 1 * 60 * 60 * 1000, // 1 hour
+    maxAge: SESSION_TIME * 1000,
     secure: false,
     sameSite: 'lax',
     httpOnly: true
@@ -37,7 +37,7 @@ export const sessionMiddleware = session({
   resave: false,
   store: new MongoStore({
     client: getClient(),
-    ttl: 1 * 60 * 60,
+    ttl: SESSION_TIME,
     autoRemove: 'native',
     collectionName: 'sessions'
   })
@@ -76,7 +76,7 @@ function setUserCookie(req, res) {
     "Set-Cookie",
     serialize("user", !req.session.user ? 'null' : JSON.stringify(req.session.user), {
       path: "/",
-      maxAge: 60 * 60 * 24 * 14, // 14 days
+      maxAge: SESSION_TIME,
     }),
   );
 }
@@ -332,7 +332,7 @@ app.post("/api/group/", isAuthenticated, async function (req, res) {
 
 });
 
-app.get("/api/group/", isAuthenticated, async function (req, res) {
+app.get("/api/group/", async function (req, res) {
   const group = await Group.find({ users: { $in: [req.session.user.username] } }, { messages: 0});
   res.status(200).json({ group: group });
 });

@@ -18,8 +18,6 @@ interface EventModalProps {
 }
 
 function getModalChildren({onClose, title, description, location, startDate, endDate, createdBy, guests, _id, onAddFunction}: EventModalProps) {
-    console.log(guests);
-
     var btnName:string = "Attend Event";
     const attendee = getUserId();
     if(attendee){

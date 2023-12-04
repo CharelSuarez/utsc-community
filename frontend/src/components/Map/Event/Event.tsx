@@ -13,17 +13,22 @@ interface EventProps {
     createdBy: string;
     guests: string[];
     _id: string;
+    setCurrentEvent: (event: any) => void;
     onAddFunction: (state:boolean) => void;
 }
 
-export default function Event({title, description, location, startDate, endDate, createdBy, guests, _id, onAddFunction}:EventProps){
+export default function Event({title, description, location, startDate, endDate, createdBy, guests, _id, setCurrentEvent, onAddFunction}:EventProps){
 
     const [showEventModal, setEventShowModal] = useState(false);
 
     return (
         <>
             <div className="ebox">
-                <div className="innerbox" onClick={() => setEventShowModal(true)}>
+                <div className="innerbox" onClick={() => {
+                    setEventShowModal(true);
+                    setCurrentEvent({_id, title, description, location, startDate, endDate, createdBy, guests});
+                    console.log("Set event owo.")
+                }}>
                     <h1>{title.substring(0, 10) + (title.length <= 10 ? "" : "...")}</h1>
                 </div>
                 <div className="eventContent">

@@ -8,7 +8,7 @@ export default function Page() {
     <>
       <div className="map-content">
         <Sidebar active="Map"/>
-        <DynamicMap width={350 + 700}/>
+        <DynamicMap width={350}/>
       </div>
     </>
   )

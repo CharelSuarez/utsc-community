@@ -23,8 +23,10 @@ interface PageProps{
   startDateFilter: string;
   endDateFilter: string;
   locationFilter: string;
+  setCurrentEvent: (event: any) => void;
 }
-export default function Events({onAdd, onAddFunction, pageNumber, setPageNumber, startDateFilter, endDateFilter, locationFilter}: PageProps){
+export default function Events({onAdd, onAddFunction, pageNumber, setPageNumber, startDateFilter, 
+    endDateFilter, locationFilter, setCurrentEvent}: PageProps){
   const [event, setEvent] = useState<EventProps[]>([]);
   useEffect(() =>{
     getEvents(pageNumber, startDateFilter, endDateFilter, locationFilter).then((events)=>{
@@ -41,7 +43,8 @@ export default function Events({onAdd, onAddFunction, pageNumber, setPageNumber,
         {(  
             event.map((event) => 
               <Event key={event._id} title={event.name} description={event.description} location={event.location} 
-                startDate={event.startDate} endDate={event.endDate} createdBy={event.createdBy} guests={event.guests} _id={event._id} onAddFunction={onAddFunction}
+                startDate={event.startDate} endDate={event.endDate} createdBy={event.createdBy} guests={event.guests} 
+                _id={event._id} onAddFunction={onAddFunction} setCurrentEvent={setCurrentEvent}
               />
             )
         )}

@@ -33,6 +33,7 @@ export function sendForm(method: string, url: string, data: any) : Promise<any> 
           formData.append(key, value);
         });
         const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
         xhr.onload = function () {
             if (xhr.status < 200 || xhr.status >= 300) {
                 // If unauthorized, reset user and go back to home page!
@@ -49,9 +50,6 @@ export function sendForm(method: string, url: string, data: any) : Promise<any> 
             resolve(null);
         }
         xhr.open(method, `${process.env.NEXT_PUBLIC_BACKEND}${url}`, true);
-        formData.forEach((value, key) => {
-            console.log(key, value);
-        });
         if (!data) {
             xhr.send();
         } else {
