@@ -10,7 +10,7 @@ import bcrypt from "bcrypt";
 import { serialize } from "cookie";
 import multer from "multer";
 import fs from "fs";
-import { BUILDINGS } from "./building/Building.mjs";
+import { BUILDINGS } from "./util/building/Building.mjs";
 import mongoose from "mongoose";
 
 
@@ -212,7 +212,6 @@ app.get("/api/events/", isAuthenticated, async function (req, res, next) {
   }
   
   for (let index = 0; index < events.length; index++) {
-    events[index].location = BUILDINGS[events[index].location]?.name || "";
     if(mongoose.isValidObjectId(events[index].createdBy)){
       const username = await User.findOne({_id: events[index].createdBy}, {username: 1});
       events[index].createdBy = username?.username || "";
@@ -369,7 +368,7 @@ app.get("/api/allUsers/", isAuthenticated, async function (req, res) {
 });
 
 app.delete("/api/event/:eventId/",  isAuthenticated, async function (req, res, next) {
-  const event = await Event.deleteOne({_id : req.params.eventId, createdBy: req.session.user.username});
+  const event = await Event.deleteOne({_id : req.params.eventId, createdBy: req.session.user._id});
   if(!event){
     return res
       .status(404)

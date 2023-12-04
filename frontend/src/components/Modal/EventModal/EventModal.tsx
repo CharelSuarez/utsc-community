@@ -2,6 +2,7 @@ import './EventModal.css';
 import Modal from "@/components/Modal/Modal";
 import { attendEvent, unattendEvent, cancelEvent } from "@/api/event";
 import {getUsername, getUserId} from "@/api/auth";
+import { BUILDINGS } from '@/util/building/Building';
 
 interface EventModalProps {
     onClose: () => void;
@@ -20,9 +21,9 @@ function getModalChildren({onClose, title, description, location, startDate, end
     console.log(guests);
 
     var btnName:string = "Attend Event";
-    const attendee = getUsername();
+    const attendee = getUserId();
     if(attendee){
-        if(getUsername() == createdBy){
+        if(getUserId() == createdBy){
             btnName = "Cancel Event";
         }
         else if(checkIfAttending(guests, attendee)){
@@ -69,7 +70,7 @@ return (
             </label>
             <div className="eventdetails">
                 <label>Location:&ensp;
-                    <div className="Location">{location}</div>
+                    <div className="Location">{BUILDINGS[location]?.name || ""}</div>
                 </label>
                 <label>Date:&ensp;
                     <div className="date">{new Date(startDate).toLocaleDateString()}{"-"}{new Date(endDate).toLocaleDateString()}</div>

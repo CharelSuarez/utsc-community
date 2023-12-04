@@ -6,6 +6,8 @@
     background: var(--bg);
 }
 .map .filterAndEvents{
-    width: 700px;
+    width: 800px;
     height: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
 }

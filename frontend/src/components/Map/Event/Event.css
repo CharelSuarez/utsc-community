@@ -7,6 +7,7 @@
     position: relative;
     width: 320px;
     height: 220px;
+    margin-left: 100px;
     background: var(--bg-sidebar);
     float: left;
     margin: 15px;
@@ -56,7 +57,7 @@
     color: darkblue;
 }
 
-.ebox .content{
+.ebox .eventContent{
     position: absolute;
     top: 100%;
     width:100%;
@@ -68,13 +69,13 @@
     
 }
 
-.ebox:hover .content{
+.ebox:hover .eventContent{
     top: 50px;
     opacity: 1;
     
 }
 
-.ebox .content .description {
+.ebox .eventContent .description {
     margin:0;
     height: 110px;
     width: 100%;
@@ -83,13 +84,13 @@
     word-break: break-all;
 }
 
-.ebox .content .eventdetails{
+.ebox .eventContent .eventdetails{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.ebox .content .eventdetails .location {
+.ebox .eventContent .eventdetails .location {
     margin:0;
     width: 250px;
     padding: 0;
@@ -98,7 +99,7 @@
     justify-content: flex-start;
 }
 
-.ebox .content .eventdetails .location .tooltiptext{
+.ebox .eventContent .eventdetails .location .tooltiptext{
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -112,7 +113,7 @@
     z-index: 1;
 }
 
-.ebox .content .eventdetails .location:hover .tooltiptext {
+.ebox .eventContent .eventdetails .location:hover .tooltiptext {
     visibility: visible;
     width: 120px;
     bottom: 35%;
@@ -120,7 +121,7 @@
     margin-left: -60px;
   }
 
-  .ebox .content .eventdetails .date .tooltiptext{
+  .ebox .eventContent .eventdetails .date .tooltiptext{
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -134,14 +135,14 @@
     z-index: 1;
 }
 
-.ebox .content .eventdetails .date:hover .tooltiptext {
+.ebox .eventContent .eventdetails .date:hover .tooltiptext {
     visibility: visible;
     width: 120px;
     bottom: 35%;
     margin-left: -60px;
   }
 
-.ebox .content .eventdetails .date {
+.ebox .eventContent .eventdetails .date {
     margin:0;
     width: 200px;
     padding: 0;

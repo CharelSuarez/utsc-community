@@ -1,4 +1,4 @@
-export const BUILDINGS = {
+export const BUILDINGS  = {
     SCIENCE_WING: {code: "SW", name: "Science Wing", location: {latitude: 43.783412263866765, longitude: -79.18798282511081}},
     HUMANITIES_WING: {code: "HW", name: "Humanities Wing", location: {latitude: 43.78315068397239, longitude: -79.18703884105001}},
     HIGHLAND_HALL: {code: "HL", name: "Highland Hall", location: {latitude: 43.784755377531084, longitude: -79.18563910859574}},

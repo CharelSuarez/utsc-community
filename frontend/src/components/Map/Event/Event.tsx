@@ -2,6 +2,7 @@ import "./Event.css";
 import EventModal from "@/components/Modal/EventModal/EventModal" 
 import { useState } from "react";
 import { createPortal } from 'react-dom';
+import { BUILDINGS } from "@/util/building/Building";
 
 interface EventProps {
     title: string;
@@ -25,10 +26,10 @@ export default function Event({title, description, location, startDate, endDate,
                 <div className="innerbox" onClick={() => setEventShowModal(true)}>
                     <h1>{title.substring(0, 10) + (title.length <= 10 ? "" : "...")}</h1>
                 </div>
-                <div className="content">
+                <div className="eventContent">
                     <div className="description">{description.substring(0, 125) + (description.length <= 125 ? "" : "...")}</div>
                     <div className="eventdetails">
-                        <div className="location">{location.substring(0, 15) + (description.length <= 25 ? "" : "...")}
+                        <div className="location">{(BUILDINGS[location]?.name || "").substring(0, 15) + (description.length <= 25 ? "" : "...")}
                             <span className="tooltiptext">Location</span>
                         </div>
                         <div className="date">{new Date(startDate).toLocaleDateString()}
