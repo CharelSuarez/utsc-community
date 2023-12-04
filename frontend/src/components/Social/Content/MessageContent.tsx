@@ -16,7 +16,7 @@ export default function MessageContent({ tab }: MessageProps) {
   
     useEffect(() => {
         getAllGroup().then((doc) => {
-            if(doc.group.length == 0) return;
+            if(!doc || doc.group.length == 0) return;
 
             setGroup(doc.group[0].name);
         })

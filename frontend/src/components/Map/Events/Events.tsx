@@ -39,8 +39,11 @@ export default function Events({onAdd, onAddFunction, pageNumber, setPageNumber,
     return (
       <div className="eventBox">
         {(  
-            event.map((event) => <Event title={event.name} description={event.description} location={event.location} 
-            startDate={event.startDate} endDate={event.endDate} createdBy={event.createdBy} guests={event.guests} _id={event._id} onAddFunction={onAddFunction}/>)
+            event.map((event) => 
+              <Event key={event._id} title={event.name} description={event.description} location={event.location} 
+                startDate={event.startDate} endDate={event.endDate} createdBy={event.createdBy} guests={event.guests} _id={event._id} onAddFunction={onAddFunction}
+              />
+            )
         )}
       </div>
     );

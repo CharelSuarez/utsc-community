@@ -70,7 +70,7 @@ export default function InteractiveMap() {
                 className='map_container'
                 center={[43.78393739345549, -79.18573731545196]} 
                 zoom={18}
-                minZoom={17}
+                minZoom={1}
                 zoomControl={false}
                 scrollWheelZoom={true}
                 >

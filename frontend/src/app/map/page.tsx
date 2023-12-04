@@ -17,7 +17,7 @@ export default function Page() {
 
     return (
         <div className="map">
-            <Sidebar> </Sidebar>
+            <Sidebar active="Events"> </Sidebar>
             <div className="filterAndEvents">
                 <Header title="Find and Create Events"></Header>
                 <Filter onAddFunction={setAddedEventFunction} setStartDate={setStartDate} setEndDate={setEndDate} setLocation={setLocation}></Filter>

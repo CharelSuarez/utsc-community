@@ -39,7 +39,6 @@ io.on('connection', (socket) => {
         const mine = {user: session.user.username, message: doc.message, mine: true}
         const yours = {user: session.user.username, message: doc.message, mine: false}
 
-
         socket.broadcast.emit('message', yours)
         socket.emit('message', mine);
     });

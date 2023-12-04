@@ -5,11 +5,15 @@ import Link from "next/link";
 import { getUsername, logout } from "@/api/auth";
 
 interface Sidebar {
-    update: (active: string) => void
+    update?: (active: string) => void
     active: string
 }
 
 export default function Sidebar({update, active}: Sidebar){
+    if (update === undefined) {
+        update = () => {}
+    }
+
     const [username, setUsername] = useState<string>("")
 
     useEffect(() => {
@@ -27,8 +31,21 @@ export default function Sidebar({update, active}: Sidebar){
                 <div className="social-holder">
                     <div className="title">Social</div>
                     <div className="tab-holder">
-                        <Tab label="Messages" image="/icons/message.png" active={active} update={update} type="tab"/>
-                        <Tab label="Friends" image="/icons/friends.png" active={active} update={update} type="tab"/>
+                        { (active == "Messages" || active == "Friends") ? (
+                            <>
+                                <Tab label="Messages" image="/icons/message.png" active={active} update={update} type="tab"/>
+                                <Tab label="Friends" image="/icons/friends.png" active={active} update={update} type="tab"/> 
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/social?tab=Messages">
+                                    <Tab label="Messages" image="/icons/message.png" active={active} update={update} type="tab"/>
+                                </Link>
+                                <Link href="/social?tab=Friends">
+                                    <Tab label="Friends" image="/icons/friends.png" active={active} update={update} type="tab"/>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
                 <div className="navi">
@@ -37,7 +54,9 @@ export default function Sidebar({update, active}: Sidebar){
                         <Link href="/">
                             <Tab label="Dashboard" image="/icons/dashboard.png" active={active} update={update} type="tab"/>
                         </Link>
-                        <Tab label="Events" image="/icons/event.png" active={active} update={update} type="tab"/>
+                        <Link href="/map">
+                            <Tab label="Events" image="/icons/event.png" active={active} update={update} type="tab"/>
+                        </Link>
                         <Link href="/dashboard">
                             <Tab label="Map" image="/icons/map.png" active={active} update={update} type="tab"/>
                         </Link>
@@ -47,7 +66,17 @@ export default function Sidebar({update, active}: Sidebar){
                 </div>
             </div>
             <div className="sign">
-                <Tab label="Account" image="/icons/user.png" active={active} update={update} type="tab"/>
+                { active == "Account" ? (
+                    <>
+                        <Tab label="Account" image="/icons/user.png" active={active} update={update} type="tab"/>
+                    </>
+                ) : (
+                    <>
+                        <Link href="/social?tab=Account">
+                         <Tab label="Account" image="/icons/user.png" active={active} update={update} type="tab"/>
+                        </Link>
+                    </>
+                )}
                 <Tab label="Sign Out" image="/icons/exit.png" active={active} update={() => {
                     logout().then(() => {
                         window.location.href = "/"

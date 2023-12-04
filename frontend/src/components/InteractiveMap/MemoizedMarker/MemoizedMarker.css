@@ -4,7 +4,9 @@
     height: 40px;
     border-radius: 50%;
     /* box-shadow: lightgreen 0px 5px 30px 0px; */
-    border: 2px rgba(145, 238, 145, 255) solid;
+    /* border: 2px rgba(145, 238, 145, 255) solid; */
+    outline: 2px rgba(145, 238, 145, 255) solid;
+    outline-offset: -1px;
     animation: 2s pulse infinite;
 }
 

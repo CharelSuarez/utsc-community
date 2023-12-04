@@ -49,7 +49,6 @@ export function sendForm(method: string, url: string, data: any) : Promise<any> 
             resolve(null);
         }
         xhr.open(method, `${process.env.NEXT_PUBLIC_BACKEND}${url}`, true);
-        console.log(data);
         formData.forEach((value, key) => {
             console.log(key, value);
         });

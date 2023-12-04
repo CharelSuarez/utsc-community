@@ -14,7 +14,7 @@ export default function Page() {
   return (
     <>
       <div className="map_content">
-        <Sidebar />
+        <Sidebar active="Map"/>
         <Map/>
       </div>
     </>

@@ -32,8 +32,8 @@ export default function Location({getLocation, reset, setReset} : LocationsProps
     return (
         <div className="oneFilter">
         <label>Location:</label>
-        <select className="location"name="locations" id="locations" ref={locationRef} onInput={onInput}>
-          <option value="NONE" disabled selected> - select option - </option>
+        <select className="location"name="locations" id="locations" ref={locationRef} onInput={onInput} defaultValue={"NONE"}>
+          <option value="NONE" disabled> - select option - </option>
           <option value="SW">SW</option>
           <option value="MW">MW</option>
           <option value="IC">IC</option>

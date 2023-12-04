@@ -1,7 +1,7 @@
 import "./Message.css"
 
 import Text from "../Text/Text"
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { getMessages } from "@/api/social";
 import Bubble from "../Bubble/Bubble";
@@ -17,13 +17,15 @@ interface Message{
     mine: boolean
 }
 
+let socket: Socket | null = null;
+
 export default function Message({name, _id}: MessageProps){
 
     const [messages , setMessages] = useState<Message[]>([]); 
     let key = 0
   
     useEffect(() => {
-        const socket = io('ws://localhost:5001',{
+        socket = io('ws://localhost:5001',{
             transports: ['websocket']
         });
         socket.on('message', (text) =>{
@@ -31,6 +33,9 @@ export default function Message({name, _id}: MessageProps){
         });
 
         return () => {
+            if (!socket) {
+                return;
+            }
             socket.disconnect();
         }
     }, []);
@@ -59,7 +64,12 @@ export default function Message({name, _id}: MessageProps){
                 )}
             </div>
             <div className="text">
-                <Text addMessage = {(message: string) => socket.emit('message', {_id: _id, message: message, mine: socket.id})} />
+                <Text addMessage = {(message: string) => {
+                    if (!socket) {
+                        return;
+                    }
+                    socket.emit('message', {_id: _id, message: message, mine: socket.id})
+                }} />
             </div>
         </div>   }
 
