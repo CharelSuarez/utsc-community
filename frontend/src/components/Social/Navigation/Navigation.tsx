@@ -22,6 +22,9 @@ export default function Navigation({ current, update }: NaviProps) {
 
     useEffect(() => {
         getAllGroup().then(function (doc) {
+            if (!doc) {
+                return;
+            }
             setList(doc.group)
             if (doc.group.length != 0) {
                 current(doc.group[0].name);

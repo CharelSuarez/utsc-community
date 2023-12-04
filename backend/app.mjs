@@ -157,6 +157,23 @@ app.post("/api/event/", isAuthenticated, async function (req, res, next) {
     .json(result);
 });
 
+app.patch("/api/friends/", isAuthenticated, async function (req, res){
+  let user = await User.findOne({_id: req.session.user._id});
+
+  if(!user){
+    return res.sendStatus(404);
+  }
+
+  if(user.friends.includes(req.body.friend)){
+    const updated = user.friends.filter((value) => value != req.body.friend);
+    user = await User.updateOne({_id: req.session.user._id}, {$set: { friends: updated }})
+    
+    res.json(user);
+  }else{
+    res.sendStatus(404);
+  }
+});
+
 function getUserAvatar(user) {
   let avatar = user.avatar?.path?.replace(/\\/g, "/");
   if (!avatar || !fs.existsSync("./" + avatar)) {
@@ -238,27 +255,26 @@ app.post("/api/friends/", isAuthenticated, async function (req, res) {
 
   const user = await User.findOne({ _id: req.session.user._id });
 
-  //find the index of friend is in requests
-  const recieved = user.requests.findIndex(val => val.user == req.body.friend && val.reqType == "recieved");
-  const sent = friend.requests.findIndex(val => val.user == req.session.user.username && val.reqType == "sent");
+  const userRequest = user.requests.filter((val) => val.user != req.body.friend);
+  const friendRequest = friend.requests.filter((val) => val.user != req.session.user.username);
 
 
   //add friend to users friends if it exists 
-  if (recieved > -1) {
+  if (userRequest.length != user.requests.length) {
 
     user.friends.push(req.body.friend);
     friend.friends.push(req.session.user.username);
-    user.requests.splice(user.requests[recieved], 1);
-    friend.requests.splice(friend.requests[sent], 1);
   }
 
   await User.updateOne({ _id: req.session.user._id }, { $set: { friends: user.friends } });
-  await User.updateOne({ _id: req.session.user._id }, { $set: { requests: user.requests } });
+  await User.updateOne({ _id: req.session.user._id }, { $set: { requests: userRequest } });
 
-  await User.updateOne({ username: req.body.friend }, { $set: { requests: friend.requests } });
+  await User.updateOne({ username: req.body.friend }, { $set: { requests: friendRequest} });
   await User.updateOne({ username: req.body.friend }, { $set: { friends: friend.friends } });
 
   return res.send({ user: user.friends.reverse() });
+
+
 });
 
 app.post("/api/request/", isAuthenticated, async function (req, res) {
@@ -311,19 +327,18 @@ app.get("/api/group/", isAuthenticated, async function (req, res) {
 });
 
 app.get("/api/message/:id/", isAuthenticated, async function (req, res) {
-  const messages = await Group.find({ _id: req.params.id }, { messages: 1, _id: 0 })
+  const messages = await Group.findOne({ _id: req.params.id }, { messages: 1, _id: 0 })
 
-  if (messages.length == 0) {
+  if (!messages) {
     return res.status(404).json([])
   }
 
   const filter = []
 
-  for (let doc of messages[0].messages) {
-    let message = { user: doc.user, message: doc.message, _id: doc._id, mine: req.session.user.username == doc.user }
+  for (let doc of messages.messages) {
+    let message = { user: doc.user, message: doc.message, _id: doc._id, mine: req.session.user.username == doc.user}
     filter.push(message)
   }
-
   return res.status(200).json(filter)
 });
 

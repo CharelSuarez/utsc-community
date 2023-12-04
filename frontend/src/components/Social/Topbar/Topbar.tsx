@@ -11,7 +11,7 @@ interface Topbar{
 export default function Topbar({current, update, active}: Topbar){
 
     const MessageTabs = ["Your Messages", "Create Group"];
-    const FriendTabs = ["Your Friends"];
+
 
     let key = 0;
 
@@ -25,7 +25,6 @@ export default function Topbar({current, update, active}: Topbar){
                 (current=="Messages")? (<div className="tabs">
                     {MessageTabs.map((label) => <Tab key={key++} label={label} image="" type="select" update={update} active={active} />)}
                 </div>) : (<div className="tabs">
-                    {FriendTabs.map((label) => <Tab key={key++} label={label} image="" type="select" update={update} active={active} />)}
                 </div>)
             }
 

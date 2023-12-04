@@ -6,11 +6,15 @@ import { useState } from "react"
 
 import Sidebar from "@/components/Social/Sidebar/Sidebar"
 import Social from "@/components/Social/MainSocial"
-
-
+import { useSearchParams } from "next/navigation"
 
 export default function Page() {
-    const [active, setActive] = useState<string>("Messages");
+    let tab = "Messages";
+    const searchParams = useSearchParams()
+    if (searchParams.has('tab')) {
+        tab = searchParams.get('tab') as string
+    }
+    const [active, setActive] = useState<string>(tab);
 
     return (
         <>

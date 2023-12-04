@@ -33,14 +33,15 @@ io.on('connection', (socket) => {
 
     socket.on('message', async function(doc) {
 
-        const message = {user: session.user.username, message: doc.message};
-        const messages = await Group.updateOne({_id:doc._id},{$push:{messages: message}});
+        const message = {user: session.user.username, message: doc.message, createdAt: Date.now() };
+        await Group.updateOne({_id:doc._id},{$push:{messages: message}});
 
         const mine = {user: session.user.username, message: doc.message, mine: true}
         const yours = {user: session.user.username, message: doc.message, mine: false}
 
+        socket.join(doc._id);
+        socket.broadcast.in(doc._id).emit('message', yours);
 
-        socket.broadcast.emit('message', yours)
         socket.emit('message', mine);
     });
 

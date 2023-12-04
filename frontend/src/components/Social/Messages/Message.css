@@ -16,7 +16,7 @@
     width: 80%;
     height: 100%;
  
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .message-display .text{
@@ -36,9 +36,6 @@
     width: 100%;
 }
 
-::-webkit-scrollbar{
-    width: 12px;
-}
 
 .empty{
     display: flex;

@@ -34,8 +34,8 @@ export default function Location({getLocation, reset, setReset, colour} : Locati
     return (
         <div className="oneFilter">
         <label className={colour}>Location:</label>
-        <select className="location"name="locations" id="locations" ref={locationRef} onInput={onInput}>
-          <option value="NONE" disabled selected> - select option - </option>
+        <select className="location"name="locations" id="locations" ref={locationRef} onInput={onInput} defaultValue={"NONE"}>
+          <option value="NONE" disabled> - select option - </option>
           {(  
             Object.entries(BUILDINGS).map(([key, value]) => <option value={key} key={key}>{value.name}</option>)
         )}

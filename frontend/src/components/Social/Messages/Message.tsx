@@ -1,8 +1,8 @@
 import "./Message.css"
 
 import Text from "../Text/Text"
-import { io } from "socket.io-client";
-import { useEffect, useState } from "react";
+import { Socket, io } from "socket.io-client";
+import { useEffect, useRef, useState } from "react";
 import { getMessages } from "@/api/social";
 import Bubble from "../Bubble/Bubble";
 
@@ -17,22 +17,34 @@ interface Message{
     mine: boolean
 }
 
+
+
+let socket: Socket | null = null;
+
 export default function Message({name, _id}: MessageProps){
 
     const [messages , setMessages] = useState<Message[]>([]); 
+    const scrollRef = useRef<HTMLDivElement | null>(null)
+
     let key = 0
   
     useEffect(() => {
-        const socket = io('ws://localhost:5001',{
+        socket = io('ws://localhost:5001',{
             transports: ['websocket']
         });
         socket.on('message', (text) =>{
             setMessages((oldMessages) => [...oldMessages, text]);
         });
 
+        
+
         return () => {
+            if (!socket) {
+                return;
+            }
             socket.disconnect();
         }
+        
     }, []);
 
     useEffect(() => {
@@ -41,7 +53,17 @@ export default function Message({name, _id}: MessageProps){
             if(!doc) return;
             setMessages(doc)
         });
+ 
     },[_id]);
+
+    useEffect(() => {
+        let scroll = scrollRef.current == null ? null : scrollRef.current
+                    
+        if(scroll){
+            scroll.scrollIntoView({behavior:"smooth"})
+        }
+
+    }, [messages.length]);
 
     return(
         <>
@@ -55,11 +77,20 @@ export default function Message({name, _id}: MessageProps){
             <div className="group-title">Group: {name}</div>
             <div className="display">
                 {(
-                    messages.map((message) => <Bubble key={key++} user={message.user} message={message.message} mine={message.mine}/>)
+                    <div>
+                       { messages.map((message) => <Bubble key={key++} user={message.user} message={message.message} mine={message.mine}/>)}
+                       <div ref={scrollRef}></div>
+                    </div>
+                    
                 )}
             </div>
             <div className="text">
-                <Text addMessage = {(message: string) => socket.emit('message', {_id: _id, message: message, mine: socket.id})} />
+                <Text addMessage = {(message: string) => {
+                    if (!socket) {
+                        return;
+                    }
+                    socket.emit('message', {_id: _id, message: message, mine: socket.id})            
+                }} />
             </div>
         </div>   }
 

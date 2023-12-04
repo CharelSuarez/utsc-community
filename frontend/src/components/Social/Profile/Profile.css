@@ -4,6 +4,7 @@
 
 .container-profile{
     display: flex;
+    flex: 0, auto;
     padding: 1rem;
     box-sizing: border-box;
     justify-content: space-between;
@@ -11,9 +12,11 @@
     width: 200px;
     height: 70px;
     background: var(--search);
+
     font-size: 1.3rem;
     border-radius: 5px;
 }
+
 
 .container-profile:hover{
     cursor: pointer;
@@ -32,6 +35,6 @@
     text-align: center;
 }
 
-.navigation-main .container-profile{
+.main-content .navigation-main .container-profile{
     width: 100%;
 }
