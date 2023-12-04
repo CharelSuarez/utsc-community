@@ -7,7 +7,13 @@ const DynamicMap = memo(function DynamicMap(mapProps : MapProps) {
   const InteractiveMap = dynamic(
     () => import('@/components/InteractiveMap/InteractiveMap'),
     { 
-      loading: () => <h1>Loading ヾ(＠⌒ー⌒＠)ノ</h1>,
+      loading: () => {
+        return (
+          <div className='loading-div' style={{width: `calc(100% - ${mapProps.width}px)`}}>
+
+          </div>
+        )
+      },
       ssr: false
     }
   )
