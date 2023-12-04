@@ -226,6 +226,18 @@ app.get("/api/events/", isAuthenticated, async function (req, res, next) {
   .json({events: events});
 });
 
+app.get("/api/numberOfEvents/", isAuthenticated, async function (req, res, next) {
+  const numberOfEvents = {};
+  for (let index = 0; index < Object.keys(BUILDINGS).length; index++) {
+    const key = Object.keys(BUILDINGS)[index];
+    console.log(key);
+    numberOfEvents[key] = await Event.find({ location: key }).count();
+  }
+  return res
+  .status(200)
+  .json({numberOfEvents});
+});
+
 app.patch("/api/attendevent/", isAuthenticated, async function (req, res, next){
   const event = await Event.updateOne(
     {_id: req.body.eventId}, {$push: {guests: req.body.attendee}}

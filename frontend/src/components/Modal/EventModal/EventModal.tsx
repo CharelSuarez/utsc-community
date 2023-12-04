@@ -29,7 +29,8 @@ function getModalChildren({onClose, title, description, location, startDate, end
             btnName = "Unattend Event"
         }
     }
-    const eventOnClick = () => {
+    const eventOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
         if(attendee){
             if(btnName == "Attend Event"){
                 attendEvent(attendee, _id);

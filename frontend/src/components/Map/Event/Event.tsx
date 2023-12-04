@@ -21,7 +21,7 @@ export default function Event({title, description, location, startDate, endDate,
 
     return (
         <>
-            <div className="box" >
+            <div className="ebox">
                 <div className="innerbox" onClick={() => setEventShowModal(true)}>
                     <h1>{title.substring(0, 10) + (title.length <= 10 ? "" : "...")}</h1>
                 </div>

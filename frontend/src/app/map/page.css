@@ -1,6 +1,6 @@
 .map{
     display: flex;
-    justify-content: center;
+    justify-content: start;
     width: fit-content;
     height: 100%;
     background: var(--bg);

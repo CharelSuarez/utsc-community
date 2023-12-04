@@ -20,3 +20,7 @@ export function unattendEvent(attendee: string, eventId: string){
 export function cancelEvent(eventId: string){
     return send("Delete", "/api/event/" + eventId , null);
 }
+
+export function getNumberOfLocations(location: string){
+    return send("GET", "/api/numberOfEvents", null);
+}
