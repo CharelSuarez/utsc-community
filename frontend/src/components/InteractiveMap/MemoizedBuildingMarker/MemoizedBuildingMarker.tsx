@@ -1,7 +1,7 @@
 import { DivIcon } from "leaflet";
 import { memo } from "react"
 import { Marker, Popup } from "react-leaflet";
-import { Building } from "../InteractiveMap";
+import { Building } from '@/util/building/Building';
 import "./MemoizedBuildingMarker.css";
 
 interface MemoizedMarkerProps {
@@ -21,7 +21,7 @@ const MemoizedBuildingMarker = memo(function MemoizedMarker({ buildingKey, build
                     html: `
                         <div class="building">
                             <div class="building-header">
-                                <h2 class="building-code">SW</h2>
+                                <h2 class="building-code">${building.code}</h2>
                                 <h1 class="building-name" style="font-size: ${building.name.length > 13 ? "0.8rem" : "1rem"};">${building.name}</h1>
                             </div>
                             <img class="building-image" src=${image} />

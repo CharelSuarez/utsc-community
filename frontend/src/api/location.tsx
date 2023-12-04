@@ -6,6 +6,8 @@ let socket : Socket | null = null;
 let Location : protobuf.Type | null = null;
 let LocationResponse : protobuf.Type | null = null;
 
+const GEO_INTERVAL = 50;
+
 async function loadProto() {
     const root = await protobuf.load("/proto/location_service.proto");
     Location = root.lookupType("locationservice.Location");
@@ -37,7 +39,7 @@ export async function connectToLocationService(messageCallback : (locationRespon
         messageCallback((locationResponse as any).personLocations);
     });
 
-    setInterval(getSendLocation, 1000);
+    setInterval(getSendLocation, GEO_INTERVAL);
 }
 
 export function disconnectFromLocationService() {

@@ -25,6 +25,8 @@ io.engine.use(sessionMiddleware);
 let Location;
 let LocationResponse;
 
+const GEO_INTERVAL = 50;
+
 async function loadProto() {
     const root = await protobuf.load("./proto/location_service.proto");
     Location = root.lookupType("locationservice.Location");
@@ -62,8 +64,6 @@ io.on('connection', async (socket) => {
         // Decode message from Uint8Array
         let buffer = new Uint8Array(message);
         const location = Location.decode(buffer);
-        // console.log(`Message from client '${username}'`);
-        // console.log(location);
 
         // Add user's location to all locations
         locations[personId] = { 
@@ -90,14 +90,23 @@ io.on('connection', async (socket) => {
         //     }
         // }
 
+        // TODO Send friends only?
         const locationResponse = LocationResponse.create({ personLocations: Object.values(locations) });
         buffer = LocationResponse.encode(locationResponse).finish();
         io.emit('message', buffer);
     });
 
+    // setInterval(() => {
+    //     if (!socket.connected) {
+    //         return;
+    //     }
+
+    //     const locationResponse = LocationResponse.create({ personLocations: Object.values(locations) });
+    //     const buffer = LocationResponse.encode(locationResponse).finish();
+    //     io.emit('message', buffer);
+    // }, GEO_INTERVAL);
+
     socket.on('disconnect', async (socket) => {
-        // const session = socket.request.session;
-        const session = null;
-        console.log(`User ${session?.username} disconnected!`);
+        console.log(`User '${username}' disconnected!`);
     })
 })

@@ -63,7 +63,7 @@ a {
 }
 
 /* Red Button Background */
-.button.red:hover::before {
+.button.red::before {
     background-image: radial-gradient(circle at center, #ff546e 0, var(--bg-sidebar) 100%);
 }
 

@@ -22,6 +22,18 @@ export default function Message({name, _id}: MessageProps){
     const [messages , setMessages] = useState<Message[]>([]); 
     let key = 0
   
+    useEffect(() => {
+        const socket = io('ws://localhost:5001',{
+            transports: ['websocket']
+        });
+        socket.on('message', (text) =>{
+            setMessages((oldMessages) => [...oldMessages, text]);
+        });
+
+        return () => {
+            socket.disconnect();
+        }
+    }, []);
 
     useEffect(() => {
         if(!_id) return;
@@ -30,14 +42,6 @@ export default function Message({name, _id}: MessageProps){
             setMessages(doc)
         });
     },[_id]);
-
-    const socket = io('ws://localhost:5001',{
-        transports: ['websocket']
-    });
-
-    socket.on('message', (text) =>{
-        setMessages([...messages, text]);
-    });
 
     return(
         <>
