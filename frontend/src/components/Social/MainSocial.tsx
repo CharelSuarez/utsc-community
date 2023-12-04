@@ -27,7 +27,6 @@ export default function Social({ current }: SocialProps) {
                 </div> :
             (current == "Account") ?
                 <div className="main">
-                    <Topbar current={current} update={setActive} active={active} />
                     <AccountContent />
                 </div> :
             <div className="main">Nothing to see here</div>

@@ -9,8 +9,7 @@ export function login(username: string, password: string) : Promise<User> {
     return send("POST", '/api/login/', {username, password})
         .then((user) => {
             if (user) {
-                localStorage.setItem('user_id', user._id);
-                localStorage.setItem('username', user.username);
+                setUser(user);
             }
             return user;
         }
@@ -21,8 +20,7 @@ export function register(username: string, password: string, avatar: any) : Prom
     return sendForm("POST", '/api/register/', {username, password, avatar})
         .then((user) => {
             if (user) {
-                localStorage.setItem('user_id', user._id);
-                localStorage.setItem('username', user.username);
+                setUser(user);
             }
             return user;
         }
@@ -39,15 +37,32 @@ export function logout() : Promise<any> {
     );
 }
 
+function setUser(user: any) {
+    if (typeof window === 'undefined') {
+        return null;
+    }
+    localStorage.setItem('user_id', user._id);
+    localStorage.setItem('username', user.username);
+}
+
 export function getUserId() {
+    if (typeof window === 'undefined') {
+        return null;
+    }
     return localStorage.getItem('user_id');
 }
 
 export function getUsername() {
-    return localStorage.getItem('username');
+    if (typeof window === 'undefined') {
+        return null;
+    }
+    return localStorage.getItem('username') || 'Unknown';
 }
 
 export function resetUser() {
+    if (typeof window === 'undefined') {
+        return null;
+    }
     localStorage.removeItem('user_id');
     localStorage.removeItem('username');
 }

@@ -27,10 +27,10 @@
     font-size: 1.4rem;
 }
 
-/* .building-name {
+.building-name {
     height: fit-content;
-    width: fit-content;
-} */
+    width: 100%;
+}
 
 .building-marker .building .building-image {
     width: calc(170px - 20px);

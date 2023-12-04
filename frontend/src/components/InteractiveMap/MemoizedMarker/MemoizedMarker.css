@@ -5,7 +5,7 @@
     border-radius: 50%;
     /* box-shadow: lightgreen 0px 5px 30px 0px; */
     border: 2px rgba(145, 238, 145, 255) solid;
-    animation: 4s pulse infinite;
+    animation: 2s pulse infinite;
 }
 
 @keyframes pulse {
@@ -13,7 +13,7 @@
         border: 2px rgba(145, 238, 145, 1) solid;
     }
     50% {
-        border: 2px rgba(145, 238, 145, 0) solid;
+        border: 2px rgba(145, 238, 145, 0.5) solid;
     }
     100% {
         border: 2px rgba(145, 238, 145, 1) solid;

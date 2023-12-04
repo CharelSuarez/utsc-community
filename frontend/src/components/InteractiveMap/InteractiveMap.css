@@ -10,3 +10,45 @@
 .leaflet-control-attribution {
   filter: invert(100%) hue-rotate(180deg) brightness(100%) contrast(90%);
 }
+
+.toggle-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+    bottom: calc(17px + 5px);
+    z-index: 10000;
+    height: fit-content;
+    width: 200px;
+    background-color: var(--bg-sidebar);
+    border-radius: 10px;
+    color: white;
+}
+
+.toggle-buildings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toggle-title {
+    margin: 0px;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.toggle-button {
+    margin: 0px;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.toggle-icon {
+    height: 25px;
+    width: 25px;
+    filter: invert(100%) sepia(0%) saturate(7450%) hue-rotate(189deg) brightness(125%) contrast(100%);
+}

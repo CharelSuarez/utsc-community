@@ -27,6 +27,10 @@ io.engine.use(sessionMiddleware);
 
 io.on('connection', (socket) => {
     const session = socket.request.session;
+
+    const username = session?.user?.username;
+    console.log(`User '${username}' connected!`);
+
     socket.on('message', async function(doc) {
 
         const message = {user: session.user.username, message: doc.message};
@@ -39,4 +43,8 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('message', yours)
         socket.emit('message', mine);
     });
+
+    socket.on('disconnect', async (socket) => {
+        console.log(`User '${username}' disconnected!`);
+    })
 })

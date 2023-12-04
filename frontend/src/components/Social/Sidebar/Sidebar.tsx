@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Tab from "../Tab/Tab";
 import "./Sidebar.css"
 import Link from "next/link";
-import { logout } from "@/api/auth";
+import { getUsername, logout } from "@/api/auth";
 
 interface Sidebar {
     update: (active: string) => void
@@ -10,11 +10,19 @@ interface Sidebar {
 }
 
 export default function Sidebar({update, active}: Sidebar){
-    
+    const [username, setUsername] = useState<string>("")
+
+    useEffect(() => {
+        const username = getUsername();
+        if (username !== null) {
+            setUsername(username)
+        }
+    }, [])
 
     return (<>
         <div className="sidebar">
             <div className="main-title">UTSC</div>
+            <div className="welcome-text">Welcome, {username}!</div>
             <div className="tabs">
                 <div className="social-holder">
                     <div className="title">Social</div>
