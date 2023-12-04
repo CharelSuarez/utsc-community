@@ -2,6 +2,8 @@
     --bg-taskbar: #2b2b2b;
     --bg-sidebar: #010b13;
     --bg-tab: #1AA7EC;
+    --search: linear-gradient(125deg, rgba(5,170,255,1) 0%, rgba(0,65,238,1) 100%);
+    --bg-white: #DFE1E6;
 }
 
 body {
@@ -34,7 +36,7 @@ a {
     border-radius: 10px;
     background-color: transparent;
     color: white;
-    font-size: 1rem;
+    font-size: 1.2rem;
     cursor: pointer;
     transition: 250ms ease-in;
     z-index: 1;
@@ -56,7 +58,7 @@ a {
     content: '';
     opacity: 1;
     background-image: radial-gradient(circle at center, var(--bg-tab) 0, #5468ff 100%);
-    background-size: 200%;
+    background-size: 300%;
     background-position: center center;
 }
 

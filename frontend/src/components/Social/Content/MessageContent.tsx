@@ -19,7 +19,6 @@ export default function MessageContent({ tab }: MessageProps) {
             if(doc.group.length == 0) return;
 
             setGroup(doc.group[0].name);
-            console.log(doc.group[0].name)
         })
     }, [tab]);
 

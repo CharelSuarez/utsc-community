@@ -11,6 +11,8 @@ interface GroupProps {
 }
 
 export default function Group() {
+    const [loaded, setLoad] = useState<boolean>(false);
+
     const [group, setGroup] = useState<GroupProps[]>([])
     const [friends, setFriends] = useState<string[]>([])
     const [create, addCreate] = useState<string[]>([])
@@ -23,7 +25,7 @@ export default function Group() {
     useEffect(() => {
         getAllGroup().then((doc) => setGroup(doc.group));
         getFriends().then((doc) => setFriends(doc.chat));
-
+        setLoad(true);
     }, []);
 
     function remove(user: string) {
@@ -43,53 +45,56 @@ export default function Group() {
 
     return (
         <>
-            {(friends.length == 0 && create.length == 0) ? <div className="empty">
-                <div className="container">
-                    <div className="caption">Dont be shy Make some <span className="highlight">Friends!</span></div>
-                    <img src="/empty/kitty.png" alt="" />
-                </div>
-                
-            </div> :
-                <div className="section">
-                    <div className="subsection">
-                        <div className="title">Your Groups</div>
-                        <div className="container">
-                            {group.map((item) => <GroupTabs name={item.name} key={item._id} addCurrent={() => null} update={() => null} id={item._id} />)}
-                        </div>
+            {!loaded ? <div></div> :
+                (friends.length == 0 && create.length == 0) ? <div className="empty">
+                    <div className="container">
+                        <div className="caption">Dont be shy Make some <span className="highlight">Friends!</span></div>
+                        <img src="/empty/kitty.png" alt="" />
                     </div>
 
-                    <div className="subsection">
-                        <div className="title">Your Friends</div>
-
-                        {(create.length != 0) ?
+                </div> :
+                    <div className="section">
+                        <div className="subsection">
+                            <div className="title">Your Groups</div>
                             <div className="container">
-                                <input type="text" onChange={handle} />
-                                {groupName}
-                                <button className="add" onClick={function () {
-                                    if (create.length == 0) return;
-                                    addGroup(create, groupName).then(function (doc) {
-                                        setGroup([...group, doc])
-                                        addCreate([]);
-                                        getFriends().then((doc) => setFriends(doc.chat));
-                                        updateName("Group");
-                                    });
-                                }}><img src="/icons/add.png" /></button>
+                                {group.map((item) => <GroupTabs name={item.name} key={item._id} addCurrent={() => null} update={() => null} id={item._id} />)}
                             </div>
-                            :
-                            <div className="container">
-                                {(friends.length != 0) ? <div className="empty-text">Click to Add Friends</div> :
-                                    <div className="empty-text">Add Friends</div>}
-                            </div>
-                        }
-
-                        <div className="users">
-                            {create.map((user) => <Profile name={user} key={key++} update={() => null} addGroup={remove} />)}
                         </div>
 
-                        <div className="friend-container">
-                            {friends.map((friend) => <Profile name={friend} key={key++} update={() => null} addGroup={add} />)}
+                        <div className="subsection">
+                            <div className="title">Your Friends</div>
+
+                            {(create.length != 0) ?
+                                <div className="container">
+                                    <input type="text" onChange={handle} />
+                                    {groupName}
+                                    <button className="add" onClick={function () {
+                                        if (create.length == 0) return;
+                                        addGroup(create, groupName).then(function (doc) {
+                                            setGroup([...group, doc])
+                                            addCreate([]);
+                                            getFriends().then((doc) => setFriends(doc.chat));
+                                            updateName("Group");
+                                        });
+                                    }}><img src="/icons/add.png" /></button>
+                                </div>
+                                :
+                                <div className="container">
+                                    {(friends.length != 0) ? <div className="empty-text">Click to Add Friends</div> :
+                                        <div className="empty-text">Add Friends</div>}
+                                </div>
+                            }
+
+                            <div className="users">
+                                {create.map((user) => <Profile name={user} key={key++} update={() => null} addGroup={remove} />)}
+                            </div>
+
+                            <div className="friend-container">
+                                {friends.map((friend) => <Profile name={friend} key={key++} update={() => null} addGroup={add} />)}
+                            </div>
                         </div>
-                    </div>
-                </div>}
+                    </div>}
+
+
         </>)
 }

@@ -20,6 +20,7 @@
 .text-holder .bubble{
     border-radius: 20px;
     padding: 8px 15px;
+    font-size: 1.3rem;
     margin-top: 8px;
     margin-bottom: 0px;
     display: inline-block;
