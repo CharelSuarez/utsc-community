@@ -16,16 +16,9 @@ interface AddEventProp{
 export default function Filter({onAddFunction, setStartDate, setEndDate, setLocation}: AddEventProp){
 
   const [showAddEventModal, setAddEventShowModal] = useState(false);
-  const [startDate, setStartDateFilter] = useState("");
-  const [endDate, setEndDateFilter] = useState("");
-  const [location, setLocationFilter] = useState("");
   const [reset, setReset] = useState(false);
 
-  const getFilters = () =>{
-    setStartDate(startDate);
-    setEndDate(endDate);
-    setLocation(location);
-  }
+
 
   const resetEvents = () => {
     setReset(true);
@@ -37,15 +30,12 @@ export default function Filter({onAddFunction, setStartDate, setEndDate, setLoca
     return (
       <div className="filterAndAdd">
         <div className="filters">
-          <Calendar getDate={setStartDateFilter} reset={reset} setReset={setReset} colour="white" label="Start Date"></Calendar>
-          <Calendar getDate={setEndDateFilter} reset={reset} setReset={setReset}  colour="white" label="End Date"></Calendar>
-          <Location getLocation={setLocationFilter} reset={reset} setReset={setReset} colour="white"></Location>
+          <Calendar getDate={setStartDate} reset={reset} setReset={setReset} colour="white" label="Start Date"></Calendar>
+          <Calendar getDate={setEndDate} reset={reset} setReset={setReset}  colour="white" label="End Date"></Calendar>
+          <Location getLocation={setLocation} reset={reset} setReset={setReset} colour="white"></Location>
         </div>
         <div className="submit">
-          <button className="button active buttonFilter" onClick={resetEvents}>Reset Filters</button>
-        </div>
-        <div className="submit">
-          <button className="button active buttonFilter" onClick={getFilters}>Filter Events</button>
+          <button className="button active buttonFilter red" onClick={resetEvents}>Reset Filters</button>
         </div>
         <div className="submit">
           <button className="button active buttonFilter" onClick={() => setAddEventShowModal(true)}>Create an Event</button>
