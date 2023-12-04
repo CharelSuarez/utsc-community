@@ -10,13 +10,13 @@ import RegisterModal from "@/components/Modal/RegisterModal/RegisterModal";
 interface Sidebar {
     update?: (active: string) => void
     active: string
-    user: string | null
 }
 
-export default function Sidebar({ update, active, user }: Sidebar) {
+export default function Sidebar({ update, active }: Sidebar) {
     if (update === undefined) {
         update = () => { }
     }
+
 
     const [username, setUsername] = useState<string>("")
     const [showLoginModal, setLoginShowModal] = useState(false);
@@ -27,12 +27,13 @@ export default function Sidebar({ update, active, user }: Sidebar) {
         if (username !== null) {
             setUsername(username)
         }
+
     }, [])
 
 
 
     return (<>
-        {(!user) ?
+        {(username == "" || !username ) ?
             <div className="sidebar">
                 <div className="main-title">UTSC</div>
                 <div className="social-holder">

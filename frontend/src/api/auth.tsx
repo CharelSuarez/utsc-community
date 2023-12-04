@@ -56,7 +56,7 @@ export function getUsername() {
     if (typeof window === 'undefined') {
         return null;
     }
-    return localStorage.getItem('username') || 'Unknown';
+    return localStorage.getItem('username') || "";
 }
 
 export function resetUser() {
