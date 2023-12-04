@@ -1,14 +1,16 @@
 import "./Location.css";
 import "@/components/Map/FilterEvent/Filter.css";
+import { BUILDINGS } from "@/util/building/Building"; 
 import { useRef, useEffect } from "react";
 
 interface LocationsProps {
   getLocation: (date:string) => void;
   reset: boolean;
   setReset: (flag:boolean) => void;
+  colour: string;
 }
 
-export default function Location({getLocation, reset, setReset} : LocationsProps){
+export default function Location({getLocation, reset, setReset, colour} : LocationsProps){
   const locationRef = useRef<HTMLSelectElement>(null);
   
   const onInput = (event: React.InputHTMLAttributes<HTMLButtonElement>) => {
@@ -31,13 +33,12 @@ export default function Location({getLocation, reset, setReset} : LocationsProps
 }, [reset]);
     return (
         <div className="oneFilter">
-        <label>Location:</label>
+        <label className={colour}>Location:</label>
         <select className="location"name="locations" id="locations" ref={locationRef} onInput={onInput}>
           <option value="NONE" disabled selected> - select option - </option>
-          <option value="SW">SW</option>
-          <option value="MW">MW</option>
-          <option value="IC">IC</option>
-          <option value="AC">AC</option>
+          {(  
+            Object.entries(BUILDINGS).map(([key, value]) => <option value={key} key={key}>{value.name}</option>)
+        )}
         </select>
       </div>
       );

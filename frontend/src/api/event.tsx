@@ -1,8 +1,8 @@
 import { send } from "./utils";
 
-export function addEvent(name: string, description: string, start: Date, end: Date, location: string, createdBy: string){
+export function addEvent(name: string, description: string, startDate: Date, endDate: Date, location: string){
     const createTime = new Date();
-    return send("POST", "/api/event/", {name, description, start, end, location, createdBy, createTime});
+    return send("POST", "/api/event/", {name, description, startDate, endDate, location, createTime});
 }
 
 export function getEvents(page: number, startDateFilter: string, endDateFilter: string, locationFilter: string){

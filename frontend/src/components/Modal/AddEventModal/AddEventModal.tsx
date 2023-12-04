@@ -5,7 +5,7 @@ import Location from "@/components/Map/Location/Location";
 import Time from "@/components/Map/Time/Time";
 import { useRef, useState } from "react";
 import { addEvent } from "@/api/event"
-import {getUsername} from "@/api/auth";
+import {getUserId} from "@/api/auth";
 
 interface EventModalProps {
     onClose: () => void;
@@ -14,8 +14,8 @@ interface EventModalProps {
 
 function getModalChildren({onClose, onAddFunction}: EventModalProps) {
 
-    const titleRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLInputElement>(null);
+    const titleRef = useRef<HTMLTextAreaElement>(null);
+    const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [startTime, setStartTime] = useState("");
@@ -41,11 +41,7 @@ function getModalChildren({onClose, onAddFunction}: EventModalProps) {
         if(start.toISOString() > end.toISOString())
             return;
         
-        var createdBy = getUsername();
-        if(!createdBy){
-            createdBy = "";
-        }
-        addEvent(title, description, start, end, location, createdBy).then((result) => {
+        addEvent(title, description, start, end, location).then((result) => {
             
             if(result != null){
                 onClose();
@@ -61,22 +57,22 @@ function getModalChildren({onClose, onAddFunction}: EventModalProps) {
         <>
             <div className="contentAdd">
                 <label>Event Title:
-                    <input className="titleAdd" ref={titleRef} type='text'></input>
+                    <textarea maxlength="25" className="titleAdd" ref={titleRef} type='text'></textarea>
                 </label>
                 <label>Event Description:
-                    <input className="descriptionAdd" ref={descriptionRef} type='text'></input>
+                    <textarea className="descriptionAdd" ref={descriptionRef} ></textarea>
                 </label>
                 <div className="eventdetails">
                     <div className='dateTime'>
-                        <Calendar getDate={setStartDate} reset={false} setReset={()=>{}} label="Start Date"></Calendar>
-                        <Calendar getDate={setEndDate} reset={false} setReset={()=>{}} label="End Date"></Calendar>
+                        <Calendar getDate={setStartDate} reset={false} setReset={()=>{}} colour="black" label="Start Date"></Calendar>
+                        <Calendar getDate={setEndDate} reset={false} setReset={()=>{}} colour="black" label="End Date"></Calendar>
                     </div>
                     <div className='dateTime'>
-                        <Time getTime={setStartTime} label="Start Time"></Time>
-                        <Time getTime={setEndTime} label="End Time"></Time>
+                        <Time getTime={setStartTime} label="Start Time" colour="black"></Time>
+                        <Time getTime={setEndTime} label="End Time" colour="black"></Time>
                     </div>
                     <div className="locationAdd">
-                        <Location getLocation={setLocation} reset={false} setReset={()=>{}}></Location>
+                        <Location getLocation={setLocation} reset={false} setReset={()=>{}} colour="black"></Location>
                     </div>
                 </div>
                 <div className="buttons">

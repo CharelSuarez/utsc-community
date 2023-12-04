@@ -4,9 +4,10 @@ import { useRef } from "react";
 interface TimeProps {
     label: string;
     getTime: (date:string) => void;
+    colour: string;
 }
 
-export default function Time({label, getTime} : TimeProps){
+export default function Time({label, getTime, colour} : TimeProps){
     const timeRef = useRef<HTMLInputElement>(null);
 
     const onInput = (event: React.InputHTMLAttributes<HTMLButtonElement>) => {
@@ -20,7 +21,7 @@ export default function Time({label, getTime} : TimeProps){
 
     return (
         <div className="oneFilter">
-            <label>{label}:</label>
+            <label className={colour}>{label}:</label>
             <input type="time" ref={timeRef} onInput={onInput}></input>
         </div>
       );

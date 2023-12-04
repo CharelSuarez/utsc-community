@@ -1,5 +1,11 @@
-.oneFilter label{
+.oneFilter .black{
+    width: 100px;
     color: black;
+}
+
+.oneFilter .white{
+    width: 100px;
+    color: white;
 }
 
 .oneFilter .location{
@@ -7,4 +13,5 @@
     border-radius: 5px;
     border-width: 2px;
     margin-left: 1px;
+    width: 125px;
 }

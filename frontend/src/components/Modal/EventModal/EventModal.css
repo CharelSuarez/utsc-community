@@ -55,6 +55,8 @@
 .modalEvent .content label .description{
     display: flex;
     flex-direction: column;
+    word-break: break-all;
+    flex-wrap: wrap;
     width: 500px;
     height: 250px;
     margin-top: 5px;

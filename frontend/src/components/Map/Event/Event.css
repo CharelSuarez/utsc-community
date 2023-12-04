@@ -80,6 +80,7 @@
     width: 100%;
     padding: 0;
     color: #fff;
+    word-break: break-all;
 }
 
 .box .content .eventdetails{
@@ -90,7 +91,7 @@
 
 .box .content .eventdetails .location {
     margin:0;
-    width: 50px;
+    width: 250px;
     padding: 0;
     color: #fff;
     display: flex;

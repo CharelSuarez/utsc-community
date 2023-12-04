@@ -6,6 +6,10 @@
     justify-content: space-evenly;
 }
 
+.pageBox .prev{
+    transform: scaleX(-1);
+}
+
 .pageBox img:hover{
     cursor: pointer;
 }

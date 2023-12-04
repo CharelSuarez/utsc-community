@@ -37,9 +37,9 @@ export default function Filter({onAddFunction, setStartDate, setEndDate, setLoca
     return (
       <div className="filterAndAdd">
         <div className="filters">
-          <Calendar getDate={setStartDateFilter} reset={reset} setReset={setReset} label="Start Date"></Calendar>
-          <Calendar getDate={setEndDateFilter} reset={reset} setReset={setReset} label="End Date"></Calendar>
-          <Location getLocation={setLocationFilter} reset={reset} setReset={setReset}></Location>
+          <Calendar getDate={setStartDateFilter} reset={reset} setReset={setReset} colour="white" label="Start Date"></Calendar>
+          <Calendar getDate={setEndDateFilter} reset={reset} setReset={setReset}  colour="white" label="End Date"></Calendar>
+          <Location getLocation={setLocationFilter} reset={reset} setReset={setReset} colour="white"></Location>
         </div>
         <div className="submit">
           <button className="button active buttonFilter" onClick={resetEvents}>Reset Filters</button>

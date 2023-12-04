@@ -23,12 +23,12 @@ export default function Event({title, description, location, startDate, endDate,
         <>
             <div className="box" >
                 <div className="innerbox" onClick={() => setEventShowModal(true)}>
-                    <h1>{title}</h1>
+                    <h1>{title.substring(0, 10) + (title.length <= 10 ? "" : "...")}</h1>
                 </div>
                 <div className="content">
-                    <div className="description">{description}</div>
+                    <div className="description">{description.substring(0, 125) + (description.length <= 125 ? "" : "...")}</div>
                     <div className="eventdetails">
-                        <div className="location">{location}
+                        <div className="location">{location.substring(0, 15) + (description.length <= 25 ? "" : "...")}
                             <span className="tooltiptext">Location</span>
                         </div>
                         <div className="date">{new Date(startDate).toLocaleDateString()}

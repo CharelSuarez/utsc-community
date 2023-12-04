@@ -7,9 +7,10 @@ interface CalendarProps {
     getDate: (date:string) => void;
     reset: boolean;
     setReset: (flag:boolean) => void;
+    colour: string;
 }
 
-export default function Calendar({label, getDate, reset, setReset} : CalendarProps){
+export default function Calendar({label, getDate, reset, setReset, colour} : CalendarProps){
     const dateRef = useRef<HTMLInputElement>(null);
 
     const onInput = (event: React.InputHTMLAttributes<HTMLButtonElement>) => {
@@ -33,7 +34,7 @@ export default function Calendar({label, getDate, reset, setReset} : CalendarPro
 
     return (
         <div className="oneFilter">
-            <label>{label}:</label>
+            <label className={colour}>{label}:</label>
             <input className="calendar" type="date" ref={dateRef} onInput={onInput}></input>
         </div>
       );

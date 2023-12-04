@@ -10,6 +10,9 @@ import bcrypt from "bcrypt";
 import { serialize } from "cookie";
 import multer from "multer";
 import fs from "fs";
+import { BUILDINGS } from "./building/Building.mjs";
+import mongoose from "mongoose";
+
 
 const PORT = 5000;
 const app = express();
@@ -145,7 +148,8 @@ app.delete("/api/login/", isAuthenticated, async function (req, res, next) {
   res.status(200).json({});
 });
 
-app.post("/api/event/", async function (req, res, next) {
+app.post("/api/event/", isAuthenticated, async function (req, res, next) {
+  req.body.createdBy = req.session.user._id;
   const result = await Event.create(req.body);
 
   return res
@@ -175,6 +179,7 @@ app.get("/api/events/", isAuthenticated, async function (req, res, next) {
   let start = req.query.startDateFilter;
   let end = req.query.endDateFilter;
   let loc = req.query.locationFilter;
+  let events;
   console.log(loc);
   if(start == ""){
     start = "1970-01-01";
@@ -183,15 +188,25 @@ app.get("/api/events/", isAuthenticated, async function (req, res, next) {
     end = "2099-01-01";
   }
   if (loc == "") {
-    const event = await Event.find({ startDate: { $gte: start, $lt: end } }).sort({ createTime: -1 }).skip(parseInt(req.query.page) * 4).limit(4);
-    return res
-      .status(200)
-      .json({ events: event });
+    events = await Event.find({ startDate: { $gte: start, $lt: end } }).sort({ createTime: -1 }).skip(parseInt(req.query.page) * 4).limit(4);
   }
-  const event = await Event.find({ startDate: { $gte: start, $lt: end }, location: loc }).sort({ createTime: -1 }).skip(parseInt(req.query.page) * 6).limit(6);
+  else{
+    events = await Event.find({ startDate: { $gte: start, $lt: end }, location: loc }).sort({ createTime: -1 }).skip(parseInt(req.query.page) * 6).limit(6);
+  }
+  
+  for (let index = 0; index < events.length; index++) {
+    events[index].location = BUILDINGS[events[index].location]?.name || "";
+    if(mongoose.isValidObjectId(events[index].createdBy)){
+      const username = await User.findOne({_id: events[index].createdBy}, {username: 1});
+      events[index].createdBy = username?.username || "";
+    }
+    
+  }
+
+
   return res
   .status(200)
-  .json({events: event});
+  .json({events: events});
 });
 
 app.patch("/api/attendevent/", isAuthenticated, async function (req, res, next){
