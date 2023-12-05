@@ -26,7 +26,7 @@ export default function Page() {
                     startDateFilter={startDate} endDateFilter={endDate} locationFilter={location} setCurrentEvent={setCurrentEvent}></Events>
                 <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber}></Pagination>   
             </div>
-            <DynamicMap width={350 + 700} currentEvent={currentEvent} setCurrentEvent={setLocation}></DynamicMap>
+            <DynamicMap width={350 + 800} currentEvent={currentEvent} setCurrentEvent={setLocation}></DynamicMap>
         </div>
     );
   }

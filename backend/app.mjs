@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
-  origin: process.env.FRONTEND,
+  origin: "*",
   credentials: true,
 }));
 
@@ -199,7 +199,6 @@ app.get("/api/events/", isAuthenticated, async function (req, res, next) {
   let end = req.query.endDateFilter;
   let loc = req.query.locationFilter;
   let events;
-  console.log(loc);
   if(start == ""){
     start = "1970-01-01";
   }
@@ -231,7 +230,6 @@ app.get("/api/numberOfEvents/", isAuthenticated, async function (req, res, next)
   const numberOfEvents = {};
   for (let index = 0; index < Object.keys(BUILDINGS).length; index++) {
     const key = Object.keys(BUILDINGS)[index];
-    console.log(key);
     numberOfEvents[key] = await Event.find({ location: key }).count();
   }
   return res
