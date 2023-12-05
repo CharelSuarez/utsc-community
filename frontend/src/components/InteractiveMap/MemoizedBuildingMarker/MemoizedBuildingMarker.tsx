@@ -7,11 +7,18 @@ import "./MemoizedBuildingMarker.css";
 interface MemoizedMarkerProps {
     buildingKey: string;
     building: Building;
+    eventCounts:
+     any;
 }
 
-const MemoizedBuildingMarker = memo(function MemoizedMarker({ buildingKey, building } : MemoizedMarkerProps) {
+function test() {
+    console.log("test");
+}
+
+const MemoizedBuildingMarker = memo(function MemoizedMarker({ buildingKey, building, eventCounts} : MemoizedMarkerProps) {
     const image = `building/${buildingKey.toLowerCase()}.jpg`
     const {latitude, longitude} = building.location;
+    const eventCount = eventCounts && eventCounts.hasOwnProperty(buildingKey) ? eventCounts[buildingKey] : 0;
     return (
         <Marker 
             position={[latitude, longitude]} 
@@ -26,9 +33,9 @@ const MemoizedBuildingMarker = memo(function MemoizedMarker({ buildingKey, build
                             </div>
                             <img class="building-image" src=${image} />
                             <div class="building-info" style="font-size: 15px;">
-                                <button class="building-events button active">
+                                <button class="building-events button active" style="opacity: ${eventCount == 0 ? 0.5 : 1.0}">
                                     <img class="building-events-icon" src="icons/event.png" />
-                                    <p>5 upcoming events</p>
+                                    <p>${eventCount} upcoming event${eventCount == 1 ? "" : "s"}</p>
                                 </button>
                             </div>
                         </div>

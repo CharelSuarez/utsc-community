@@ -5,10 +5,7 @@
   "main": "app.mjs",
   "scripts": {
     "prod": "node app.mjs",
-    "dev": "nodemon app.mjs",
-    "socket": "nodemon socket.mjs",
-    "location": "nodemon location.mjs",
-    "test": "npx mocha"
+    "dev": "nodemon app.mjs"
   },
   "author": "",
   "license": "ISC",

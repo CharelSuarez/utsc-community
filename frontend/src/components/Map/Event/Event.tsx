@@ -27,7 +27,6 @@ export default function Event({title, description, location, startDate, endDate,
                 <div className="innerbox" onClick={() => {
                     setEventShowModal(true);
                     setCurrentEvent({_id, title, description, location, startDate, endDate, createdBy, guests});
-                    console.log("Set event owo.")
                 }}>
                     <h1>{title.substring(0, 10) + (title.length <= 10 ? "" : "...")}</h1>
                 </div>
@@ -44,7 +43,10 @@ export default function Event({title, description, location, startDate, endDate,
                 </div>
             </div>
             {showEventModal && createPortal(
-                <EventModal onClose={() => setEventShowModal(false)} title={title} description={description} 
+                <EventModal onClose={() => {
+                    setEventShowModal(false)
+                    setCurrentEvent(null);
+                }} title={title} description={description} 
                 location={location} startDate={startDate} endDate={endDate} createdBy={createdBy} guests={guests} _id={_id} onAddFunction={onAddFunction}/>,
                 document.body
             )}

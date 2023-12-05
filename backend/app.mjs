@@ -12,6 +12,8 @@ import multer from "multer";
 import fs from "fs";
 import { BUILDINGS } from "./util/building/Building.mjs";
 import mongoose from "mongoose";
+import createLocationServer from "./location.mjs";
+import createSocketServer from "./socket.mjs";
 
 const PORT = 5000;
 const app = express();
@@ -383,3 +385,6 @@ const server = createServer(app).listen(PORT, function (err) {
   if (err) console.log(err);
   else console.log("HTTP server on http://localhost:%s", PORT);
 });
+
+createLocationServer(sessionMiddleware);
+createSocketServer(sessionMiddleware);

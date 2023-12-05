@@ -59,17 +59,7 @@
 }
 
 .building-events {
-    /* TODO This is a global button style... */
-    /* align-items: center;
-    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
-    border: none;
-    border-radius: 6px;
-    box-sizing: border-box;
-    color: #fff;
     cursor: pointer;
-    display: flex;
-    overflow: hidden; */
-
     width: 100%;
     justify-content: space-between;
     padding: 7px 7px;

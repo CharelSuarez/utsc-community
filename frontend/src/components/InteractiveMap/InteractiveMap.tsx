@@ -2,13 +2,14 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/images/marker-icon.png';
-import { DivIcon, LatLngBounds, Map} from 'leaflet';
+import { DivIcon, LatLngBounds, Map as LeafletMap} from 'leaflet';
 import { connectToLocationService, disconnectFromLocationService } from '@/api/location';
 import { useEffect, useState, useRef } from 'react';
 import './InteractiveMap.css';
 import MemoizedMarker from './MemoizedMarker/MemoizedMarker';
 import MemoizedBuildingMarker from './MemoizedBuildingMarker/MemoizedBuildingMarker';
 import { BUILDINGS } from '@/util/building/Building';
+import { getNumberOfLocations } from '@/api/event';
 
 export interface MapProps {
     width: number;
@@ -23,13 +24,19 @@ function getShowBuildings() {
     return !(localStorage.getItem('showBuildings') === 'false');
 }
 
+let eventCounts: any | null = null;
+
 export default function InteractiveMap({ width, currentEvent, setCurrentEvent } : MapProps) {
     const [personLocations, setPersonLocations] = useState<Array<any>>([]);
     const [showBuildings, setShowBuildings] = useState(getShowBuildings());
-    const [map, setMap] = useState<Map|null>(null);
+    const [map, setMap] = useState<LeafletMap|null>(null);
     const showBuildingsButton = useRef<any>(null);
 
     useEffect(() => {
+        getNumberOfLocations().then((counts) => {
+            eventCounts = counts.numberOfEvents;
+        });
+
         connectToLocationService((personLocations) => {
             // Prevent elements being re-rendered unnecessarily
             setPersonLocations((prevPersonLocations) => {
@@ -69,11 +76,8 @@ export default function InteractiveMap({ width, currentEvent, setCurrentEvent } 
     }, [showBuildings]);
 
     useEffect(() => {
-        console.log("LOL");
         if (currentEvent) {
-            // const building = BUILDINGS[currentEvent.location.building];
-            const building = BUILDINGS.PAN_AM;
-            console.log(building);
+            const building = BUILDINGS[currentEvent.location];
             map?.flyTo([building.location.latitude, building.location.longitude], 18); // 18 = max zoom level
         }
     }, [currentEvent, map]);
@@ -82,12 +86,12 @@ export default function InteractiveMap({ width, currentEvent, setCurrentEvent } 
         <>
             <MapContainer
                 style={{fontFamily: 'inherit', width: `calc(100% - ${width}px)`}}
-                maxBounds={new LatLngBounds([43.77726466009645, -79.19554571880464], [43.792133217870415, -79.17708660072934])}
+                maxBounds={new LatLngBounds([43.775725424841006, -79.20103326023897], [43.793890945552064, -79.17378951960264])}
                 maxBoundsViscosity={1.0}
                 className='map_container'
                 center={[43.78393739345549, -79.18573731545196]} 
                 zoom={18}
-                minZoom={1}
+                minZoom={17}
                 zoomControl={false}
                 scrollWheelZoom={true}
                 ref={setMap}
@@ -105,8 +109,11 @@ export default function InteractiveMap({ width, currentEvent, setCurrentEvent } 
                 }
                 { showBuildings &&
                     Object.entries(BUILDINGS).map(([key, building], index) => {
+                        if (currentEvent && currentEvent.location !== key) {
+                            return null;
+                        }
                         return (
-                            <MemoizedBuildingMarker key={key} buildingKey={key} building={building}/>
+                            <MemoizedBuildingMarker key={key} buildingKey={key} building={building} eventCounts={eventCounts}/>
                         );
                     })
                 }
@@ -131,14 +138,16 @@ export default function InteractiveMap({ width, currentEvent, setCurrentEvent } 
                     </Marker>
                 }
             </MapContainer>
-            <div className='toggle-menu'>
-                <div className='toggle-buildings'>
-                    <h2 className='toggle-title'>{showBuildings ? "Hide" : "Show"} Buildings</h2>
-                    <button className='toggle-button button active' ref={showBuildingsButton} onClick={() => setShowBuildings(!showBuildings)}>
-                        <img className='toggle-icon' src='icons/building.png' alt='toggle buildings'/>
-                    </button>
+            { !setCurrentEvent &&
+                <div className='toggle-menu'>
+                    <div className='toggle-buildings'>
+                        <h2 className='toggle-title'>{showBuildings ? "Hide" : "Show"} Buildings</h2>
+                        <button className='toggle-button button active' ref={showBuildingsButton} onClick={() => setShowBuildings(!showBuildings)}>
+                            <img className='toggle-icon' src='icons/building.png' alt='toggle buildings'/>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            }
         </>
     );
 }

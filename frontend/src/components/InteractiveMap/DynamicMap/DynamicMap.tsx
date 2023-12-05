@@ -9,9 +9,7 @@ const DynamicMap = memo(function DynamicMap(mapProps : MapProps) {
     { 
       loading: () => {
         return (
-          <div className='loading-div' style={{width: `calc(100% - ${mapProps.width}px)`}}>
-
-          </div>
+          <div className='loading-div' style={{width: `calc(100% - ${mapProps.width}px)`}}></div>
         )
       },
       ssr: false

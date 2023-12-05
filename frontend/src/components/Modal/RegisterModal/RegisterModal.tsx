@@ -40,27 +40,12 @@ function getModalChildren({onClose}: RegisterModalProps) {
     return (
         <>
             <h1>Register</h1>
-
-            <script src='https://accounts.google.com/gsi/client' async></script>
-            <div id='g_id_onload'
-                data-client_id='YOUR_GOOGLE_CLIENT_ID'
-                data-login_uri='https://your.domain/your_login_endpoint'
-                data-auto_prompt='false'>
-            </div>
-            <div className='g_id_signin'
-                data-type='standard'
-                data-size='large'
-                data-theme='outline'
-                data-text='sign_in_with'
-                data-shape='rectangular'
-                data-logo_alignment='left'>
-            </div>
-
             <div className='modal-form'>
                 <input ref={usernameRef} type='text' placeholder='Username' autoComplete="off"/>
                 <input ref={passwordRef} type='password' placeholder='Password' autoComplete="off"/>
-                <input ref={fileRef} type='file' placeholder='File' autoComplete="off"/>
-                <button onClick={onClickRegister}>Register</button>
+                <label htmlFor="files" className='button active'>Select Avatar Image (Optional)</label>
+                <input id="files" ref={fileRef} type='file' placeholder='File' autoComplete="off" style={{visibility: 'hidden', display: 'none'}}/>
+                <button className='button active submit red' onClick={onClickRegister}>Register</button>
             </div>
         </>
     )

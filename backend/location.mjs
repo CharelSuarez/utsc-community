@@ -1,6 +1,5 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { sessionMiddleware } from "./app.mjs";
 import cors from "cors";
 import express from "express";
 import protobuf from "protobufjs";
@@ -14,13 +13,80 @@ app.use(cors({
     origin: "*",
 }));
 
-const server = createServer(app).listen(PORT, function (err) {
-    if (err) console.log(err);
-    else console.log("Socket on http://localhost:%s", PORT);
-});
+export default function createLocationServer(sessionMiddleware) {
+    const server = createServer(app).listen(PORT, function (err) {
+        if (err) console.log(err);
+        else console.log("Socket on http://localhost:%s", PORT);
+    });
+    const io = new Server(server);
+    io.engine.use(sessionMiddleware);
 
-const io = new Server(server);
-io.engine.use(sessionMiddleware);
+    io.on('connection', async (socket) => {
+        if (!Location) {
+            await loadProto();
+        }
+    
+        if (!socket.request.session?.user) {
+            socket.disconnect();
+            return;
+        }
+    
+        const session = socket.request.session;
+        const personId = session.user._id;
+        const username = session.user.username;
+        const avatar = session.user.avatar;
+        console.log(`User '${username}' connected!`);
+    
+        socket.on('message', (message) => {
+            // TODO Do this in a separate task!
+            // Clear old locations
+            for (const key in locations) {
+                const location = locations[key];
+                if (location.lastUpdated != null && Date.now() - location.lastUpdated > 10000) {
+                    delete locations[key];
+                }
+            }
+    
+            // Decode message from Uint8Array
+            let buffer = new Uint8Array(message);
+            const location = Location.decode(buffer);
+    
+            // Add user's location to all locations
+            locations[personId] = { 
+                personId,
+                username,
+                avatar,
+                location,
+                lastUpdated: Date.now()
+            } 
+    
+    
+            // TODO Remove this!
+            // for (let i = Object.values(locations).length; i < 50; i++) {
+            //     const random = `${Math.floor(Math.random() * 20000)}`;
+            //     locations[random] = {
+            //         personId: random,
+            //         username: `Random User #${random}`,
+            //         avatar: 'http://localhost:5000/avatars/default.svg', // TODO: Fix origin!
+            //         location: {
+            //             latitude: 43.777106 + Math.random() * (43.792295 - 43.777106),
+            //             longitude: -79.180157 + Math.random() * (-79.195519 - -79.180157),
+            //         },
+            //         lastUpdated: null
+            //     }
+            // }
+    
+            // TODO Send friends only?
+            const locationResponse = LocationResponse.create({ personLocations: Object.values(locations) });
+            buffer = LocationResponse.encode(locationResponse).finish();
+            io.emit('message', buffer);
+        });
+    
+        socket.on('disconnect', async (socket) => {
+            console.log(`User '${username}' disconnected!`);
+        })
+    })
+}
 
 let Location;
 let LocationResponse;
@@ -34,79 +100,3 @@ async function loadProto() {
 }
 
 const locations = {};
-
-io.on('connection', async (socket) => {
-    if (!Location) {
-        await loadProto();
-    }
-
-    if (!socket.request.session?.user) {
-        socket.disconnect();
-        return;
-    }
-
-    const session = socket.request.session;
-    const personId = session.user._id;
-    const username = session.user.username;
-    const avatar = session.user.avatar;
-    console.log(`User '${username}' connected!`);
-
-    socket.on('message', (message) => {
-        // TODO Do this in a separate task!
-        // Clear old locations
-        for (const key in locations) {
-            const location = locations[key];
-            if (location.lastUpdated != null && Date.now() - location.lastUpdated > 10000) {
-                delete locations[key];
-            }
-        }
-
-        // Decode message from Uint8Array
-        let buffer = new Uint8Array(message);
-        const location = Location.decode(buffer);
-
-        // Add user's location to all locations
-        locations[personId] = { 
-            personId,
-            username,
-            avatar,
-            location,
-            lastUpdated: Date.now()
-        } 
-
-
-        // TODO Remove this!
-        // for (let i = Object.values(locations).length; i < 50; i++) {
-        //     const random = `${Math.floor(Math.random() * 20000)}`;
-        //     locations[random] = {
-        //         personId: random,
-        //         username: `Random User #${random}`,
-        //         avatar: 'http://localhost:5000/avatars/default.svg', // TODO: Fix origin!
-        //         location: {
-        //             latitude: 43.777106 + Math.random() * (43.792295 - 43.777106),
-        //             longitude: -79.180157 + Math.random() * (-79.195519 - -79.180157),
-        //         },
-        //         lastUpdated: null
-        //     }
-        // }
-
-        // TODO Send friends only?
-        const locationResponse = LocationResponse.create({ personLocations: Object.values(locations) });
-        buffer = LocationResponse.encode(locationResponse).finish();
-        io.emit('message', buffer);
-    });
-
-    // setInterval(() => {
-    //     if (!socket.connected) {
-    //         return;
-    //     }
-
-    //     const locationResponse = LocationResponse.create({ personLocations: Object.values(locations) });
-    //     const buffer = LocationResponse.encode(locationResponse).finish();
-    //     io.emit('message', buffer);
-    // }, GEO_INTERVAL);
-
-    socket.on('disconnect', async (socket) => {
-        console.log(`User '${username}' disconnected!`);
-    })
-})

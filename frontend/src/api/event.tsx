@@ -21,6 +21,6 @@ export function cancelEvent(eventId: string){
     return send("Delete", "/api/event/" + eventId , null);
 }
 
-export function getNumberOfLocations(location: string){
+export function getNumberOfLocations(){
     return send("GET", "/api/numberOfEvents", null);
 }
