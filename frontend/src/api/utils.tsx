@@ -2,7 +2,7 @@ import { resetUser } from "./auth";
 
 export function send(method: string, url: string, data: any): Promise<any> {
     console.log(method, url, data)
-    return fetch(`${typeof window === 'undefined' || window.location.href.startsWith("http://localhost") ? process.env.NEXT_PUBLIC_BACKEND+'/' : ''}${url}`, {
+    return fetch(`${typeof window === 'undefined' || window.location.href.startsWith("http://localhost") ? process.env.NEXT_PUBLIC_BACKEND : 'https://utscampus.live:5000'}${url}`, {
         credentials: 'include',
         method: method,
         headers: {
@@ -49,7 +49,7 @@ export function sendForm(method: string, url: string, data: any) : Promise<any> 
         xhr.onerror = function () {
             resolve(null);
         }
-        xhr.open(method, `${typeof window === 'undefined' || window.location.href.startsWith("http://localhost") ? process.env.NEXT_PUBLIC_BACKEND+'/' : ''}${url}`, true);
+        xhr.open(method, `${typeof window === 'undefined' || window.location.href.startsWith("http://localhost") ? process.env.NEXT_PUBLIC_BACKEND : 'https://utscampus.live:5000'}${url}`, true);
         if (!data) {
             xhr.send();
         } else {
