@@ -22,14 +22,10 @@ const SESSION_TIME = 60 * 60 * 24; // 24 hours
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(function (req, res, next) {
-  let origin = req.get("origin");
-  console.log(origin);
-  cors({
-    origin: origin == process.env.FRONTEND || origin == 'https://utscampus.live' ? origin : "badorigin",
-    credentials: true,
-  })(req, res, (err) => {});
-});
+app.use(cors({
+  origin: "*",
+  credentials: true,
+}));
 
 export const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
