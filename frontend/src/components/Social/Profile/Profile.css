@@ -22,11 +22,18 @@
     cursor: pointer;
 }
 
-.profile{
+.profile img{
     height: 40px;
     width: 40px;
     background-color: white;
-    border-radius: 100%;
+    border-radius: 50%;
+}
+
+
+.profile.group img{
+    filter: invert(100%) sepia(0%) saturate(7450%) hue-rotate(189deg) brightness(125%) contrast(100%);
+    background-color: transparent;
+    border-radius: 0px;
 }
 
 .name{

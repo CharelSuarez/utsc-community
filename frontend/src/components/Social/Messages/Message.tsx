@@ -78,6 +78,7 @@ export default function Message({name, _id}: MessageProps){
             <div className="display">
                 {(
                     <div>
+                        
                        { messages.map((message) => <Bubble key={key++} user={message.user} message={message.message} mine={message.mine}/>)}
                        <div ref={scrollRef}></div>
                     </div>

@@ -10,6 +10,8 @@ export default function Bubble({user, message, mine}: Bubbleprops){
     let bubble = mine ? "bubble mine" : "bubble yours"
     let userBubble = mine ? "user hidden" : "user"
 
+
+
     return (
         <div className="text-holder">
             
