@@ -22,7 +22,7 @@ export async function connectToLocationService(messageCallback : (locationRespon
         return;
     }
 
-    socket = io('ws://localhost:2082',{
+    socket = io('ws://utscampus.live:2082',{
         transports: ['websocket']
     });
 
