@@ -23,9 +23,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
-  console.log(req.origin);
+  let origin = req.get("origin");
+  console.log(origin);
   cors({
-    origin: req.origin == process.env.FRONTEND || req.origin == 'https://utscampus.live' ? req.origin : "badorigin",
+    origin: origin == process.env.FRONTEND || origin == 'https://utscampus.live' ? origin : "badorigin",
     credentials: true,
   })(req, res, (err) => {});
 });
