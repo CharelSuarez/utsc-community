@@ -4,7 +4,7 @@ import cors from "cors";
 import express from "express";
 import protobuf from "protobufjs";
 
-const PORT = 5002;
+const PORT = 2082;
 const app = express();
 
 app.use(express.json());

@@ -29,7 +29,7 @@ export default function Message({name, _id}: MessageProps){
     let key = 0
   
     useEffect(() => {
-        socket = io('ws://localhost:5001',{
+        socket = io('ws://localhost:2083',{
             transports: ['websocket']
         });
         socket.on('message', (text) =>{
@@ -78,7 +78,7 @@ export default function Message({name, _id}: MessageProps){
             <div className="display">
                 {(
                     <div>
-                        
+
                        { messages.map((message) => <Bubble key={key++} user={message.user} message={message.message} mine={message.mine}/>)}
                        <div ref={scrollRef}></div>
                     </div>
