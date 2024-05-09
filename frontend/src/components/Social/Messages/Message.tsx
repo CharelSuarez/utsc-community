@@ -29,7 +29,7 @@ export default function Message({name, _id}: MessageProps){
     let key = 0
   
     useEffect(() => {
-        socket = io('ws://utscampus.live:2083',{
+        socket = io('ws://localhost:' + process.env.WEBSOCKET_PORT,{
             transports: ['websocket']
         });
         socket.on('message', (text) =>{

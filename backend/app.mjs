@@ -15,7 +15,7 @@ import mongoose from "mongoose";
 import createLocationServer from "./location.mjs";
 import createSocketServer from "./socket.mjs";
 
-const PORT = 5000;
+const PORT = 5001;
 const app = express();
 const SESSION_TIME = 60 * 60 * 24; // 24 hours
 
@@ -184,7 +184,7 @@ function getUserAvatar(user) {
   if (avatar.startsWith("public/")) {
     avatar = avatar.substring("public/".length);
   }
-  return "http://localhost:5000/" + avatar; // TODO: Fix origin!
+  return "http://localhost:5001/" + avatar; // TODO: Fix origin!
 }
 
 // Endpoint to get any user's information
@@ -316,7 +316,6 @@ app.get("/api/request/", isAuthenticated, async function (req, res) {
 });
 
 app.post("/api/group/", isAuthenticated, async function (req, res) {
-
   const users = req.body.users;
   
   users.push(req.session.user.username)
@@ -332,7 +331,7 @@ app.post("/api/group/", isAuthenticated, async function (req, res) {
 
 });
 
-app.get("/api/group/", async function (req, res) {
+app.get("/api/group/", isAuthenticated, async function (req, res) {
   const group = await Group.find({ users: { $in: [req.session.user.username] } }, { messages: 0});
   res.status(200).json({ group: group });
 });
@@ -384,5 +383,4 @@ const server = createServer(app).listen(PORT, function (err) {
   else console.log("HTTP server on http://localhost:%s", PORT);
 });
 
-createLocationServer(sessionMiddleware);
-createSocketServer(sessionMiddleware);
+createLocationServer(sessionMiddleware, server);

@@ -6,10 +6,10 @@ let socket : Socket | null = null;
 let Location : protobuf.Type | null = null;
 let LocationResponse : protobuf.Type | null = null;
 
-const GEO_INTERVAL = 50;
+const GEO_INTERVAL = 250;
 
 async function loadProto() {
-    const root = await protobuf.load("/proto/location_service.proto");
+    const root = await protobuf.load("./proto/location_service.proto");
     Location = root.lookupType("locationservice.Location");
     LocationResponse = root.lookupType("locationservice.LocationResponse");
 }
@@ -22,11 +22,11 @@ export async function connectToLocationService(messageCallback : (locationRespon
         return;
     }
 
-    socket = io('ws://utscampus.live:2082',{
+    socket = io('ws://localhost:5001',{
         transports: ['websocket']
     });
 
-    socket.on('message', (message) =>{
+    socket.on('location', (message) =>{
         if (Location == null || LocationResponse == null) {
             return;
         }
@@ -79,6 +79,6 @@ async function sendLocation(latitude : number, longitude : number) {
     // console.log(`Sending message to server: ${data}`);
     const location = Location.create(data);
     const buffer = Location.encode(location).finish();
-    socket.emit('message', buffer);
+    socket.emit('location', buffer);
 }
 

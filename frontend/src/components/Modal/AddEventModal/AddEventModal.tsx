@@ -57,10 +57,10 @@ function getModalChildren({onClose, onAddFunction}: EventModalProps) {
         <>
             <div className="contentAdd">
                 <label>Event Title:
-                    <textarea maxLength="20" className="titleAdd" ref={titleRef} type='text'></textarea>
+                    <textarea maxLength={20} className="titleAdd" ref={titleRef}></textarea>
                 </label>
                 <label>Event Description:
-                    <textarea maxLength="750" className="descriptionAdd" ref={descriptionRef} ></textarea>
+                    <textarea maxLength={750} className="descriptionAdd" ref={descriptionRef} ></textarea>
                 </label>
                 <div className="eventdetails">
                     <div className='dateTime'>

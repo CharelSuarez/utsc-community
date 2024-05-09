@@ -7,7 +7,6 @@ export function send(method: string, url: string, data: any): Promise<any> {
         method: method,
         headers: {
             "Content-Type": "application/json",
-            //'Access-Control-Allow-Origin': 'http://localhost:3000',
         },
         body: data ? JSON.stringify(data): null,
     })

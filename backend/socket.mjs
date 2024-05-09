@@ -4,7 +4,6 @@ import cors from "cors";
 import express from "express";
 import { Group } from "./model/model.mjs";
 
-
 const PORT = 2083;
 const app = express();
 
@@ -14,13 +13,11 @@ app.use(cors({
     origin: "*",
 }));
 
-export default function createSocketServer(sessionMiddleware) {
-    const server = createServer(app).listen(PORT, function (err) {
-        if (err) console.log(err);
-        else console.log("HTTP server on http://localhost:%s", PORT);
-    });
-    const io = new Server(server)
+export default function createSocketServer(sessionMiddleware, server) {
+    const io = new Server(server);
     io.engine.use(sessionMiddleware);
+
+    console.log("Socket on http://localhost:%s", PORT);
 
     io.on('connection', (socket) => {
         const session = socket.request.session;
